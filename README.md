@@ -1,8 +1,13 @@
 # About
 
-This repository contains two variations on how to render point clouds with compute shaders that are up to ten times faster than gl.drawArrays(GL_POINT, ...). In the folders _compute_ and compute_hqs_ you will find a regular non-anti-aliased version and a high-quality splatting version.
+This repository contains two variations on how to render point clouds with compute shaders that are up to ten times faster than gl.drawArrays(GL_POINT, ...). In the folders _compute_ and _compute_hqs_ you will find a regular non-anti-aliased version and a high-quality splatting version.
 
 Please note that benchmarking results were obtained with the original order of points in our test files and for pixel sizes of 1 pixel. The order of points has a significant impact on performance and shuffling points severely reduces the performance gains of our compute shader approach. It can even make the high-quality compute shader version slower than the regular gl.drawArrays(GL_POINT, ...). In-depth benchmarking is subject to future work. 
+
+This repository is an excerpt of the compute shader rasterization part of https://github.com/m-schuetz/Fenek/. 
+
+Video (YouTube):
+![ad](./doc/video_smaller.jpg)
 
 ## compute
 
