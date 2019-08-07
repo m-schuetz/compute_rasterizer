@@ -1,0 +1,20 @@
+{
+	"workbench.editor.enablePreview": false,
+	"files.associations": {
+		"*.vs": "cpp",
+		"*.fs": "cpp"
+	},
+	"files.trimTrailingWhitespace": false,
+	"editor.fontSize": 20,
+	"editor.autoIndent": false,
+	"editor.detectIndentation": false,
+	"editor.renderWhitespace": "all",
+	"editor.insertSpaces": false,
+	"editor.minimap.enabled": false,
+	"editor.autoClosingBrackets": false,
+	"editor.formatOnType": false,
+	"editor.acceptSuggestionOnEnter": "off",
+	"editor.acceptSuggestionOnCommitCharacter": false,
+	"terminal.integrated.fontSize": 20,
+	"markdown.preview.fontSize": 20,
+}
