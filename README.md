@@ -7,7 +7,9 @@ Please note that benchmarking results were obtained with the original order of p
 This repository is an excerpt of the compute shader rasterization part of https://github.com/m-schuetz/Fenek/. 
 
 Video (YouTube):
-![ad](./doc/video_smaller.jpg)
+<a href="https://youtu.be/TQNGajgeEvQ" target="_blank">
+	<img src="./doc/video_smaller.jpg" width="959px">
+</a>
 
 # compute
 
