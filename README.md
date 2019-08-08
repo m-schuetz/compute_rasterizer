@@ -35,15 +35,16 @@ A compute shader implementation of _High-Quality Surface Splatting on Today’s 
 * Our renderer uses OpenGL 4.5 via glew and glfw, C++, V8 Javascript Engine. See https://github.com/m-schuetz/Fenek/.
 * Tested on an RTX 2080 TI and a GTX 1060.
 * Points in the test files we used were somewhat ordered, altough we do not know the means by which they were ordered. Shuffling drastically changes the results. 
-* Evaluated for a size of 1 pixel per point. The compute shader based approach scales roughly linearly with the point size/fragment count, whereas GL_POINT scales much better. So our approach is ideal for a size of 1 pixel per point, but the usefulness diminishes for sizes larger than 2x2 pixels. 
+* Evaluated for a size of 1 pixel per point. The compute shader based approach scales roughly linearly with the point size/fragment count, whereas GL_POINT scales much better. So our approach is ideal for a size of 1 pixel per point, but the usefulness diminishes for sizes larger than 2x2 pixels.
+* The Retz model was reduced to 100M points on the GTX 1060 (3GB) because of memory constraints.
 
-| Model        | GPU           | AtomicMin  | High-Quality Splatting | GL_POINT  |
-| ------------ |:--------------| ----------:| ---------:| ---------:|
-| Heidentor    | 2080 TI       |  1.64 ms   |   3.37 ms |   5.71 ms |
-|              | 1060 GTX      |  4.88 ms   |  11.78 ms |  13.60 ms |
-| Retz         | 2080 TI       |  6.41 ms   |  12.95 ms |  34.04 ms |
-|              | 1060 GTX      | 14.32 ms   |  31.76 ms |  58.82 ms |
-| Morro Bay    | 2080 TI       | 5.87 ms    |  15.48 ms |  60.26 ms |
+| Model         | #Points | GPU           | AtomicMin  | High-Quality Splatting | GL_POINT  |
+| ------------  | -------:|:--------------| ----------:| ---------:| ---------:|
+| Heidentor     |     26M | 2080 TI       |  1.64 ms   |   3.37 ms |   5.71 ms |
+|               |         | 1060 GTX      |  4.88 ms   |  11.78 ms |  13.60 ms |
+| Retz          |    145M | 2080 TI       |  6.41 ms   |  12.95 ms |  34.04 ms |
+|               |    100M | 1060 GTX      | 14.32 ms   |  31.76 ms |  58.82 ms |
+| Morro Bay     |    117M | 2080 TI       | 5.87 ms    |  15.48 ms |  60.26 ms |
 
 
 
