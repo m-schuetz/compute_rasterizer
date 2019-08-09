@@ -24,7 +24,7 @@ Up to 2-10 times faster than GL_POINT.
 
 Up to 2-3 times faster than GL_POINT.
 
-A compute shader implementation of _High-Quality Surface Splatting on Today’s GPUs_[1]. Instead of rendering only the closest point, this approach computes the average of all points within a certain depth-range, which leads to pretty good anti-aliasing within a pixel. Currently doesn't do anti-aliasing between pixels, though.
+A compute shader implementation of _High-Quality Surface Splatting on Today’s GPUs_[2]. Instead of rendering only the closest point, this approach computes the average of all points within a certain depth-range, which leads to pretty good anti-aliasing within a pixel. Currently doesn't do anti-aliasing between pixels, though.
 
 * render_depth.cs: Creates a depth-buffer using the basic compute approach.
 * render_attribute.cs: Computes the sum of colors of all points that are at most 1% behind the closest point in a pixel. Also counts how many points contribute to the sum.
@@ -47,5 +47,9 @@ A compute shader implementation of _High-Quality Surface Splatting on Today’s 
 | Morro Bay     |    117M | 2080 TI       | 5.87 ms    |  15.48 ms |  60.26 ms |
 
 
+# References
 
-[1] Mario Botsch, Alexander Hornung, Matthias Zwicker, Leif Kobbelt, "High-Quality Surface Splatting on Today’s GPUs", Eurographics Symposium on Point-Based Graphics (2005)
+* [1] [Markus Schütz, Michael Wimmer, "Rendering Point Clouds with Compute Shaders", arXiv](https://arxiv.org/abs/1908.02681)
+* [2] Mario Botsch, Alexander Hornung, Matthias Zwicker, Leif Kobbelt, "High-Quality Surface Splatting on Today’s GPUs", Eurographics Symposium on Point-Based Graphics (2005)
+* [3] Christian M Günther, Thomas Kanzok, Lars Linsen, and Paul Rosenthal. 2013. "A GPGPU-based Pipeline for Accelerated Rendering of Point Clouds." Journal of WSCG 21 (2013), 153–161.
+
