@@ -1,6 +1,6 @@
 # About
 
-[Two page abstract at arXiv](https://arxiv.org/abs/1908.02681)
+[Source code to the poster/2-page abstract at arxiv.](https://arxiv.org/abs/1908.02681)
 
 This repository contains two variations on how to render point clouds with compute shaders that are up to ten times faster than gl.drawArrays(GL_POINT, ...). In the folders _compute_ and _compute_hqs_ you will find a regular non-anti-aliased version and a high-quality splatting version.
 
