@@ -52,4 +52,5 @@ A compute shader implementation of _High-Quality Surface Splatting on Today’s 
 * [1] [Markus Schütz, Michael Wimmer, "Rendering Point Clouds with Compute Shaders", arXiv](https://arxiv.org/abs/1908.02681)
 * [2] Mario Botsch, Alexander Hornung, Matthias Zwicker, Leif Kobbelt, "High-Quality Surface Splatting on Today’s GPUs", Eurographics Symposium on Point-Based Graphics (2005)
 * [3] Christian M Günther, Thomas Kanzok, Lars Linsen, and Paul Rosenthal. 2013. "A GPGPU-based Pipeline for Accelerated Rendering of Point Clouds." Journal of WSCG 21 (2013), 153–161.
+* [4] [Adam Marrs, Benjamin Watson, Christopher Healey, "View-warped Multi-view Soft Shadowing for Local Area Lights", JCGT](http://jcgt.org/published/0007/03/01/)
 
