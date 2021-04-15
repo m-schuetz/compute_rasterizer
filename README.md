@@ -29,6 +29,22 @@ After loading the point cloud, you should be seeing something like the screensho
 
 ![sd](./doc/screenshot.jpg)
 
+# Code Sections
+
+Code for the individual rendering methods is primarily found in the modules/compute_\<methods\> folders. 
+
+| Method        | Location      |
+| ------------- |:-------------|
+| atomicMin          | [./modules/compute](./modules/compute) |
+| reduce             | [./modules/compute_ballot](./modules/compute_ballot) |
+| early-z            | [./modules/compute_earlyDepth](./modules/compute_earlyDepth) |
+| reduce & early-z   | [./modules/compute_ballot_earlyDepth](./modules/compute_ballot_earlyDepth) |
+| dedup              | [./modules/compute_ballot_earlyDepth_dedup](./modules/compute_ballot_earlyDepth_dedup) |
+| HQS                | [./modules/compute_hqs](./modules/compute_hqs) |
+| HQS1R              | [./modules/compute_hqs_1x64bit_fast](./modules/compute_hqs_1x64bit_fast) |
+| busy-loop          | [./modules/compute_guenther](./modules/compute_guenther) |
+| just-set           | [./modules/compute_just_set](./modules/compute_just_set) |
+
 # Results
 
 Frame times when rendering 796 million points on an RTX 3090 in a close-up viewpoint. Times in milliseconds, lower is better. The compute methods reduce (with early-z) and dedup (with early-z) yield the best results with Morton order (<16.6ms, >60fps). The shuffled Morton order greatly improves performance of GL_POINTS and some compute methods, and it is usually either the fastest or within close margins of the fastest combinations of rendering method and ordering.
