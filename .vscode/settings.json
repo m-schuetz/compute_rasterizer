@@ -2,7 +2,10 @@
 	"workbench.editor.enablePreview": false,
 	"files.associations": {
 		"*.vs": "cpp",
-		"*.fs": "cpp"
+		"*.fs": "cpp",
+		"cmath": "cpp",
+		"unordered_map": "cpp",
+		"chrono": "cpp"
 	},
 	"files.trimTrailingWhitespace": false,
 	"editor.fontSize": 20,

@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs
+commands.txt
+bindings.txt
+constants.txt
+errors.txt
+node_modules/
+src_js/start_build.js

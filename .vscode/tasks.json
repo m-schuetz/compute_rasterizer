@@ -6,7 +6,7 @@
 		{
 			"label": "Run App",
 			"type": "shell",
-			"command": "./Fenek.exe",
+			"command": "./Skye.exe",
 			"options": {
 				"cwd": "./bin/Release_x64"
 			},

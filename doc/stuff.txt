@@ -1,0 +1,1 @@
+json.scenarios.filter(s => s.sorting === "original").map(s => s.timings.filter(t => t.method === "GL_POINTS")).flat().map(d => d.durations.find(d => d.label === "frame").avg)

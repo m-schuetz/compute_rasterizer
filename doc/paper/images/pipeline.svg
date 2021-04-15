@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="pipeline.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 210 297"
+   height="297mm"
+   width="210mm">
+  <defs
+     id="defs2">
+    <rect
+       id="rect957"
+       height="84.666667"
+       width="179.3497"
+       y="-107.43453"
+       x="274.41071" />
+    <rect
+       x="274.41071"
+       y="-107.43453"
+       width="179.3497"
+       height="84.666667"
+       id="rect965" />
+  </defs>
+  <sodipodi:namedview
+     showguides="false"
+     inkscape:window-maximized="1"
+     inkscape:window-y="-8"
+     inkscape:window-x="-8"
+     inkscape:window-height="1377"
+     inkscape:window-width="2560"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="1289.1022"
+     inkscape:cx="611.33154"
+     inkscape:zoom="0.98994949"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Layer 1">
+    <rect
+       y="-181.94701"
+       x="-28.865108"
+       height="186.01959"
+       width="414.00049"
+       id="rect868"
+       style="fill:#ffffff;stroke:#000000;stroke-width:4.99999;stroke-linecap:square;stroke-linejoin:round;paint-order:stroke fill markers;fill-opacity:1" />
+    <text
+       style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:10.58333333px;line-height:1.25;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect957);"
+       id="text955"
+       xml:space="preserve" />
+    <text
+       xml:space="preserve"
+       id="text963"
+       style="fill:black;fill-opacity:1;stroke:none;font-family:sans-serif;font-style:normal;font-weight:normal;font-size:10.58333333px;line-height:1.25;letter-spacing:0px;word-spacing:0px;white-space:pre;shape-inside:url(#rect965);" />
+    <rect
+       inkscape:export-ydpi="147.97"
+       inkscape:export-xdpi="147.97"
+       y="-152.11629"
+       x="16.812069"
+       height="31.127882"
+       width="176.68307"
+       id="rect967"
+       style="fill:#fffeff;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill" />
+    <text
+       inkscape:export-ydpi="147.97"
+       inkscape:export-xdpi="147.97"
+       id="text971"
+       y="-139.86752"
+       x="87.371162"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;stroke-width:0.264583"
+         y="-139.86752"
+         x="87.371162"
+         id="tspan969"
+         sodipodi:role="line">Render</tspan></text>
+    <rect
+       inkscape:export-ydpi="147.97"
+       inkscape:export-xdpi="147.97"
+       style="fill:#fffeff;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="rect989"
+       width="139.17784"
+       height="31.127882"
+       x="218.94745"
+       y="-151.82094" />
+    <text
+       inkscape:export-ydpi="147.97"
+       inkscape:export-xdpi="147.97"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="277.67719"
+       y="-139.86722"
+       id="text993"><tspan
+         sodipodi:role="line"
+         id="tspan991"
+         x="277.67719"
+         y="-139.86722"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;stroke-width:0.264583">Resolve</tspan></text>
+    <text
+       inkscape:export-ydpi="147.97"
+       inkscape:export-xdpi="147.97"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="105.06658"
+       y="-127.24577"
+       id="text1017"><tspan
+         id="tspan1023"
+         sodipodi:role="line"
+         x="105.06658"
+         y="-127.24577"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;text-anchor:middle;stroke-width:0.264583">Render points into a custom framebuffer using atomicMin.</tspan></text>
+    <text
+       inkscape:export-ydpi="147.97"
+       inkscape:export-xdpi="147.97"
+       id="text1021"
+       y="-127.24577"
+       x="228.92955"
+       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:Calibri;-inkscape-font-specification:Calibri;stroke-width:0.264583"
+         y="-127.24577"
+         x="228.92955"
+         id="tspan1019"
+         sodipodi:role="line">Transform custom framebuffer into texture.</tspan></text>
+    <rect
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       y="-85.181305"
+       x="16.30344"
+       height="37.059158"
+       width="100.3597"
+       id="rect833"
+       style="fill:#fffeff;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill" />
+    <text
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       transform="scale(1.0011297,0.99887157)"
+       id="text837"
+       y="-74.406807"
+       x="53.152779"
+       style="font-style:normal;font-weight:normal;font-size:10.5714px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;stroke-width:0.264583"
+         y="-74.406807"
+         x="53.152779"
+         id="tspan835"
+         sodipodi:role="line">Depth</tspan></text>
+    <text
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       transform="scale(1.0011297,0.99887157)"
+       id="text1029"
+       y="-63.213295"
+       x="69.246796"
+       style="font-style:normal;font-weight:normal;font-size:7.0476px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.0476px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         y="-63.213295"
+         x="69.246796"
+         sodipodi:role="line"
+         id="tspan1027">Render points into a custom</tspan><tspan
+         id="tspan1033"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.0476px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         y="-54.140705"
+         x="69.246796"
+         sodipodi:role="line">depth buffer using atomicMin</tspan></text>
+    <rect
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       style="fill:#fffeff;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="rect867"
+       width="102.2306"
+       height="37.059158"
+       x="139.17268"
+       y="-85.181305" />
+    <text
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       transform="scale(1.0011297,0.99887157)"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5714px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="178.45921"
+       y="-72.626045"
+       id="text871"><tspan
+         sodipodi:role="line"
+         id="tspan869"
+         x="178.45921"
+         y="-72.626045"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;stroke-width:0.264583">Color</tspan></text>
+    <text
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       transform="scale(1.0011297,0.99887157)"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.0476px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="189.83852"
+       y="-63.213295"
+       id="text1039"><tspan
+         sodipodi:role="line"
+         x="189.83852"
+         y="-63.213295"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.0476px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         id="tspan1037">Sum up point colors that pass</tspan><tspan
+         id="tspan1043"
+         sodipodi:role="line"
+         x="189.83852"
+         y="-54.140705"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.0476px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;text-anchor:middle;stroke-width:0.264583">the depth test using atomicAdd</tspan></text>
+    <rect
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       y="-84.639076"
+       x="263.91281"
+       height="37.059158"
+       width="94.212509"
+       id="rect889"
+       style="fill:#fffeff;stroke:#000000;stroke-width:2;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill" />
+    <text
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       transform="scale(1.0156396,0.98460123)"
+       id="text893"
+       y="-72.919952"
+       x="289.83353"
+       style="font-style:normal;font-weight:normal;font-size:10.4203px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Calibri;-inkscape-font-specification:Calibri;stroke-width:0.264583"
+         y="-72.919952"
+         x="289.83353"
+         id="tspan891"
+         sodipodi:role="line">Resolve</tspan></text>
+    <text
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       transform="scale(1.0156396,0.98460123)"
+       id="text1049"
+       y="-63.641678"
+       x="307.4877"
+       style="font-style:normal;font-weight:normal;font-size:6.94691px;line-height:1.25;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.94691px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         y="-63.641678"
+         x="307.4877"
+         sodipodi:role="line"
+         id="tspan1047">Compute average color and </tspan><tspan
+         id="tspan1053"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.94691px;font-family:Calibri;-inkscape-font-specification:Calibri;text-align:center;text-anchor:middle;stroke-width:0.264583"
+         y="-54.698711"
+         x="307.4877"
+         sodipodi:role="line">store result in a texture</tspan></text>
+    <text
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       transform="scale(1.2675412,0.78892899)"
+       id="text1081"
+       y="-79.080109"
+       x="89.526756"
+       style="font-style:normal;font-weight:normal;font-size:16.2276px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264584"
+       xml:space="preserve"><tspan
+         style="stroke-width:0.264584"
+         y="-79.080109"
+         x="89.526756"
+         id="tspan1079"
+         sodipodi:role="line"> 🡆</tspan></text>
+    <text
+       inkscape:export-ydpi="147.75093"
+       inkscape:export-xdpi="147.75093"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.2276px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264584"
+       x="187.57512"
+       y="-79.080109"
+       id="text1085"
+       transform="scale(1.2675412,0.78892899)"><tspan
+         sodipodi:role="line"
+         id="tspan1083"
+         x="187.57512"
+         y="-79.080109"
+         style="stroke-width:0.264584"> 🡆</tspan></text>
+    <text
+       inkscape:export-ydpi="147.97"
+       inkscape:export-xdpi="147.97"
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:16.2276px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264584"
+       x="151.11189"
+       y="-165.80655"
+       id="text1091"
+       transform="scale(1.2675412,0.78892899)"><tspan
+         sodipodi:role="line"
+         id="tspan1089"
+         x="151.11189"
+         y="-165.80655"
+         style="stroke-width:0.264584"> 🡆</tspan></text>
+  </g>
+</svg>

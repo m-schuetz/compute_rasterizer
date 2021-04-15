@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{8DD0E032-93EF-4E9C-8463-21CB2DC10134}</ProjectGuid>
+    <RootNamespace>Skye</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Skye</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)\bin\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\obj\$(Configuration)_$(Platform)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)\bin\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)\obj\$(Configuration)_$(Platform)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)include;$(SolutionDir)libs\glfw\include;$(SolutionDir)libs\glew\include;$(SolutionDir)libs\v8\include;$(SolutionDir)libs\openvr\headers;$(SolutionDir)libs\glm;$(SolutionDir)libs\stb;$(SolutionDir)libs\imgui\;$(SolutionDir)libs\imgui\backends;$(SolutionDir)libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;WIN32;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)\libs\glfw\lib\msvc2017_x64\glfw3.lib;$(SolutionDir)\libs\v8\v8_libplatform.dll.lib;$(SolutionDir)\libs\v8\v8.dll.lib;$(SolutionDir)\libs\openvr\lib\win64\openvr_api.lib;opengl32.lib;dxgi.lib;d3d11.lib;$(SolutionDir)\bin\$(Configuration)_$(Platform)\laszip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <Profile>true</Profile>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)libs\v8\run\*" "$(OutDir)"
+copy /Y "$(SolutionDir)libs\openvr\openvr_api.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)include;$(SolutionDir)libs\glfw\include;$(SolutionDir)libs\glew\include;$(SolutionDir)libs\v8\include;$(SolutionDir)libs\openvr\headers;$(SolutionDir)libs\glm;$(SolutionDir)libs\stb;$(SolutionDir)libs\imgui\;$(SolutionDir)libs\imgui\backends;$(SolutionDir)libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;WIN32;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>$(SolutionDir)\libs\glfw\lib\msvc2017_x64\glfw3.lib;$(SolutionDir)\libs\v8\v8_libplatform.dll.lib;$(SolutionDir)\libs\v8\v8.dll.lib;$(SolutionDir)\libs\openvr\lib\win64\openvr_api.lib;opengl32.lib;dxgi.lib;d3d11.lib;$(SolutionDir)\bin\$(Configuration)_$(Platform)\laszip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <Profile>true</Profile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)libs\v8\run\*" "$(OutDir)"
+copy /Y "$(SolutionDir)libs\openvr\openvr_api.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="include\unsuck_platform_specific.cpp" />
+    <ClCompile Include="libs\glew\glew.c" />
+    <ClCompile Include="libs\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="libs\imgui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="libs\imgui\imgui.cpp" />
+    <ClCompile Include="libs\imgui\imgui_demo.cpp" />
+    <ClCompile Include="libs\imgui\imgui_draw.cpp" />
+    <ClCompile Include="libs\imgui\imgui_tables.cpp" />
+    <ClCompile Include="libs\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="libs\implot\implot.cpp" />
+    <ClCompile Include="libs\implot\implot_items.cpp" />
+    <ClCompile Include="modules\progressive\progressive.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\GLTimerQueries.cpp" />
+    <ClCompile Include="src\LasLoader.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\OpenVRHelper.cpp" />
+    <ClCompile Include="src\utils.cpp" />
+    <ClCompile Include="src\V8ComputeShader.cpp" />
+    <ClCompile Include="src\V8File.cpp" />
+    <ClCompile Include="src\V8GLExtBindings.cpp" />
+    <ClCompile Include="src\V8Helper.cpp" />
+    <ClCompile Include="src\V8Shader.cpp" />
+    <ClCompile Include="src\V8VR.cpp" />
+    <ClCompile Include="src\V8Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\BArray.h" />
+    <ClInclude Include="include\ComputeShader.h" />
+    <ClInclude Include="include\GLTimerQueries.h" />
+    <ClInclude Include="include\LasLoader.h" />
+    <ClInclude Include="include\OpenVRHelper.h" />
+    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\TaskPool.h" />
+    <ClInclude Include="include\unsuck.hpp" />
+    <ClInclude Include="include\utils.h" />
+    <ClInclude Include="include\V8ComputeShader.h" />
+    <ClInclude Include="include\v8File.h" />
+    <ClInclude Include="include\V8Helper.h" />
+    <ClInclude Include="include\V8Shader.h" />
+    <ClInclude Include="libs\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="libs\imgui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="libs\implot\implot.h" />
+    <ClInclude Include="libs\implot\implot_internal.h" />
+    <ClInclude Include="modules\CppUtils\CppUtils.h" />
+    <ClInclude Include="modules\progressive\LASLoader.h" />
+    <ClInclude Include="modules\progressive\progressive.h" />
+    <ClInclude Include="modules\progressive\ProgressiveBINLoader.h" />
+    <ClInclude Include="modules\progressive\ProgressiveLoader.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

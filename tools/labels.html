@@ -1,0 +1,58 @@
+<html>
+	<head>
+
+	</head>
+	<body>
+
+		<canvas id="canvas" width="1200" height="800" style="letter-spacing: 4px">
+
+		</canvas>
+
+		<script>
+		
+			let canvas = document.getElementById("canvas");
+			let context = canvas.getContext("2d");
+
+			function drawText(text, size, position){
+				context.font = `bold ${size}px Helvetica`;
+				context.strokeStyle = 'black';
+
+				context.lineWidth = 8;
+				context.shadowColor = "black";
+				context.shadowOffsetX = 0;
+				context.shadowOffsetY = 0;
+				context.shadowBlur = 3;
+		
+				let outlineSize = Math.round(size / 18);
+				context.fillStyle = 'black';
+				for(let i = -outlineSize; i <= outlineSize; i++){
+					for(let j = -outlineSize; j <= outlineSize; j++){
+
+						let x = position[0] + i;
+						let y = position[1] + j;
+
+						context.fillText(text, x, y);
+					}
+				}
+
+
+				context.fillStyle = 'white';
+				context.fillText(text, ...position);
+			}
+
+			drawText("Matterhorn", 80, [20, 100]);
+			drawText("50 Million Points", 28, [103, 160]);
+			drawText("Courtesy of Pix4D", 28, [90, 200]);
+
+			drawText("Eclepens", 80, [20, 350]);
+			drawText("68 Million Points", 28, [66, 410]);
+			drawText("Courtesy of Pix4D", 28, [56, 450]);
+
+			drawText("Heidentor", 80, [20, 600]);
+			drawText("26 Million Points", 28, [84, 660]);
+			drawText("Courtesy of LBI ArchPro", 28, [18, 700]);
+
+		</script>
+
+	</body>
+</html>

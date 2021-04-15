@@ -1,0 +1,3556 @@
+{
+	"scenarios": [
+		{
+			"model": "Lion",
+			"sorting": "original",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 0.531085,
+							"min": 0.492544,
+							"max": 1.61894
+						},
+						{
+							"label": "frame",
+							"avg": 0.592008,
+							"min": 0.544768,
+							"max": 1.86061
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 0.129964,
+							"min": 0.121856,
+							"max": 0.80896
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0532168,
+							"min": 0.047104,
+							"max": 0.766976
+						},
+						{
+							"label": "compute-basic",
+							"avg": 0.218189,
+							"min": 0.201728,
+							"max": 0.954368
+						},
+						{
+							"label": "frame",
+							"avg": 0.276278,
+							"min": 0.252928,
+							"max": 1.1305
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 0.131146,
+							"min": 0.121856,
+							"max": 1.21037
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0534533,
+							"min": 0.048128,
+							"max": 0.751616
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 0.218957,
+							"min": 0.201728,
+							"max": 1.29229
+						},
+						{
+							"label": "frame",
+							"avg": 0.276216,
+							"min": 0.252928,
+							"max": 1.43053
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 0.152708,
+							"min": 0.141312,
+							"max": 0.883712
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0533146,
+							"min": 0.047104,
+							"max": 1.16224
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 0.240201,
+							"min": 0.22016,
+							"max": 1.36806
+						},
+						{
+							"label": "frame",
+							"avg": 0.299089,
+							"min": 0.27136,
+							"max": 1.4295
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.153932,
+							"min": 0.139264,
+							"max": 1.2329
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.051185,
+							"min": 0.047104,
+							"max": 0.708608
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 0.240057,
+							"min": 0.22016,
+							"max": 1.31482
+						},
+						{
+							"label": "frame",
+							"avg": 0.298583,
+							"min": 0.270336,
+							"max": 1.76026
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.151783,
+							"min": 0.140288,
+							"max": 0.918528
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0517421,
+							"min": 0.047104,
+							"max": 0.758784
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 0.239052,
+							"min": 0.22016,
+							"max": 0.999424
+						},
+						{
+							"label": "frame",
+							"avg": 0.297566,
+							"min": 0.27136,
+							"max": 1.20115
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 0.127299,
+							"min": 0.118784,
+							"max": 1.03117
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0312211,
+							"min": 0.026624,
+							"max": 0.722944
+						},
+						{
+							"label": "compute-set",
+							"avg": 0.192581,
+							"min": 0.177152,
+							"max": 1.09056
+						},
+						{
+							"label": "frame",
+							"avg": 0.250354,
+							"min": 0.228352,
+							"max": 1.28512
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 0.144513,
+							"min": 0.134144,
+							"max": 0.874496
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 0.183072,
+							"min": 0.16384,
+							"max": 1.29843
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.103069,
+							"min": 0.094208,
+							"max": 0.82432
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 0.466812,
+							"min": 0.43008,
+							"max": 1.57082
+						},
+						{
+							"label": "frame",
+							"avg": 0.525437,
+							"min": 0.482304,
+							"max": 1.77562
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 0.147961,
+							"min": 0.136192,
+							"max": 0.887808
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 0.13248,
+							"min": 0.11776,
+							"max": 1.22573
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.146821,
+							"min": 0.132096,
+							"max": 1.27078
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 0.463512,
+							"min": 0.423936,
+							"max": 1.56979
+						},
+						{
+							"label": "frame",
+							"avg": 0.520863,
+							"min": 0.47616,
+							"max": 1.69165
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 0.453745,
+							"min": 0.412672,
+							"max": 1.54829
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.042282,
+							"min": 0.036864,
+							"max": 0.736256
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 0.521772,
+							"min": 0.475136,
+							"max": 1.61075
+						},
+						{
+							"label": "frame",
+							"avg": 0.58064,
+							"min": 0.526336,
+							"max": 1.71725
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Lion",
+			"sorting": "morton",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 0.634371,
+							"min": 0.591872,
+							"max": 1.37626
+						},
+						{
+							"label": "frame",
+							"avg": 0.696845,
+							"min": 0.64512,
+							"max": 1.51859
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 0.125907,
+							"min": 0.11776,
+							"max": 0.863232
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0521967,
+							"min": 0.047104,
+							"max": 0.78336
+						},
+						{
+							"label": "compute-basic",
+							"avg": 0.212364,
+							"min": 0.196608,
+							"max": 1.29024
+						},
+						{
+							"label": "frame",
+							"avg": 0.270747,
+							"min": 0.247808,
+							"max": 1.3824
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 0.109156,
+							"min": 0.101376,
+							"max": 0.850944
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0530473,
+							"min": 0.048128,
+							"max": 1.4592
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 0.196853,
+							"min": 0.181248,
+							"max": 1.62611
+						},
+						{
+							"label": "frame",
+							"avg": 0.25498,
+							"min": 0.232448,
+							"max": 1.68755
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 0.12812,
+							"min": 0.118784,
+							"max": 0.809984
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0516507,
+							"min": 0.047104,
+							"max": 0.756736
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 0.213845,
+							"min": 0.197632,
+							"max": 1.31994
+						},
+						{
+							"label": "frame",
+							"avg": 0.271723,
+							"min": 0.249856,
+							"max": 1.38547
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.116369,
+							"min": 0.109568,
+							"max": 0.893952
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0531898,
+							"min": 0.047104,
+							"max": 0.726016
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 0.204946,
+							"min": 0.188416,
+							"max": 0.974848
+						},
+						{
+							"label": "frame",
+							"avg": 0.26588,
+							"min": 0.239616,
+							"max": 1.17658
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.0999754,
+							"min": 0.093184,
+							"max": 1.10182
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0518021,
+							"min": 0.047104,
+							"max": 0.7168
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 0.185324,
+							"min": 0.173056,
+							"max": 1.18067
+						},
+						{
+							"label": "frame",
+							"avg": 0.244776,
+							"min": 0.224256,
+							"max": 1.24416
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 0.0849859,
+							"min": 0.080896,
+							"max": 0.621568
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0312026,
+							"min": 0.026624,
+							"max": 0.678912
+						},
+						{
+							"label": "compute-set",
+							"avg": 0.150371,
+							"min": 0.140288,
+							"max": 0.886784
+						},
+						{
+							"label": "frame",
+							"avg": 0.208777,
+							"min": 0.191488,
+							"max": 1.01171
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 0.117178,
+							"min": 0.10752,
+							"max": 1.18784
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 0.163126,
+							"min": 0.149504,
+							"max": 0.919552
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.10581,
+							"min": 0.094208,
+							"max": 1.26874
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 0.423234,
+							"min": 0.38912,
+							"max": 1.56672
+						},
+						{
+							"label": "frame",
+							"avg": 0.482138,
+							"min": 0.44032,
+							"max": 1.62202
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 0.117723,
+							"min": 0.110592,
+							"max": 0.820224
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 0.109952,
+							"min": 0.099328,
+							"max": 1.19706
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.146183,
+							"min": 0.132096,
+							"max": 1.26362
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 0.409327,
+							"min": 0.377856,
+							"max": 1.58208
+						},
+						{
+							"label": "frame",
+							"avg": 0.468443,
+							"min": 0.428032,
+							"max": 1.67219
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 0.338429,
+							"min": 0.309248,
+							"max": 1.06598
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.039634,
+							"min": 0.036864,
+							"max": 0.809984
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 0.4039,
+							"min": 0.371712,
+							"max": 1.17453
+						},
+						{
+							"label": "frame",
+							"avg": 0.461349,
+							"min": 0.421888,
+							"max": 1.63942
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Lion",
+			"sorting": "shuffled",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 1.27595,
+							"min": 1.17862,
+							"max": 2.93069
+						},
+						{
+							"label": "frame",
+							"avg": 1.33685,
+							"min": 1.23187,
+							"max": 2.98803
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 0.205061,
+							"min": 0.186368,
+							"max": 0.951296
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0552904,
+							"min": 0.048128,
+							"max": 0.758784
+						},
+						{
+							"label": "compute-basic",
+							"avg": 0.295308,
+							"min": 0.270336,
+							"max": 1.36909
+						},
+						{
+							"label": "frame",
+							"avg": 0.354938,
+							"min": 0.321536,
+							"max": 1.43053
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 0.201562,
+							"min": 0.18944,
+							"max": 0.933888
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0551978,
+							"min": 0.049152,
+							"max": 0.768
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 0.291283,
+							"min": 0.27136,
+							"max": 1.01478
+						},
+						{
+							"label": "frame",
+							"avg": 0.351085,
+							"min": 0.32256,
+							"max": 1.24416
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 0.174236,
+							"min": 0.161792,
+							"max": 0.905216
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0538628,
+							"min": 0.048128,
+							"max": 0.787456
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 0.26235,
+							"min": 0.242688,
+							"max": 1.01274
+						},
+						{
+							"label": "frame",
+							"avg": 0.321797,
+							"min": 0.294912,
+							"max": 1.35066
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.167811,
+							"min": 0.151552,
+							"max": 1.18579
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0544974,
+							"min": 0.048128,
+							"max": 0.792576
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 0.256059,
+							"min": 0.232448,
+							"max": 1.35168
+						},
+						{
+							"label": "frame",
+							"avg": 0.316407,
+							"min": 0.284672,
+							"max": 1.83091
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.169059,
+							"min": 0.1536,
+							"max": 1.52166
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0544816,
+							"min": 0.048128,
+							"max": 0.878592
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 0.258324,
+							"min": 0.23552,
+							"max": 1.60154
+						},
+						{
+							"label": "frame",
+							"avg": 0.315341,
+							"min": 0.28672,
+							"max": 1.76026
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 0.142206,
+							"min": 0.134144,
+							"max": 0.841728
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0338165,
+							"min": 0.027648,
+							"max": 0.748544
+						},
+						{
+							"label": "compute-set",
+							"avg": 0.2094,
+							"min": 0.19456,
+							"max": 0.958464
+						},
+						{
+							"label": "frame",
+							"avg": 0.267849,
+							"min": 0.24576,
+							"max": 1.2073
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 0.125508,
+							"min": 0.119808,
+							"max": 0.638976
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 0.559475,
+							"min": 0.510976,
+							"max": 1.29946
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.109645,
+							"min": 0.095232,
+							"max": 0.823296
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 0.83045,
+							"min": 0.763904,
+							"max": 1.55648
+						},
+						{
+							"label": "frame",
+							"avg": 0.886142,
+							"min": 0.815104,
+							"max": 1.6681
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 0.133215,
+							"min": 0.123904,
+							"max": 0.887808
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 0.274897,
+							"min": 0.246784,
+							"max": 1.03219
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.146736,
+							"min": 0.134144,
+							"max": 1.26054
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 0.590398,
+							"min": 0.54272,
+							"max": 1.69574
+						},
+						{
+							"label": "frame",
+							"avg": 0.650106,
+							"min": 0.59392,
+							"max": 1.75718
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 0.22534,
+							"min": 0.205824,
+							"max": 1.00045
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.0433561,
+							"min": 0.037888,
+							"max": 0.776192
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 0.295169,
+							"min": 0.269312,
+							"max": 1.44077
+						},
+						{
+							"label": "frame",
+							"avg": 0.353437,
+							"min": 0.320512,
+							"max": 1.64352
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Lion",
+			"sorting": "morton-shuffled",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 0.41247,
+							"min": 0.386048,
+							"max": 1.47149
+						},
+						{
+							"label": "frame",
+							"avg": 0.474038,
+							"min": 0.439296,
+							"max": 1.97734
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 0.130364,
+							"min": 0.121856,
+							"max": 0.927744
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0528515,
+							"min": 0.048128,
+							"max": 0.74752
+						},
+						{
+							"label": "compute-basic",
+							"avg": 0.2182,
+							"min": 0.202752,
+							"max": 1.00966
+						},
+						{
+							"label": "frame",
+							"avg": 0.276948,
+							"min": 0.253952,
+							"max": 1.21549
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 0.111449,
+							"min": 0.105472,
+							"max": 0.795648
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0535478,
+							"min": 0.048128,
+							"max": 0.733184
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 0.198345,
+							"min": 0.185344,
+							"max": 1.2759
+						},
+						{
+							"label": "frame",
+							"avg": 0.257903,
+							"min": 0.237568,
+							"max": 1.33734
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 0.122639,
+							"min": 0.114688,
+							"max": 0.78336
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.052617,
+							"min": 0.047104,
+							"max": 0.743424
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 0.209358,
+							"min": 0.195584,
+							"max": 0.935936
+						},
+						{
+							"label": "frame",
+							"avg": 0.270725,
+							"min": 0.246784,
+							"max": 1.72134
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.119285,
+							"min": 0.11264,
+							"max": 0.816128
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0531874,
+							"min": 0.048128,
+							"max": 1.23392
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 0.206463,
+							"min": 0.192512,
+							"max": 1.38342
+						},
+						{
+							"label": "frame",
+							"avg": 0.265988,
+							"min": 0.243712,
+							"max": 1.45203
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.112324,
+							"min": 0.104448,
+							"max": 0.812032
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0537512,
+							"min": 0.047104,
+							"max": 0.75264
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 0.200283,
+							"min": 0.186368,
+							"max": 1.27898
+						},
+						{
+							"label": "frame",
+							"avg": 0.260111,
+							"min": 0.237568,
+							"max": 1.34349
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 0.0888398,
+							"min": 0.083968,
+							"max": 0.766976
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0323536,
+							"min": 0.026624,
+							"max": 0.741376
+						},
+						{
+							"label": "compute-set",
+							"avg": 0.155196,
+							"min": 0.144384,
+							"max": 0.878592
+						},
+						{
+							"label": "frame",
+							"avg": 0.213663,
+							"min": 0.19456,
+							"max": 1.09363
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 0.107625,
+							"min": 0.101376,
+							"max": 0.815104
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 0.177109,
+							"min": 0.160768,
+							"max": 0.922624
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.104355,
+							"min": 0.095232,
+							"max": 0.859136
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 0.425997,
+							"min": 0.393216,
+							"max": 1.55341
+						},
+						{
+							"label": "frame",
+							"avg": 0.483985,
+							"min": 0.444416,
+							"max": 1.61382
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 0.111279,
+							"min": 0.104448,
+							"max": 0.840704
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 0.128006,
+							"min": 0.113664,
+							"max": 1.24006
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.146948,
+							"min": 0.13312,
+							"max": 1.2503
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 0.421348,
+							"min": 0.387072,
+							"max": 1.54419
+						},
+						{
+							"label": "frame",
+							"avg": 0.479902,
+							"min": 0.438272,
+							"max": 1.60973
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 0.248384,
+							"min": 0.231424,
+							"max": 1.39059
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.0430096,
+							"min": 0.037888,
+							"max": 0.774144
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 0.319057,
+							"min": 0.293888,
+							"max": 1.45408
+						},
+						{
+							"label": "frame",
+							"avg": 0.376737,
+							"min": 0.346112,
+							"max": 1.58003
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Lifeboat",
+			"sorting": "original",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 9.12139,
+							"min": 8.5975,
+							"max": 10.027
+						},
+						{
+							"label": "frame",
+							"avg": 9.19424,
+							"min": 8.65075,
+							"max": 10.0936
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 1.77394,
+							"min": 1.63635,
+							"max": 2.90202
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0542421,
+							"min": 0.048128,
+							"max": 0.606208
+						},
+						{
+							"label": "compute-basic",
+							"avg": 1.87014,
+							"min": 1.71827,
+							"max": 2.98496
+						},
+						{
+							"label": "frame",
+							"avg": 1.93305,
+							"min": 1.77152,
+							"max": 3.04742
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 1.56665,
+							"min": 1.42438,
+							"max": 2.74739
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.053208,
+							"min": 0.048128,
+							"max": 0.621568
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 1.65492,
+							"min": 1.50733,
+							"max": 2.83136
+						},
+						{
+							"label": "frame",
+							"avg": 1.71486,
+							"min": 1.56058,
+							"max": 2.88768
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 1.13304,
+							"min": 1.04038,
+							"max": 2.22413
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0556368,
+							"min": 0.048128,
+							"max": 1.01581
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 1.22388,
+							"min": 1.12435,
+							"max": 2.30912
+						},
+						{
+							"label": "frame",
+							"avg": 1.29031,
+							"min": 1.17658,
+							"max": 2.71872
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 1.11289,
+							"min": 1.024,
+							"max": 2.20467
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0548702,
+							"min": 0.048128,
+							"max": 0.851968
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 1.20418,
+							"min": 1.10797,
+							"max": 2.28864
+						},
+						{
+							"label": "frame",
+							"avg": 1.26995,
+							"min": 1.16019,
+							"max": 2.41254
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 1.07588,
+							"min": 0.984064,
+							"max": 2.26714
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0540216,
+							"min": 0.048128,
+							"max": 0.785408
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 1.16769,
+							"min": 1.06803,
+							"max": 2.3511
+						},
+						{
+							"label": "frame",
+							"avg": 1.22729,
+							"min": 1.12128,
+							"max": 2.41766
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 0.929681,
+							"min": 0.862208,
+							"max": 2.07565
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0323829,
+							"min": 0.028672,
+							"max": 0.57344
+						},
+						{
+							"label": "compute-set",
+							"avg": 1.00261,
+							"min": 0.924672,
+							"max": 2.14426
+						},
+						{
+							"label": "frame",
+							"avg": 1.06542,
+							"min": 0.97792,
+							"max": 2.20774
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 1.08891,
+							"min": 1.00352,
+							"max": 2.18419
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 1.52571,
+							"min": 1.40493,
+							"max": 2.60198
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.107483,
+							"min": 0.096256,
+							"max": 0.897024
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 2.75898,
+							"min": 2.54464,
+							"max": 3.74784
+						},
+						{
+							"label": "frame",
+							"avg": 2.82018,
+							"min": 2.59789,
+							"max": 3.81133
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 1.09408,
+							"min": 1.01069,
+							"max": 2.17702
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 1.10936,
+							"min": 1.00864,
+							"max": 2.1801
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.138923,
+							"min": 0.134144,
+							"max": 0.72192
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 2.38225,
+							"min": 2.19238,
+							"max": 3.38637
+						},
+						{
+							"label": "frame",
+							"avg": 2.44943,
+							"min": 2.24563,
+							"max": 3.45088
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 2.49799,
+							"min": 2.29581,
+							"max": 3.49594
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.040837,
+							"min": 0.038912,
+							"max": 0.065536
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 2.56581,
+							"min": 2.36237,
+							"max": 3.56147
+						},
+						{
+							"label": "frame",
+							"avg": 2.62343,
+							"min": 2.41357,
+							"max": 3.63213
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Lifeboat",
+			"sorting": "morton",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 12.2244,
+							"min": 11.5384,
+							"max": 12.9516
+						},
+						{
+							"label": "frame",
+							"avg": 12.2852,
+							"min": 11.5927,
+							"max": 13.0191
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 1.99469,
+							"min": 1.83706,
+							"max": 2.99315
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0526369,
+							"min": 0.048128,
+							"max": 0.77312
+						},
+						{
+							"label": "compute-basic",
+							"avg": 2.08292,
+							"min": 1.91898,
+							"max": 3.0761
+						},
+						{
+							"label": "frame",
+							"avg": 2.1437,
+							"min": 1.9712,
+							"max": 3.13754
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 1.4575,
+							"min": 1.33427,
+							"max": 2.54976
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0540007,
+							"min": 0.049152,
+							"max": 0.791552
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 1.54575,
+							"min": 1.41824,
+							"max": 2.63578
+						},
+						{
+							"label": "frame",
+							"avg": 1.60303,
+							"min": 1.47046,
+							"max": 2.72077
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 1.34155,
+							"min": 1.23392,
+							"max": 2.61325
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0539554,
+							"min": 0.048128,
+							"max": 1.18374
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 1.4353,
+							"min": 1.31686,
+							"max": 2.69619
+						},
+						{
+							"label": "frame",
+							"avg": 1.49559,
+							"min": 1.36909,
+							"max": 2.75251
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 1.14951,
+							"min": 1.04858,
+							"max": 2.31219
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0573781,
+							"min": 0.048128,
+							"max": 0.811008
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 1.24192,
+							"min": 1.13254,
+							"max": 2.39718
+						},
+						{
+							"label": "frame",
+							"avg": 1.30423,
+							"min": 1.18579,
+							"max": 2.47194
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 0.982236,
+							"min": 0.902144,
+							"max": 2.01011
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0539158,
+							"min": 0.048128,
+							"max": 0.780288
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 1.07086,
+							"min": 0.987136,
+							"max": 2.09613
+						},
+						{
+							"label": "frame",
+							"avg": 1.13157,
+							"min": 1.04038,
+							"max": 2.2569
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 0.929493,
+							"min": 0.858112,
+							"max": 1.99578
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0334172,
+							"min": 0.028672,
+							"max": 0.744448
+						},
+						{
+							"label": "compute-set",
+							"avg": 0.997133,
+							"min": 0.920576,
+							"max": 2.05824
+						},
+						{
+							"label": "frame",
+							"avg": 1.0555,
+							"min": 0.9728,
+							"max": 2.1207
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 1.24892,
+							"min": 1.15098,
+							"max": 2.42381
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 1.46718,
+							"min": 1.34963,
+							"max": 2.5303
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.102251,
+							"min": 0.096256,
+							"max": 0.654336
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 2.85525,
+							"min": 2.6368,
+							"max": 3.92294
+						},
+						{
+							"label": "frame",
+							"avg": 2.91382,
+							"min": 2.68902,
+							"max": 3.98541
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 1.25855,
+							"min": 1.16122,
+							"max": 2.36237
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 1.05081,
+							"min": 0.958464,
+							"max": 2.15654
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.147981,
+							"min": 0.134144,
+							"max": 0.892928
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 2.49961,
+							"min": 2.29274,
+							"max": 3.54918
+						},
+						{
+							"label": "frame",
+							"avg": 2.56106,
+							"min": 2.34496,
+							"max": 3.61267
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 3.22405,
+							"min": 2.95834,
+							"max": 4.60083
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.0409709,
+							"min": 0.038912,
+							"max": 0.063488
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 3.28919,
+							"min": 3.02387,
+							"max": 4.66637
+						},
+						{
+							"label": "frame",
+							"avg": 3.34521,
+							"min": 3.0761,
+							"max": 4.73088
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Lifeboat",
+			"sorting": "shuffled",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 14.9426,
+							"min": 14.6371,
+							"max": 15.9171
+						},
+						{
+							"label": "frame",
+							"avg": 15.0045,
+							"min": 14.6954,
+							"max": 15.9816
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 5.00517,
+							"min": 4.61005,
+							"max": 5.81632
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0536224,
+							"min": 0.049152,
+							"max": 0.54784
+						},
+						{
+							"label": "compute-basic",
+							"avg": 5.09165,
+							"min": 4.70118,
+							"max": 5.90029
+						},
+						{
+							"label": "frame",
+							"avg": 5.15575,
+							"min": 4.75341,
+							"max": 5.9607
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 4.97735,
+							"min": 4.608,
+							"max": 6.06618
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0542008,
+							"min": 0.050176,
+							"max": 0.592896
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 5.06979,
+							"min": 4.69094,
+							"max": 6.15014
+						},
+						{
+							"label": "frame",
+							"avg": 5.13525,
+							"min": 4.74624,
+							"max": 6.21158
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 2.48728,
+							"min": 2.27942,
+							"max": 3.7376
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0518317,
+							"min": 0.049152,
+							"max": 0.616448
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 2.57556,
+							"min": 2.36339,
+							"max": 3.82157
+						},
+						{
+							"label": "frame",
+							"avg": 2.64123,
+							"min": 2.41562,
+							"max": 3.87584
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 2.37792,
+							"min": 2.18419,
+							"max": 3.46522
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0520529,
+							"min": 0.049152,
+							"max": 0.608256
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 2.46616,
+							"min": 2.26918,
+							"max": 3.54918
+						},
+						{
+							"label": "frame",
+							"avg": 2.5246,
+							"min": 2.32243,
+							"max": 3.61574
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 2.45967,
+							"min": 2.24973,
+							"max": 3.52256
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0564224,
+							"min": 0.048128,
+							"max": 0.669696
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 2.55237,
+							"min": 2.33472,
+							"max": 3.67002
+						},
+						{
+							"label": "frame",
+							"avg": 2.60892,
+							"min": 2.38797,
+							"max": 3.73248
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 1.67924,
+							"min": 1.53088,
+							"max": 2.75149
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0369634,
+							"min": 0.03072,
+							"max": 0.726016
+						},
+						{
+							"label": "compute-set",
+							"avg": 1.75364,
+							"min": 1.59744,
+							"max": 3.2512
+						},
+						{
+							"label": "frame",
+							"avg": 1.81805,
+							"min": 1.65069,
+							"max": 3.31571
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 1.38198,
+							"min": 1.27795,
+							"max": 2.44634
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 5.65314,
+							"min": 5.21523,
+							"max": 6.47373
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.113325,
+							"min": 0.09728,
+							"max": 0.735232
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 7.18712,
+							"min": 6.64474,
+							"max": 7.9616
+						},
+						{
+							"label": "frame",
+							"avg": 7.24753,
+							"min": 6.69696,
+							"max": 8.02304
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 1.38053,
+							"min": 1.26669,
+							"max": 2.0439
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 4.05133,
+							"min": 3.70176,
+							"max": 5.03808
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.145113,
+							"min": 0.135168,
+							"max": 0.82944
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 5.61294,
+							"min": 5.15994,
+							"max": 6.53517
+						},
+						{
+							"label": "frame",
+							"avg": 5.6692,
+							"min": 5.21216,
+							"max": 6.59763
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 2.28874,
+							"min": 2.10432,
+							"max": 3.33005
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.0458731,
+							"min": 0.04096,
+							"max": 0.760832
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 2.36133,
+							"min": 2.17088,
+							"max": 3.42426
+						},
+						{
+							"label": "frame",
+							"avg": 2.42076,
+							"min": 2.22413,
+							"max": 3.48672
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Lifeboat",
+			"sorting": "morton-shuffled",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 4.96095,
+							"min": 4.62336,
+							"max": 5.80096
+						},
+						{
+							"label": "frame",
+							"avg": 5.02956,
+							"min": 4.67661,
+							"max": 5.92691
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 1.49374,
+							"min": 1.38138,
+							"max": 2.68698
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0561679,
+							"min": 0.049152,
+							"max": 0.7936
+						},
+						{
+							"label": "compute-basic",
+							"avg": 1.58767,
+							"min": 1.46637,
+							"max": 2.77299
+						},
+						{
+							"label": "frame",
+							"avg": 1.65184,
+							"min": 1.51962,
+							"max": 2.82931
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 1.22174,
+							"min": 1.1223,
+							"max": 2.3767
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0552677,
+							"min": 0.050176,
+							"max": 0.718848
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 1.31788,
+							"min": 1.20934,
+							"max": 2.49651
+						},
+						{
+							"label": "frame",
+							"avg": 1.38015,
+							"min": 1.26464,
+							"max": 2.56307
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 1.11383,
+							"min": 1.03014,
+							"max": 2.29683
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0563316,
+							"min": 0.049152,
+							"max": 0.7936
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 1.20551,
+							"min": 1.11411,
+							"max": 2.38285
+						},
+						{
+							"label": "frame",
+							"avg": 1.27202,
+							"min": 1.16736,
+							"max": 2.44634
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 1.10578,
+							"min": 1.02093,
+							"max": 2.20365
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0553277,
+							"min": 0.049152,
+							"max": 0.668672
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 1.20181,
+							"min": 1.1049,
+							"max": 2.31117
+						},
+						{
+							"label": "frame",
+							"avg": 1.26245,
+							"min": 1.15917,
+							"max": 2.45146
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 1.09234,
+							"min": 1.01581,
+							"max": 2.14938
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0533578,
+							"min": 0.048128,
+							"max": 0.644096
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 1.18535,
+							"min": 1.09875,
+							"max": 2.34189
+						},
+						{
+							"label": "frame",
+							"avg": 1.24391,
+							"min": 1.15302,
+							"max": 2.40435
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 1.00128,
+							"min": 0.927744,
+							"max": 2.17293
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0350831,
+							"min": 0.028672,
+							"max": 0.728064
+						},
+						{
+							"label": "compute-set",
+							"avg": 1.07415,
+							"min": 0.991232,
+							"max": 2.23846
+						},
+						{
+							"label": "frame",
+							"avg": 1.13615,
+							"min": 1.04448,
+							"max": 2.30093
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 1.08363,
+							"min": 0.996352,
+							"max": 2.14835
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 1.26529,
+							"min": 1.17043,
+							"max": 2.36954
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.106546,
+							"min": 0.09728,
+							"max": 0.850944
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 2.501,
+							"min": 2.30195,
+							"max": 3.55123
+						},
+						{
+							"label": "frame",
+							"avg": 2.56184,
+							"min": 2.3552,
+							"max": 3.64544
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 1.0727,
+							"min": 0.994304,
+							"max": 1.86163
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 1.15888,
+							"min": 1.06496,
+							"max": 1.92205
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.145995,
+							"min": 0.135168,
+							"max": 0.754688
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 2.42113,
+							"min": 2.23437,
+							"max": 3.57581
+						},
+						{
+							"label": "frame",
+							"avg": 2.47861,
+							"min": 2.28762,
+							"max": 3.64032
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 1.93016,
+							"min": 1.7705,
+							"max": 3.06893
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.0418065,
+							"min": 0.039936,
+							"max": 0.062464
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 1.99917,
+							"min": 1.83603,
+							"max": 3.13446
+						},
+						{
+							"label": "frame",
+							"avg": 2.06111,
+							"min": 1.88928,
+							"max": 3.19795
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Retz",
+			"sorting": "original",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 31.9161,
+							"min": 31.7839,
+							"max": 33.1028
+						},
+						{
+							"label": "frame",
+							"avg": 31.9755,
+							"min": 31.8423,
+							"max": 33.1684
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 4.91831,
+							"min": 4.55168,
+							"max": 5.78765
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0541095,
+							"min": 0.050176,
+							"max": 0.589824
+						},
+						{
+							"label": "compute-basic",
+							"avg": 5.00552,
+							"min": 4.63565,
+							"max": 5.87059
+						},
+						{
+							"label": "frame",
+							"avg": 5.07436,
+							"min": 4.68787,
+							"max": 6.11942
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 3.76234,
+							"min": 3.45498,
+							"max": 4.71859
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0516197,
+							"min": 0.050176,
+							"max": 0.07168
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 3.8479,
+							"min": 3.53997,
+							"max": 4.80358
+						},
+						{
+							"label": "frame",
+							"avg": 3.9109,
+							"min": 3.59322,
+							"max": 4.87936
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 3.66621,
+							"min": 3.36998,
+							"max": 4.57933
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0538237,
+							"min": 0.050176,
+							"max": 0.58368
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 3.75655,
+							"min": 3.45498,
+							"max": 4.66637
+						},
+						{
+							"label": "frame",
+							"avg": 3.81458,
+							"min": 3.5072,
+							"max": 4.72986
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 3.2027,
+							"min": 2.95834,
+							"max": 4.19635
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0537327,
+							"min": 0.050176,
+							"max": 0.606208
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 3.29399,
+							"min": 3.04333,
+							"max": 4.28237
+						},
+						{
+							"label": "frame",
+							"avg": 3.3564,
+							"min": 3.09658,
+							"max": 4.34688
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 2.90706,
+							"min": 2.68288,
+							"max": 3.98848
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0537401,
+							"min": 0.050176,
+							"max": 0.64
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 2.99764,
+							"min": 2.7689,
+							"max": 4.07347
+						},
+						{
+							"label": "frame",
+							"avg": 3.06567,
+							"min": 2.82112,
+							"max": 4.12979
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 2.78917,
+							"min": 2.58355,
+							"max": 3.83488
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0356969,
+							"min": 0.031744,
+							"max": 0.575488
+						},
+						{
+							"label": "compute-set",
+							"avg": 2.86634,
+							"min": 2.65011,
+							"max": 3.90451
+						},
+						{
+							"label": "frame",
+							"avg": 2.92816,
+							"min": 2.70336,
+							"max": 3.968
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 3.30581,
+							"min": 3.09555,
+							"max": 4.2967
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 4.88758,
+							"min": 4.52915,
+							"max": 5.69242
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.106077,
+							"min": 0.099328,
+							"max": 0.618496
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 8.33988,
+							"min": 7.78035,
+							"max": 9.41158
+						},
+						{
+							"label": "frame",
+							"avg": 8.40484,
+							"min": 7.83258,
+							"max": 9.47405
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 3.385,
+							"min": 3.1191,
+							"max": 4.27622
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 3.23598,
+							"min": 3.02592,
+							"max": 4.86912
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.152869,
+							"min": 0.137216,
+							"max": 0.84992
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 6.81377,
+							"min": 6.33754,
+							"max": 8.1705
+						},
+						{
+							"label": "frame",
+							"avg": 6.87361,
+							"min": 6.38874,
+							"max": 8.23501
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 7.53109,
+							"min": 6.99392,
+							"max": 8.58317
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.044926,
+							"min": 0.043008,
+							"max": 0.064512
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 7.59631,
+							"min": 7.06355,
+							"max": 8.65178
+						},
+						{
+							"label": "frame",
+							"avg": 7.65594,
+							"min": 7.11475,
+							"max": 8.71322
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Retz",
+			"sorting": "morton",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 31.991,
+							"min": 31.7993,
+							"max": 33.2042
+						},
+						{
+							"label": "frame",
+							"avg": 32.0513,
+							"min": 31.8587,
+							"max": 33.2708
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 4.8585,
+							"min": 4.48819,
+							"max": 5.96992
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0547974,
+							"min": 0.049152,
+							"max": 0.75264
+						},
+						{
+							"label": "compute-basic",
+							"avg": 4.94914,
+							"min": 4.57216,
+							"max": 6.05389
+						},
+						{
+							"label": "frame",
+							"avg": 5.00638,
+							"min": 4.62438,
+							"max": 6.11533
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 3.70284,
+							"min": 3.41504,
+							"max": 4.70118
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0563697,
+							"min": 0.050176,
+							"max": 0.662528
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 3.80149,
+							"min": 3.50106,
+							"max": 4.78515
+						},
+						{
+							"label": "frame",
+							"avg": 3.85928,
+							"min": 3.55328,
+							"max": 4.84966
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 3.61933,
+							"min": 3.31674,
+							"max": 4.59571
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0516735,
+							"min": 0.050176,
+							"max": 0.070656
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 3.70514,
+							"min": 3.40173,
+							"max": 4.68173
+						},
+						{
+							"label": "frame",
+							"avg": 3.76459,
+							"min": 3.45395,
+							"max": 4.74522
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 3.19642,
+							"min": 2.93171,
+							"max": 4.19635
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0576118,
+							"min": 0.050176,
+							"max": 0.60928
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 3.28916,
+							"min": 3.01773,
+							"max": 4.28237
+						},
+						{
+							"label": "frame",
+							"avg": 3.35035,
+							"min": 3.07098,
+							"max": 4.34586
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 2.90533,
+							"min": 2.67469,
+							"max": 4.38784
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0554124,
+							"min": 0.050176,
+							"max": 0.692224
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 2.99592,
+							"min": 2.75968,
+							"max": 4.47488
+						},
+						{
+							"label": "frame",
+							"avg": 3.05628,
+							"min": 2.81395,
+							"max": 4.53734
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 2.78878,
+							"min": 2.58458,
+							"max": 3.78573
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0396402,
+							"min": 0.03072,
+							"max": 0.772096
+						},
+						{
+							"label": "compute-set",
+							"avg": 2.86493,
+							"min": 2.65114,
+							"max": 3.85331
+						},
+						{
+							"label": "frame",
+							"avg": 2.9291,
+							"min": 2.70336,
+							"max": 3.9168
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 3.28244,
+							"min": 3.06893,
+							"max": 4.27622
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 4.86332,
+							"min": 4.53018,
+							"max": 5.7897
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.112278,
+							"min": 0.100352,
+							"max": 1.28819
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 8.29278,
+							"min": 7.75168,
+							"max": 9.70445
+						},
+						{
+							"label": "frame",
+							"avg": 8.36436,
+							"min": 7.80493,
+							"max": 9.76896
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 3.43655,
+							"min": 3.09658,
+							"max": 4.39501
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 3.15664,
+							"min": 2.99418,
+							"max": 4.24243
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.13938,
+							"min": 0.137216,
+							"max": 0.156672
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 6.77261,
+							"min": 6.28736,
+							"max": 7.65235
+						},
+						{
+							"label": "frame",
+							"avg": 6.82927,
+							"min": 6.34061,
+							"max": 7.71584
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 7.51955,
+							"min": 6.97344,
+							"max": 8.52992
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.0496116,
+							"min": 0.043008,
+							"max": 0.59904
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 7.59336,
+							"min": 7.04205,
+							"max": 8.59955
+						},
+						{
+							"label": "frame",
+							"avg": 7.64886,
+							"min": 7.09325,
+							"max": 8.66202
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Retz",
+			"sorting": "shuffled",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 30.5127,
+							"min": 30.3411,
+							"max": 31.8054
+						},
+						{
+							"label": "frame",
+							"avg": 30.5719,
+							"min": 30.4015,
+							"max": 31.87
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 8.42747,
+							"min": 7.89299,
+							"max": 9.18426
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.0528493,
+							"min": 0.0512,
+							"max": 0.06656
+						},
+						{
+							"label": "compute-basic",
+							"avg": 8.51902,
+							"min": 7.97901,
+							"max": 9.2713
+						},
+						{
+							"label": "frame",
+							"avg": 8.58371,
+							"min": 8.03123,
+							"max": 9.33376
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 8.55021,
+							"min": 7.9831,
+							"max": 9.36141
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0528974,
+							"min": 0.0512,
+							"max": 0.06144
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 8.63665,
+							"min": 8.06707,
+							"max": 9.44742
+						},
+						{
+							"label": "frame",
+							"avg": 8.69788,
+							"min": 8.1193,
+							"max": 9.50886
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 5.9529,
+							"min": 5.35552,
+							"max": 6.8567
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0516472,
+							"min": 0.050176,
+							"max": 0.058368
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 6.03892,
+							"min": 5.44051,
+							"max": 6.94272
+						},
+						{
+							"label": "frame",
+							"avg": 6.09856,
+							"min": 5.49376,
+							"max": 7.00621
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 5.19195,
+							"min": 4.78106,
+							"max": 6.15834
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0520581,
+							"min": 0.050176,
+							"max": 0.07168
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 5.28562,
+							"min": 4.86707,
+							"max": 6.24538
+						},
+						{
+							"label": "frame",
+							"avg": 5.35004,
+							"min": 4.92032,
+							"max": 6.30886
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 5.76829,
+							"min": 5.26029,
+							"max": 6.63347
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.059569,
+							"min": 0.050176,
+							"max": 0.74752
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 5.86309,
+							"min": 5.34733,
+							"max": 6.72051
+						},
+						{
+							"label": "frame",
+							"avg": 5.92752,
+							"min": 5.4016,
+							"max": 6.784
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 4.10928,
+							"min": 3.7847,
+							"max": 5.09952
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0358994,
+							"min": 0.032768,
+							"max": 0.044032
+						},
+						{
+							"label": "compute-set",
+							"avg": 4.18059,
+							"min": 3.85434,
+							"max": 5.1712
+						},
+						{
+							"label": "frame",
+							"avg": 4.24315,
+							"min": 3.90656,
+							"max": 5.23571
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 3.54852,
+							"min": 3.53894,
+							"max": 3.55635
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 12.4785,
+							"min": 11.9818,
+							"max": 13.2618
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.102588,
+							"min": 0.101376,
+							"max": 0.105472
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 16.1645,
+							"min": 15.6682,
+							"max": 16.9554
+						},
+						{
+							"label": "frame",
+							"avg": 16.2257,
+							"min": 15.7245,
+							"max": 17.0179
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 3.76695,
+							"min": 3.55942,
+							"max": 4.29978
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 9.16131,
+							"min": 8.55962,
+							"max": 9.87546
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.149047,
+							"min": 0.139264,
+							"max": 0.70144
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 13.1129,
+							"min": 12.2993,
+							"max": 13.6376
+						},
+						{
+							"label": "frame",
+							"avg": 13.1792,
+							"min": 12.3525,
+							"max": 13.696
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 5.40508,
+							"min": 4.98688,
+							"max": 6.46144
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.0522477,
+							"min": 0.045056,
+							"max": 0.595968
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 5.48306,
+							"min": 5.05856,
+							"max": 6.53107
+						},
+						{
+							"label": "frame",
+							"avg": 5.55361,
+							"min": 5.11078,
+							"max": 6.59558
+						}
+					]
+				}
+			]
+		},
+		{
+			"model": "Retz",
+			"sorting": "morton-shuffled",
+			"timings": [
+				{
+					"method": "GL_POINTS",
+					"durations": [
+						{
+							"label": "GL_POINTS",
+							"avg": 8.16505,
+							"min": 7.61754,
+							"max": 8.90368
+						},
+						{
+							"label": "frame",
+							"avg": 8.22413,
+							"min": 7.67078,
+							"max": 8.96717
+						}
+					]
+				},
+				{
+					"method": "atomicMin",
+					"durations": [
+						{
+							"label": "compute-basic-render",
+							"avg": 3.58696,
+							"min": 3.31469,
+							"max": 4.52096
+						},
+						{
+							"label": "compute-basic-resolve",
+							"avg": 0.054956,
+							"min": 0.0512,
+							"max": 0.690176
+						},
+						{
+							"label": "compute-basic",
+							"avg": 3.68323,
+							"min": 3.40275,
+							"max": 4.60902
+						},
+						{
+							"label": "frame",
+							"avg": 3.75015,
+							"min": 3.45702,
+							"max": 4.68173
+						}
+					]
+				},
+				{
+					"method": "reduce",
+					"durations": [
+						{
+							"label": "compute-ballot-render",
+							"avg": 3.21553,
+							"min": 2.97779,
+							"max": 4.27725
+						},
+						{
+							"label": "compute-ballot-resolve",
+							"avg": 0.0594874,
+							"min": 0.0512,
+							"max": 0.766976
+						},
+						{
+							"label": "compute-ballot",
+							"avg": 3.31186,
+							"min": 3.06586,
+							"max": 4.36531
+						},
+						{
+							"label": "frame",
+							"avg": 3.38651,
+							"min": 3.12115,
+							"max": 4.49434
+						}
+					]
+				},
+				{
+					"method": "early-z",
+					"durations": [
+						{
+							"label": "compute-earlyDepth-render",
+							"avg": 3.29578,
+							"min": 3.04333,
+							"max": 4.26496
+						},
+						{
+							"label": "compute-earlyDepth-resolve",
+							"avg": 0.0565704,
+							"min": 0.050176,
+							"max": 0.724992
+						},
+						{
+							"label": "compute-earlyDepth",
+							"avg": 3.392,
+							"min": 3.13037,
+							"max": 4.35098
+						},
+						{
+							"label": "frame",
+							"avg": 3.4553,
+							"min": 3.18464,
+							"max": 4.50765
+						}
+					]
+				},
+				{
+					"method": "reduce,early-z",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 3.14577,
+							"min": 2.90714,
+							"max": 4.1984
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0565491,
+							"min": 0.050176,
+							"max": 0.787456
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 3.23785,
+							"min": 2.99418,
+							"max": 4.28544
+						},
+						{
+							"label": "frame",
+							"avg": 3.30772,
+							"min": 3.04742,
+							"max": 4.34893
+						}
+					]
+				},
+				{
+					"method": "dedup",
+					"durations": [
+						{
+							"label": "compute-ballot(earlyDepth)-render",
+							"avg": 3.2831,
+							"min": 2.90918,
+							"max": 4.25472
+						},
+						{
+							"label": "compute-ballot(earlyDepth)-resolve",
+							"avg": 0.0560072,
+							"min": 0.050176,
+							"max": 0.627712
+						},
+						{
+							"label": "compute-ballot(earlyDepth)",
+							"avg": 3.37393,
+							"min": 2.9952,
+							"max": 4.34074
+						},
+						{
+							"label": "frame",
+							"avg": 3.43919,
+							"min": 3.04742,
+							"max": 4.40218
+						}
+					]
+				},
+				{
+					"method": "just-set",
+					"durations": [
+						{
+							"label": "compute-set-render",
+							"avg": 3.03994,
+							"min": 2.81498,
+							"max": 4.06016
+						},
+						{
+							"label": "compute-set-resolve",
+							"avg": 0.0344781,
+							"min": 0.031744,
+							"max": 0.054272
+						},
+						{
+							"label": "compute-set",
+							"avg": 3.11055,
+							"min": 2.88256,
+							"max": 4.12774
+						},
+						{
+							"label": "frame",
+							"avg": 3.17806,
+							"min": 2.93581,
+							"max": 4.30285
+						}
+					]
+				},
+				{
+					"method": "HQS",
+					"durations": [
+						{
+							"label": "compute-hqs-depth",
+							"avg": 3.08667,
+							"min": 2.85184,
+							"max": 4.04275
+						},
+						{
+							"label": "compute-hqs-attribute",
+							"avg": 3.78576,
+							"min": 3.53075,
+							"max": 4.77491
+						},
+						{
+							"label": "compute-hqs-resolve",
+							"avg": 0.106827,
+							"min": 0.100352,
+							"max": 0.713728
+						},
+						{
+							"label": "compute-hqs",
+							"avg": 7.01593,
+							"min": 6.53517,
+							"max": 7.79162
+						},
+						{
+							"label": "frame",
+							"avg": 7.0814,
+							"min": 6.58739,
+							"max": 7.8551
+						}
+					]
+				},
+				{
+					"method": "HQS1x,protected",
+					"durations": [
+						{
+							"label": "compute-hqs1x64bit-depth",
+							"avg": 3.15485,
+							"min": 2.86413,
+							"max": 4.14106
+						},
+						{
+							"label": "compute-hqs1x64bit-attribute",
+							"avg": 3.22028,
+							"min": 3.01875,
+							"max": 4.34381
+						},
+						{
+							"label": "compute-hqs1x64bit-resolve",
+							"avg": 0.145618,
+							"min": 0.13824,
+							"max": 0.91136
+						},
+						{
+							"label": "compute-hqs1x64bit",
+							"avg": 6.55752,
+							"min": 6.06925,
+							"max": 7.40045
+						},
+						{
+							"label": "frame",
+							"avg": 6.61469,
+							"min": 6.1225,
+							"max": 7.46291
+						}
+					]
+				},
+				{
+					"method": "guenther",
+					"durations": [
+						{
+							"label": "compute-guenther-render",
+							"avg": 3.69757,
+							"min": 3.39968,
+							"max": 4.75955
+						},
+						{
+							"label": "compute-guenther-resolve",
+							"avg": 0.0514156,
+							"min": 0.045056,
+							"max": 0.79872
+						},
+						{
+							"label": "compute-guenther",
+							"avg": 3.77592,
+							"min": 3.47238,
+							"max": 4.83328
+						},
+						{
+							"label": "frame",
+							"avg": 3.83745,
+							"min": 3.5287,
+							"max": 4.89882
+						}
+					]
+				}
+			]
+		}
+	]
+}
