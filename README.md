@@ -1,8 +1,8 @@
 
 # Compute Shader Based Point Cloud Rendering
 
-This repository contains the source code to our techreport: <br>
-[Rendering Point Clouds with Compute Shaders and Vertex Order Optimization](https://www.cg.tuwien.ac.at/research/publications/2021/SCHUETZ-2021-PCC/) <br>Markus Schütz, Bernhard Kerbl, Michael Wimmer. (not peer-reviewed, currently in submission)
+This repository contains the source code to our paper: <br>
+[Rendering Point Clouds with Compute Shaders and Vertex Order Optimization](https://www.cg.tuwien.ac.at/research/publications/2021/SCHUETZ-2021-PCC/) <br>Markus Schütz, Bernhard Kerbl, Michael Wimmer. [EGSR '21](https://diglib.eg.org/handle/10.1111/cgf14345).
 
 * Compute shaders can render point clouds up to an order of magnitude faster than GL_POINTS.
 * With a combination of warp-wide deduplication and early-z, compute shaders able to render 796 million points (12.7GB) at stable 62 to 64 frames per second in various different viewpoints on an RTX 3090. This corresponds to a memory bandwidth utilization of about 802GB/s, or a throughput of about 50 billion points per second. 
