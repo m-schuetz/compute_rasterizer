@@ -8,6 +8,11 @@ This repository contains the source code to our paper: <br>
 * With a combination of warp-wide deduplication and early-z, compute shaders able to render 796 million points (12.7GB) at stable 62 to 64 frames per second in various different viewpoints on an RTX 3090. This corresponds to a memory bandwidth utilization of about 802GB/s, or a throughput of about 50 billion points per second. 
 * The vertex order also strongly affects the performance. Some locality of points that are consecutive in memory is beneficial, but excessive locality can result in drastic slowdowns if it leads to thousands of GPU threads attempting to update a single pixel. As such, neither Morton ordered nor shuffled buffers are optimal. However combining both by first sorting by Morton code, and then shuffling batches of 128 points but leaving points within a batch in order, results in an improved ordering that ensures high performance with our compute approaches, and it also increases the performance of GL_POINTS by up to 5 times.
 
+### Uses
+
+* _"ADOP: Approximate Differentiable One-Pixel Point Rendering"_, Darius Rückert, Linus Franke, Marc Stamminger, [arxiv](https://arxiv.org/abs/2110.06635) <br>
+  Uses compute-based point rasterization to efficiently generate a set of sparse neural images, which are the basis for a high-quality reconstruction of a novel view image. 
+
 # About the Framework
 
 This framework is written in C++ and JavaScript (using V8). Most of the rendering is done in JavaScript with bindings to OpenGL 4.5 functions. It is written with live-coding in mind, so many javascript files are immediately executed at runtime as soon as they are saved by any text editor. As such, code has to be written with repeated execution in mind. 
