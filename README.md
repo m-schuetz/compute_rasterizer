@@ -10,8 +10,9 @@ This repository contains the source code to our paper: <br>
 
 #### Applications
 
-* __"ADOP: Approximate Differentiable One-Pixel Point Rendering"__, Darius Rückert, Linus Franke, Marc Stamminger, [arxiv](https://arxiv.org/abs/2110.06635) <br>
-  Uses compute-based point rasterization to efficiently generate a set of sparse neural images, which are the basis for a high-quality reconstruction of a novel view image. 
+* __"ADOP: Approximate Differentiable One-Pixel Point Rendering"__, Darius Rückert, Linus Franke, Marc Stamminger, <br>
+  Uses compute-based point rasterization to efficiently generate a set of sparse neural images, which are the basis for a high-quality reconstruction of a novel view image. <br>
+  [paper](https://arxiv.org/abs/2110.06635) - [video](https://www.youtube.com/watch?v=WJRyu1JUtVw) - [code](https://github.com/darglein/ADOP) <br>
 
 # About the Framework
 
