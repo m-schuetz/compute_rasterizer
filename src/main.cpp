@@ -106,7 +106,7 @@ int main(){
 	
 	{ // Eclepens at home
 		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/eclepens/potree";
+		setting.path_potree = "E:/dev/pointclouds/paper_testdata/eclepens/potree";
 		setting.path_las = "E:/dev/pointclouds/paper_testdata/eclepens/eclepens_morton.las";
 		setting.yaw = 6.65;
 		setting.pitch = -0.71;
@@ -214,9 +214,9 @@ int main(){
 	renderer->controls->radius = setting.radius;
 	renderer->controls->target = setting.target;
 
-	// auto potreedata = PotreeData::create(setting.path_potree);
+	auto potreedata = PotreeData::create(setting.path_potree);
 	auto las_encode_444 = ComputeLasData::create(setting.path_las);
-	// auto las_standard = LasStandardData::create(setting.path_las);
+	auto las_standard = LasStandardData::create(setting.path_las);
 
 	{ // 4-4-4 byte format
 		auto computeLoopLas       = new ComputeLoopLas(renderer.get(), las_encode_444);
@@ -231,27 +231,27 @@ int main(){
 		Runtime::addMethod((Method*)computeCUDALas);
 	}
 
-	// { // POTREE FORMAT
-	// auto computeLoopNodes = new ComputeLoopNodes(renderer.get(), potreedata);
-	// auto computeLoopNodesHqs = new ComputeLoopNodesHqs(renderer.get(), potreedata);
-	// auto computeLoopNodesHqsVr = new ComputeLoopNodesHqsVr(renderer.get(), potreedata);
-	// Runtime::addMethod((Method*)computeLoopNodes);
-	// Runtime::addMethod((Method*)computeLoopNodesHqs);
-	// Runtime::addMethod((Method*)computeLoopNodesHqsVr);
-	// }
+	{ // POTREE FORMAT
+		auto computeLoopNodes = new ComputeLoopNodes(renderer.get(), potreedata);
+		auto computeLoopNodesHqs = new ComputeLoopNodesHqs(renderer.get(), potreedata);
+		auto computeLoopNodesHqsVr = new ComputeLoopNodesHqsVr(renderer.get(), potreedata);
+		Runtime::addMethod((Method*)computeLoopNodes);
+		Runtime::addMethod((Method*)computeLoopNodesHqs);
+		Runtime::addMethod((Method*)computeLoopNodesHqsVr);
+	}
 
-	// { // OLD METHODS / 16 byte format
-	// auto computeEarlyZ = new ComputeEarlyZ(renderer.get(), las_standard);
-	// auto computeEarlyZReduce = new ComputeEarlyZReduce(renderer.get(), las_standard);
-	// auto computeDedup = new ComputeDedup(renderer.get(), las_standard);
-	// auto compute2021Hqs = new Compute2021HQS(renderer.get(), las_standard);
-	// auto compute2021GL = new ComputeGL(renderer.get(), las_standard);
-	// Runtime::addMethod((Method*)computeEarlyZ);
-	// Runtime::addMethod((Method*)computeEarlyZReduce);
-	// Runtime::addMethod((Method*)computeDedup);
-	// Runtime::addMethod((Method*)compute2021Hqs);
-	// Runtime::addMethod((Method*)compute2021GL);
-	// }
+	{ // OLD METHODS / 16 byte format
+		//auto computeEarlyZ = new ComputeEarlyZ(renderer.get(), las_standard);
+		//auto computeEarlyZReduce = new ComputeEarlyZReduce(renderer.get(), las_standard);
+		auto computeDedup = new ComputeDedup(renderer.get(), las_standard);
+		auto compute2021Hqs = new Compute2021HQS(renderer.get(), las_standard);
+		auto compute2021GL = new ComputeGL(renderer.get(), las_standard);
+		//Runtime::addMethod((Method*)computeEarlyZ);
+		//Runtime::addMethod((Method*)computeEarlyZReduce);
+		Runtime::addMethod((Method*)computeDedup);
+		Runtime::addMethod((Method*)compute2021Hqs);
+		Runtime::addMethod((Method*)compute2021GL);
+	}
 
 	// { // PARAMETRIC
 	// auto computeParametric = new ComputeParametric(renderer.get());

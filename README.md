@@ -1,7 +1,7 @@
 
 # About
 
-This repository contains the source code for our papers about compute rasterization of point clouds. The project is currently crude and difficult to use, but we plan to add the option to drag&drop your own point clouds after vacation. 
+This repository contains the source code for our papers about compute rasterization of point clouds. The project is currently crude and difficult to use, but we plan to add the option to drag&drop your own point clouds after vacation. We will also add a test data set by then.
 
 * "Software Rasterization of 2 Billion Points in Real-Time" <br>
 Current branch
@@ -17,3 +17,5 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 	* Change ```Setting setting = settings["..."];``` to your own setting.
 * Compile build/ComputeRasterizer.sln with Visual Studio 2022.
 * Run (ctrl + f5)
+
+Currently, only point clouds in LAS format are supported.
