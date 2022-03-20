@@ -21,6 +21,25 @@ void GLTimerQueries::timestamp(string label) {
 	glt->currentFrame.timestamps.push_back(timestamp);
 }
 
+void GLTimerQueries::timestampPrint(string label) {
+	GLTimerQueries* glt = GLTimerQueries::instance();
+
+	if (!glt->enabled) {
+		return;
+	}
+
+	GLuint handle;
+	glGenQueries(1, &handle);
+	glQueryCounter(handle, GL_TIMESTAMP);
+
+	GLTimestamp timestamp;
+	timestamp.label = label;
+	timestamp.handle = handle;
+	timestamp.shouldPrint = true;
+
+	glt->currentFrame.timestamps.push_back(timestamp);
+}
+
 void GLTimerQueries::frameStart() {
 	GLTimerQueries* glt = GLTimerQueries::instance();
 
@@ -65,6 +84,7 @@ void GLTimerQueries::frameEnd() {
 				Timestamp item;
 				item.label = timestamp.label;
 				item.nanos = nanos;
+				item.shouldPrint = timestamp.shouldPrint;
 				timings.push_back(item);
 
 			} else {
@@ -108,13 +128,18 @@ void GLTimerQueries::frameEnd() {
 				item.label = baseLabel;
 				item.nanos = duration;
 
+				if(timestamp.shouldPrint){
+					double avg = stat.sum / stat.count;
+					cout << "load batch: " << formatNumber(avg, 3) << "ms " << endl;
+				}
+
 				durations.push_back(item);
 			}
 		}
 
 
 		// Update once per <window>. TODO: compute mean, update that once per second.
-		double window = 1.0;
+		double window = 0.1;
 		static double toggle = now();
 		if (now() - toggle > window) {
 			glt->timings = timings;

@@ -15,6 +15,10 @@ OpenVRHelper *OpenVRHelper::_instance = new OpenVRHelper();
 
 bool OpenVRHelper::start() {
 
+	if(system){
+		return false;
+	}
+
 	EVRInitError error;
 	system = VR_Init(&error, EVRApplicationType::VRApplication_Scene);
 
@@ -37,8 +41,10 @@ bool OpenVRHelper::start() {
 }
 
 void OpenVRHelper::stop() {
-	VR_Shutdown();
-	system = nullptr;
+	if(system){
+		VR_Shutdown();
+		system = nullptr;
+	}
 }
 
 bool OpenVRHelper::isActive() {
@@ -180,6 +186,30 @@ Pose OpenVRHelper::getRightControllerPose() {
 	int rightHandID = system->GetTrackedDeviceIndexForControllerRole(vr::ETrackedControllerRole::TrackedControllerRole_RightHand);
 
 	return getPose(rightHandID);
+}
+
+vr::VRControllerState_t OpenVRHelper::getLeftControllerState(){
+	int leftHandID = system->GetTrackedDeviceIndexForControllerRole(vr::ETrackedControllerRole::TrackedControllerRole_LeftHand);
+
+	if(leftHandID < 0){
+		return vr::VRControllerState_t();
+	}
+
+	vr::VRControllerState_t state = controllerStates[leftHandID];
+
+	return state;
+}
+
+vr::VRControllerState_t OpenVRHelper::getRightControllerState(){
+	int rightHandID = system->GetTrackedDeviceIndexForControllerRole(vr::ETrackedControllerRole::TrackedControllerRole_RightHand);
+
+	if(rightHandID < 0){
+		return vr::VRControllerState_t();
+	}
+
+	vr::VRControllerState_t state = controllerStates[rightHandID];
+
+	return state;
 }
 
 vector<unsigned int> OpenVRHelper::getRecommmendedRenderTargetSize(){

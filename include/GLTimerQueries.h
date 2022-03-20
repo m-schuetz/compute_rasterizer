@@ -25,6 +25,7 @@ struct GLTimestamp {
 	string label;
 	GLuint handle = -1;
 	int age = 0;
+	bool shouldPrint = false;
 };
 
 struct GLFrame {
@@ -36,6 +37,7 @@ struct GLFrame {
 struct Timestamp {
 	string label;
 	uint64_t nanos;
+	bool shouldPrint = false;
 };
 
 struct Duration {
@@ -75,6 +77,7 @@ struct GLTimerQueries {
 	static void frameStart();
 	static void frameEnd();
 	static void timestamp(string label);
+	static void timestampPrint(string label);
 
 
 };

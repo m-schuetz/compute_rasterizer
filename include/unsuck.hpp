@@ -17,11 +17,14 @@
 #include <thread>
 #include <cstdint>
 #include <cstring>
+#include <functional>
+#include <mutex>
 
 using std::cout;
 using std::endl;
 using std::to_string;
 using std::string;
+using std::function;
 using std::vector;
 using std::ifstream;
 using std::ofstream;
@@ -33,6 +36,7 @@ using std::ios;
 using std::shared_ptr;
 using std::make_shared;
 using std::chrono::high_resolution_clock;
+using std::mutex;
 
 namespace fs = std::filesystem;
 
@@ -106,11 +110,12 @@ struct Buffer {
 	double* data_f64 = nullptr;
 	char* data_char = nullptr;
 
+	int64_t id = 0;
 	int64_t size = 0;
 	int64_t pos = 0;
 
 	Buffer() {
-
+		this->id = Buffer::createID();
 	}
 
 	Buffer(int64_t size) {
@@ -155,10 +160,32 @@ struct Buffer {
 		data_char = reinterpret_cast<char*>(data);
 
 		this->size = size;
+
+		this->id = Buffer::createID();
+	}
+
+	static int createID(){
+		static int64_t counter = 0;
+
+		int id = int(counter);
+
+		counter++;
+
+		return id;
 	}
 
 	~Buffer() {
 		free(data);
+	}
+
+	template<class T>
+	T get(int64_t position) {
+
+		T value;
+
+		memcpy(&value, data_u8 + position, sizeof(T));
+
+		return value;
 	}
 
 	template<class T>
@@ -404,7 +431,7 @@ inline shared_ptr<Buffer> readBinaryFile(string path) {
 //	}
 //}
 
-inline vector<uint8_t> readBinaryFile(string path, uint64_t start, uint64_t size) {
+inline shared_ptr<Buffer> readBinaryFile(string path, uint64_t start, uint64_t size) {
 
 	//ifstream file(path, ios::binary);	
 	
@@ -414,24 +441,25 @@ inline vector<uint8_t> readBinaryFile(string path, uint64_t start, uint64_t size
 	auto totalSize = fs::file_size(path);
 
 	if (start >= totalSize) {
-		return vector<uint8_t>();
+		auto buffer = make_shared<Buffer>(0);
+		return buffer;
 	}if (start + size > totalSize) {
 		auto clampedSize = totalSize - start;
 
-		vector<uint8_t> buffer(clampedSize);
+		auto buffer = make_shared<Buffer>(clampedSize);
 		//file.seekg(start, ios::beg);
 		//file.read(reinterpret_cast<char*>(buffer.data()), clampedSize);
 		fseek_64_all_platforms(file, start, SEEK_SET);
-		fread(buffer.data(), 1, clampedSize, file);
+		fread(buffer->data, 1, clampedSize, file);
 		fclose(file);
 
 		return buffer;
 	} else {
-		vector<uint8_t> buffer(size);
+		auto buffer = make_shared<Buffer>(size);
 		//file.seekg(start, ios::beg);
 		//file.read(reinterpret_cast<char*>(buffer.data()), size);
 		fseek_64_all_platforms(file, start, SEEK_SET);
-		fread(buffer.data(), 1, size, file);
+		fread(buffer->data, 1, size, file);
 		fclose(file);
 
 		return buffer;
@@ -512,7 +540,7 @@ inline void writeBinaryFile(string path, Buffer& data) {
 
 	while (remaining > 0) {
 		constexpr int64_t mb4 = int64_t(4 * 1024 * 1024);
-		int batchSize = std::min(remaining, mb4);
+		int batchSize = int(std::min(remaining, mb4));
 		of.write(reinterpret_cast<char*>(data.data) + offset, batchSize);
 
 		offset += batchSize;
@@ -579,7 +607,7 @@ T read(vector<uint8_t>& buffer, int offset) {
 
 inline string leftPad(string in, int length, const char character = ' ') {
 
-	int tmp = length - in.size();
+	int tmp = int(length - in.size());
 	auto reps = std::max(tmp, 0);
 	string result = string(reps, character) + in;
 
@@ -594,7 +622,83 @@ inline string rightPad(string in, int64_t length, const char character = ' ') {
 	return result;
 }
 
+inline string repeat(string str, int64_t repetitions) {
+
+	string result = "";
+
+	for(int i = 0; i < repetitions; i++){
+		result = result + str;
+	}
+
+	return result;
+}
+
+void toClipboard(string str);
+
+struct EventQueue {
+
+	static EventQueue *instance;
+	vector<std::function<void()>> queue;
+	mutex mtx;
+
+	void add(std::function<void()> event) {
+		mtx.lock();
+		this->queue.push_back(event);
+		mtx.unlock();
+	}
+
+	void process() {
+
+		mtx.lock();
+		vector<std::function<void()>> q = queue;
+		queue = vector<std::function<void()>>();
+		mtx.unlock();
+
+		for (auto &event : q) {
+			event();
+		}
+	}
+};
+
+inline void schedule(std::function<void()> event) {
+	EventQueue::instance->add(event);
+}
+
+inline void monitorFile(string file, std::function<void()> callback) {
+
+	std::thread([file, callback]() {
+
+		if (!fs::exists(file)) {
+			cout << "ERROR(monitorFile): file does not exist: " << file << endl;
+
+			return;
+		}
+
+		auto lastWriteTime = fs::last_write_time(fs::path(file));
+
+		using namespace std::chrono_literals;
+
+		while (true) {
+			std::this_thread::sleep_for(20ms);
+
+			auto currentWriteTime = fs::last_write_time(fs::path(file));
+
+			if (currentWriteTime > lastWriteTime) {
+
+				//callback();
+				schedule(callback);
+
+				lastWriteTime = currentWriteTime;
+			}
+
+		}
+
+	}).detach();
+}
+
 
 #define GENERATE_ERROR_MESSAGE cout << "ERROR(" << __FILE__ << ":" << __LINE__ << "): "
 #define GENERATE_WARN_MESSAGE cout << "WARNING: "
+
+
 
