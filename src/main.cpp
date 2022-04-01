@@ -207,7 +207,7 @@ int main(){
 	// renderer->controls->radius = 13.45;
 	// renderer->controls->target = {0.00, 0.00, 0.00};
 
-	Setting setting = settings["morrobay_morton"];
+	Setting setting = settings["banyunibo_inside_morton"];
 	
 	renderer->controls->yaw = setting.yaw;
 	renderer->controls->pitch = setting.pitch;
@@ -302,6 +302,14 @@ int main(){
 			Debug::set("state", state);
 		}
 
+		{
+			float t = now();
+
+			renderer->controls->yaw = t;
+			renderer->controls->pitch = -0.32;
+			renderer->controls->radius = 24.50;
+			renderer->controls->target = {40.57, 29.45, 3.87};
+		}
 
 	};
 

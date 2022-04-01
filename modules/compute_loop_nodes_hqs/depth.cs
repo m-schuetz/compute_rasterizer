@@ -103,6 +103,7 @@ layout(std140, binding = 31) uniform UniformData{
 	int showBoundingBox;
 	int numPoints;
 	ivec2 imageSize;
+	bool colorizeChunks;
 } uniforms;
 
 uint SPECTRAL[5] = {

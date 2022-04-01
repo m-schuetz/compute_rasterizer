@@ -101,6 +101,8 @@ layout(std140, binding = 31) uniform UniformData{
 	int showBoundingBox;
 	int numPoints;
 	ivec2 imageSize;
+	bool colorizeChunks;
+	bool colorizeOverdraw;
 } uniforms;
 
 uint SPECTRAL[5] = {
@@ -374,7 +376,13 @@ void main(){
 				bool isBallotLeader = (ballotLeaderID == gl_SubgroupInvocationID.x);
 
 				uint32_t color = ssRGBA[index];
-				// color = batchIndex * 1234;
+
+				if(uniforms.colorizeChunks){
+					color = batchIndex * 1234567;
+				}else if(uniforms.colorizeOverdraw){
+					color = 0x00010101;
+				}
+
 				uint32_t R = (color >>  0) & 0xFF;
 				uint32_t G = (color >>  8) & 0xFF;
 				uint32_t B = (color >> 16) & 0xFF;

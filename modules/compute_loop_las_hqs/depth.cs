@@ -102,6 +102,8 @@ layout(std140, binding = 31) uniform UniformData{
 	int showBoundingBox;
 	int numPoints;
 	ivec2 imageSize;
+	bool colorizeChunks;
+	bool colorizeOverdraw;
 } uniforms;
 
 uint SPECTRAL[5] = {
@@ -327,6 +329,10 @@ void main(){
 		vec4 pos = vec4(point, 1.0);
 		pos = uniforms.transform * pos;
 		pos.xyz = pos.xyz / pos.w;
+
+		if(uniforms.colorizeOverdraw){
+			pos.w = 1000;
+		}
 
 		bool isInsideFrustum = !(pos.w <= 0.0 || pos.x < -1.0 || pos.x > 1.0 || pos.y < -1.0 || pos.y > 1.0);
 

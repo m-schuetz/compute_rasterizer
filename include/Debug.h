@@ -25,6 +25,9 @@ struct Debug{
 	inline static bool requestCopyVrMatrices = false;
 	inline static bool dummyVR = false;
 	inline static bool requestResetView = false;
+	inline static bool colorizeChunks = false;
+	inline static bool colorizeOverdraw = false;
+
 
 
 	Debug(){

@@ -47,6 +47,7 @@ struct ComputeLoopNodesHqs : public Method{
 		int showBoundingBox;
 		int numPoints;
 		ivec2 imageSize;
+		bool colorizeChunks;
 	};
 
 	struct DebugData{
@@ -152,6 +153,7 @@ struct ComputeLoopNodesHqs : public Method{
 			uniformData.enableFrustumCulling = Debug::frustumCullingEnabled ? 1 : 0;
 			uniformData.showBoundingBox = Debug::showBoundingBox ? 1 : 0;
 			uniformData.imageSize = {fbo->width, fbo->height};
+			uniformData.colorizeChunks = Debug::colorizeChunks;
 
 			glNamedBufferSubData(uniformBuffer.handle, 0, sizeof(UniformData), &uniformData);
 		}

@@ -517,6 +517,20 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			}
 
 			{
+				static bool checked = Debug::colorizeChunks; 
+				ImGui::Checkbox("colorize chunks", &checked);
+
+				Debug::colorizeChunks = checked;
+			}
+
+			{
+				static bool checked = Debug::colorizeOverdraw; 
+				ImGui::Checkbox("colorize overdraw", &checked);
+
+				Debug::colorizeOverdraw = checked;
+			}
+
+			{
 				static bool checked = Debug::boolMisc; 
 				ImGui::Checkbox("misc", &checked);
 

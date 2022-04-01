@@ -46,6 +46,8 @@ struct ComputeLoopLasHqs : public Method{
 		int showBoundingBox;
 		int numPoints;
 		ivec2 imageSize;
+		int colorizeChunks;
+		int colorizeOverdraw;
 	};
 
 	struct DebugData{
@@ -154,6 +156,8 @@ averages overlapping points
 			uniformData.enableFrustumCulling = Debug::frustumCullingEnabled ? 1 : 0;
 			uniformData.showBoundingBox = Debug::showBoundingBox ? 1 : 0;
 			uniformData.imageSize = {fbo->width, fbo->height};
+			uniformData.colorizeChunks = Debug::colorizeChunks;
+			uniformData.colorizeOverdraw = Debug::colorizeOverdraw;
 
 			glNamedBufferSubData(uniformBuffer.handle, 0, sizeof(UniformData), &uniformData);
 		}

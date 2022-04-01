@@ -47,9 +47,17 @@ layout(std140, binding = 31) uniform UniformData{
 	int showBoundingBox;
 	int numPoints;
 	ivec2 imageSize;
+	bool colorizeChunks;
+	bool colorizeOverdraw;
 } uniforms;
 
-#define MAX_BUFFER_SIZE 2000000000l
+uint SPECTRAL[5] = {
+	0x00ba832b,
+	0x00a4ddab,
+	0x00bfffff,
+	0x0061aefd,
+	0x001c19d7
+};
 
 void main(){
 
@@ -67,6 +75,32 @@ void main(){
 	uint32_t G = ssRGBA[4 * pixelID + 1];
 	uint32_t B = ssRGBA[4 * pixelID + 2];
 	uint32_t count = ssRGBA[4 * pixelID + 3];
+
+	if(uniforms.colorizeChunks){
+		// color = batchIndex * 1234;
+	}else if(uniforms.colorizeOverdraw){
+		// count = 1;
+
+		int spectralIndex = 0;
+
+		if(count < 10){
+			spectralIndex = 0;
+		}else if(count < 250){
+			spectralIndex = 1;
+		}else if(count < 1000){
+			spectralIndex = 2;
+		}else if(count < 4000){
+			spectralIndex = 3;
+		}else{
+			spectralIndex = 4;
+		}
+
+		R = (SPECTRAL[spectralIndex] >>  0) & 0xFF;
+		G = (SPECTRAL[spectralIndex] >>  8) & 0xFF;
+		B = (SPECTRAL[spectralIndex] >> 16) & 0xFF;
+		
+		count = 1;
+	}
 
 	uint32_t r = R / count;
 	uint32_t g = G / count;

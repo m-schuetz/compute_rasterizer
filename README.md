@@ -3,7 +3,7 @@
 
 This repository contains the source code for our papers about compute rasterization of point clouds. The project is currently crude and difficult to use, but we plan to add the option to drag&drop your own point clouds after vacation. We will also add a test data set by then.
 
-* "Software Rasterization of 2 Billion Points in Real-Time" <br>
+* ["Software Rasterization of 2 Billion Points in Real-Time"](https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/) <br>
 Current branch
 
 * ["Rendering Point Clouds with Compute Shaders and Vertex Order Optimization"](https://www.cg.tuwien.ac.at/research/publications/2021/SCHUETZ-2021-PCC/)<br>
