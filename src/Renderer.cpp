@@ -468,6 +468,7 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 				ImGui::Separator(); 
 			}
 
+			stringstream ssStats;
 			for(auto& [key, value] : Debug::frameStats){
 
 				if(key == "divider" && value == ""){
@@ -476,11 +477,18 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 					ImGui::Text(key.c_str());
 					ImGui::SameLine(240.0);
 					ImGui::Text(value.c_str());
+
+					ssStats << key << "\t" << value << endl;
 				}
 			}
 			
 			if(Debug::frameStats.size() > 0){
 				ImGui::Separator(); 
+			}
+
+			if(Debug::frameStats.size() > 0 && ImGui::Button("copy")) {
+				
+				toClipboard(ssStats.str());
 			}
 
 			ImGui::End();

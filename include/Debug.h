@@ -23,7 +23,7 @@ struct Debug{
 	inline static bool frustumCullingEnabled = true;
 	inline static bool enableShaderDebugValue = false;
 	inline static bool requestCopyVrMatrices = false;
-	inline static bool dummyVR = true;
+	inline static bool dummyVR = false;
 	inline static bool requestResetView = false;
 
 

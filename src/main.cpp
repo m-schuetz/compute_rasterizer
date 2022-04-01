@@ -151,7 +151,7 @@ int main(){
 		setting.radius = 20.26;
 		setting.target = {38.64, 29.22, 5.23};
 
-		settings["canyunibo_outside_morton"] = setting;
+		settings["banyunibo_outside_morton"] = setting;
 	}
 
 	{ // Candi Banyunibo inside
@@ -163,7 +163,7 @@ int main(){
 		setting.radius = 3.01;
 		setting.target = {41.48, 31.31, 4.96};
 
-		settings["canyunibo_inside_morton"] = setting;
+		settings["banyunibo_inside_morton"] = setting;
 	}
 
 
@@ -207,7 +207,7 @@ int main(){
 	// renderer->controls->radius = 13.45;
 	// renderer->controls->target = {0.00, 0.00, 0.00};
 
-	Setting setting = settings["eclepens_morton_home"];
+	Setting setting = settings["morrobay_morton"];
 	
 	renderer->controls->yaw = setting.yaw;
 	renderer->controls->pitch = setting.pitch;

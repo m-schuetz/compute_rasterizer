@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\libs\imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\imgui\backends\imgui_impl_glfw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\imgui\imgui_tables.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\imgui\imgui_widgets.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\implot\implot.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\implot\implot_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\implot\implot_items.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\unsuck_platform_specific.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Texture.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Renderer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\OrbitControls.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\OpenVRHelper.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GLTimerQueries.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Framebuffer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\modules\compute\ComputeLasLoader.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\glew\glew.c">
+      <Filter>headers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\imgui\backends\imgui_impl_glfw.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\imgui\backends\imgui_impl_opengl3.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\implot\implot.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\implot\implot_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\unsuck.hpp">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Debug.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\drawBoundingBoxes.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\drawBoxes.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Framebuffer.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Frustum.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GLBuffer.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GLTimerQueries.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\LasLoader.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\OpenVRHelper.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Plane.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\ProgressiveFileBuffer.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Renderer.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Shader.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\SimLOD.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Texture.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\VrHelper.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\VrRuntime.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\modules\compute_2021_gl\compute_2021_gl.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\compute_basic.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\modules\compute_loop\compute_loop.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\modules\compute_loop_hqs\compute_loop_hqs.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\modules\compute_loop_nodes_hqs\compute_loop_nodes_hqs.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\modules\compute_loop_nodes_hqs_vr\compute_loop_nodes_hqs_vr.h">
+      <Filter>methods</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Box.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Camera.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\CudaProgram.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{651d2ed3-853f-4f6a-be44-dd3081acc780}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{4b02947d-638b-4a6e-a176-4a4abe0d9b5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="headers">
+      <UniqueIdentifier>{6f062ce5-ad70-48c3-a47b-efec6e18e88d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="methods">
+      <UniqueIdentifier>{f7cb9d8d-0008-422e-944d-adbbfe7d2f92}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\include\OrbitControls.h">
+      <Filter>headers</Filter>
+    </None>
+  </ItemGroup>
+</Project>
