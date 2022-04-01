@@ -23,3 +23,30 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 * Run (ctrl + f5)
 
 Currently, only point clouds in LAS format are supported.
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Location</th>
+	</tr>
+	<tr>
+		<td>basic</td>
+		<td><a href="./modules/compute_loop_las">./modules/compute_loop_las</a></td>
+	</tr>
+	<tr>
+		<td>prefetch</td>
+		<td><a href="./modules/compute_loop_las2">./modules/compute_loop_las2</a></td>
+	</tr>
+	<tr>
+		<td>hqs</td>
+		<td><a href="./modules/compute_loop_las_hqs">./modules/compute_loop_las_hqs</a></td>
+	</tr>
+	<tr>
+		<td>LOD</td>
+		<td><a href="./modules/compute_loop_nodes">./modules/compute_loop_nodes</a></td>
+	</tr>
+	<tr>
+		<td>LOD hqs</td>
+		<td><a href="./modules/compute_loop_nodes_hqs">./modules/compute_loop_nodes_hqs</a></td>
+	</tr>
+</table>
