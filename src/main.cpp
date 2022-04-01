@@ -302,14 +302,14 @@ int main(){
 			Debug::set("state", state);
 		}
 
-		{
-			float t = now();
+		//{
+		//	float t = now();
 
-			renderer->controls->yaw = t;
-			renderer->controls->pitch = -0.32;
-			renderer->controls->radius = 24.50;
-			renderer->controls->target = {40.57, 29.45, 3.87};
-		}
+		//	renderer->controls->yaw = t;
+		//	renderer->controls->pitch = -0.32;
+		//	renderer->controls->radius = 24.50;
+		//	renderer->controls->target = {40.57, 29.45, 3.87};
+		//}
 
 	};
 
