@@ -9,47 +9,74 @@
 #include "GL\glew.h"
 #include "GLFW\glfw3.h"
 
-#include "utils.h"
+#include "unsuck.hpp"
 
 using std::unordered_map;
 using std::string;
 using std::cout;
 using std::endl;
 
+struct ShaderComponent {
+	string path = "";
+	GLuint shaderType = -1;
+	string source = "";
+	GLuint shader;
 
-class Shader {
+	ShaderComponent(string path, GLuint shaderType) {
+		this->path = path;
+		this->shaderType = shaderType;
+	}
+};
 
-public:
 
-	string vsPath = "";
-	string fsPath = "";
+struct Shader {
+
+	vector<ShaderComponent> components;
+
 	GLuint program = -1;
 
 	unordered_map<string, unsigned int> uniformLocations;
 
 	Shader(string vsPath, string fsPath) {
-		this->vsPath = vsPath;
-		this->fsPath = fsPath;
+
+		setComponents({
+			{vsPath, GL_VERTEX_SHADER},
+			{fsPath, GL_FRAGMENT_SHADER}
+		});
+
+		//compile();
+	}
+
+	Shader(vector<ShaderComponent> components) {
+		setComponents(components);
+
+		/*compile();*/
+	}
+
+	void setComponents(vector<ShaderComponent> components) {
+		this->components = components;
 
 		compile();
+
+		for (auto& component : components) {
+			monitorFile(component.path, [&]() {
+				compile();
+			});
+		}
+
 	}
 
 	void compile() {
-		string vsSource = loadFileAsString(vsPath);
-		string fsSource = loadFileAsString(fsPath);
 
-		cout << "compiling vs shader: " << vsPath << endl;
-		//cout << vsSource << endl;
+		for (auto& component : components) {
+			cout << "compiling component " << component.path << endl;
 
-		int vs = compileShader(vsSource, GL_VERTEX_SHADER);
+			component.source = readTextFile(component.path);
+			bool compiled = compileShader(component);	
 
-		cout << "compiling fs shader: " << fsPath << endl;
-		//cout << fsSource << endl;
-
-		int fs = compileShader(fsSource, GL_FRAGMENT_SHADER);
-
-		if (vs == -1 || fs == -1) {
-			return;
+			if (!compiled) {
+				return;
+			}
 		}
 
 
@@ -61,8 +88,9 @@ public:
 			program = glCreateProgram();
 		}
 
-		glAttachShader(program, vs);
-		glAttachShader(program, fs);
+		for (auto& component : components) {
+			glAttachShader(program, component.shader);
+		}
 
 		glLinkProgram(program);
 
@@ -113,18 +141,18 @@ public:
 			}
 		}
 
-		glDetachShader(program, vs);
-		glDetachShader(program, fs);
-		glDeleteShader(vs);
-		glDeleteShader(fs);
+		for (auto& component : components) {
+			glDetachShader(program, component.shader);
+			glDeleteShader(component.shader);
+		}
 
 	}
 
-	GLuint compileShader(string source, GLuint shaderType) {
+	bool compileShader(ShaderComponent& component) {
 
-		int glshader = glCreateShader(shaderType);
+		int glshader = glCreateShader(component.shaderType);
 
-		const char * vsc = source.c_str();
+		const char * vsc = component.source.c_str();
 		glShaderSource(glshader, 1, &vsc, NULL);
 		glCompileShader(glshader);
 		auto abc = glGetError();
@@ -143,14 +171,13 @@ public:
 			std::string str(infoLog.begin(), infoLog.end());
 			cout << "error in shader" << endl;
 			cout << str << endl;
-			//qDebug() << "error in vertex shader " << name.c_str();
-			//qDebug() << str.c_str();
 
-
-			return -1;
+			return false;
 		}
 
-		return glshader;
+		component.shader = glshader;
+
+		return true;
 	}
 
 };

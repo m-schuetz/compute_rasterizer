@@ -1,11 +1,25 @@
 
 #include "unsuck.hpp"
 
+EventQueue *EventQueue::instance = new EventQueue();
+
 #ifdef _WIN32
 	#include "TCHAR.h"
 	#include "pdh.h"
 	#include "windows.h"
 	#include "psapi.h"
+
+void toClipboard(string str) {
+	const char* output = str.c_str();
+	const size_t len = strlen(output) + 1;
+	HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
+	memcpy(GlobalLock(hMem), output, len);
+	GlobalUnlock(hMem);
+	OpenClipboard(0);
+	EmptyClipboard();
+	SetClipboardData(CF_TEXT, hMem);
+	CloseClipboard();
+}
 
 // see https://stackoverflow.com/questions/63166/how-to-determine-cpu-and-memory-consumption-from-inside-a-process
 MemoryData getMemoryData() {

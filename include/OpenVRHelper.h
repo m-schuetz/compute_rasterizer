@@ -75,8 +75,10 @@ public:
 	Pose getPose(int deviceID);
 
 	Pose getLeftControllerPose();
-	
 	Pose getRightControllerPose();
+
+	vr::VRControllerState_t getLeftControllerState();
+	vr::VRControllerState_t getRightControllerState();
 
 	vector<unsigned int> getRecommmendedRenderTargetSize();
 
