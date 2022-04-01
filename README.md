@@ -28,22 +28,27 @@ Currently, only point clouds in LAS format are supported.
 	<tr>
 		<th>Method</th>
 		<th>Location</th>
+		<th></th>
 	</tr>
 	<tr>
 		<td>basic</td>
 		<td><a href="./modules/compute_loop_las">./modules/compute_loop_las</a></td>
+		<td></td>
 	</tr>
 	<tr>
 		<td>prefetch</td>
 		<td><a href="./modules/compute_loop_las2">./modules/compute_loop_las2</a></td>
+		<td>fastest, each thread fetches 4 points at a time</td>
 	</tr>
 	<tr>
 		<td>hqs</td>
 		<td><a href="./modules/compute_loop_las_hqs">./modules/compute_loop_las_hqs</a></td>
+		<td>High-Quality Shading</td>
 	</tr>
 	<tr>
 		<td>LOD</td>
 		<td><a href="./modules/compute_loop_nodes">./modules/compute_loop_nodes</a></td>
+		<td>Support for the Potree LOD format</td>
 	</tr>
 	<tr>
 		<td>LOD hqs</td>
