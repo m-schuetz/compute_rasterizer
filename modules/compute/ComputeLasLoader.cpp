@@ -27,14 +27,11 @@ void ComputeLasData::load(Renderer* renderer){
 
 	{ // create buffers
 		int numBatches = (this->numPoints / POINTS_PER_WORKGROUP) + 1;
-		//int lodBufferSize = 4 * ((this->numPoints) / 10);
 		this->ssBatches = renderer->createBuffer(64 * numBatches);
-		this->ssXyz_12b = renderer->createBuffer(4 * this->numPoints);
-		this->ssXyz_8b = renderer->createBuffer(4 * this->numPoints);
-		this->ssXyz_4b = renderer->createBuffer(4 * this->numPoints);
-		this->ssColors = renderer->createBuffer(4 * this->numPoints);
-		//this->ssLOD = renderer->createBuffer(lodBufferSize);
-		//this->ssLODColor = renderer->createBuffer(lodBufferSize);
+		this->ssXyz_12b = renderer->createSparseBuffer(4 * this->numPoints);
+		this->ssXyz_8b = renderer->createSparseBuffer(4 * this->numPoints);
+		this->ssXyz_4b = renderer->createSparseBuffer(4 * this->numPoints);
+		this->ssColors = renderer->createSparseBuffer(4 * this->numPoints);
 		this->ssLoadBuffer = renderer->createBuffer(this->bytesPerPoint * MAX_POINTS_PER_BATCH);
 
 		GLuint zero = 0;
@@ -43,8 +40,6 @@ void ComputeLasData::load(Renderer* renderer){
 		glClearNamedBufferData(this->ssXyz_8b.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		glClearNamedBufferData(this->ssXyz_4b.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		glClearNamedBufferData(this->ssColors.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
-		//glClearNamedBufferData(this->ssLOD.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
-		//glClearNamedBufferData(this->ssLODColor.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 	}
 
 
@@ -184,6 +179,40 @@ void ComputeLasData::process(Renderer* renderer){
 			glUniform1i(30, batchOffset);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, this->ssLoadBuffer.handle);
+
+			{ // commit pages
+
+				static int PAGE_SIZE = 0;
+				if(PAGE_SIZE == 0){
+					glGetIntegerv(GL_SPARSE_BUFFER_PAGE_SIZE_ARB, &PAGE_SIZE);
+				}
+
+				int64_t offset = 4 * this->numPointsLoaded;
+				int64_t pageAlignedOffset = offset - (offset % PAGE_SIZE);
+
+				int64_t size = 4 * this->task->numPoints;
+				int64_t pageAlignedSize = size - (size % PAGE_SIZE) + PAGE_SIZE;
+				pageAlignedSize = std::min(pageAlignedSize, this->ssXyz_4b.size);
+
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssXyz_12b.handle);
+				glBufferPageCommitmentARB(GL_SHADER_STORAGE_BUFFER, pageAlignedOffset, pageAlignedSize, GL_TRUE);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssXyz_8b.handle);
+				glBufferPageCommitmentARB(GL_SHADER_STORAGE_BUFFER, pageAlignedOffset, pageAlignedSize, GL_TRUE);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssXyz_4b.handle);
+				glBufferPageCommitmentARB(GL_SHADER_STORAGE_BUFFER, pageAlignedOffset, pageAlignedSize, GL_TRUE);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, this->ssColors.handle);
+				glBufferPageCommitmentARB(GL_SHADER_STORAGE_BUFFER, pageAlignedOffset, pageAlignedSize, GL_TRUE);
+				glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+				
+				// cout << "page size: " << PAGE_SIZE << endl;
+			}
+
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 30, ssDebug.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 40, this->ssBatches.handle);

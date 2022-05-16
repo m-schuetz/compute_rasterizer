@@ -113,7 +113,30 @@ struct Renderer{
 	inline GLBuffer createBuffer(int64_t size){
 		GLuint handle;
 		glCreateBuffers(1, &handle);
-		glNamedBufferStorage(handle, size, 0, GL_DYNAMIC_STORAGE_BIT | GL_MAP_READ_BIT );
+		glNamedBufferStorage(handle, size, 0, GL_DYNAMIC_STORAGE_BIT | GL_MAP_READ_BIT);
+		// glNamedBufferStorage(handle, size, 0, GL_DYNAMIC_STORAGE_BIT | GL_MAP_READ_BIT | GL_SPARSE_STORAGE_BIT_ARB );
+		// glBufferPageCommitmentARB(handle, 0, size, true);
+
+		GLBuffer buffer;
+		buffer.handle = handle;
+		buffer.size = size;
+
+		return buffer;
+	}
+
+	inline GLBuffer createSparseBuffer(int64_t size){
+		GLuint handle;
+		glCreateBuffers(1, &handle);
+		glNamedBufferStorage(handle, size, 0, GL_DYNAMIC_STORAGE_BIT | GL_SPARSE_STORAGE_BIT_ARB );
+
+		// not supported in glew :(
+		// glNamedBufferPageCommitmentARB(handle, 0, size, GL_TRUE);
+
+		// do it the traditional way
+		// glBindBuffer(GL_SHADER_STORAGE_BUFFER, handle);
+		// glBufferPageCommitmentARB(GL_SHADER_STORAGE_BUFFER, 0, size, GL_TRUE);
+		// glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+
 
 		GLBuffer buffer;
 		buffer.handle = handle;
@@ -142,6 +165,11 @@ struct Renderer{
 
 		return target;
 	}
+
+	//inline int64_t getAvailableGpuMemory(){
+	//	GLint available = 0;
+	//	glGetIntegerv(GL_GPU_MEM_INFO_CURRENT_AVAILABLE_MEM_NVX, &available);
+	//}
 
 	void loop(function<void(void)> update, function<void(void)> render);
 
