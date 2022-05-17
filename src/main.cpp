@@ -217,6 +217,11 @@ int main(){
 	renderer->controls->radius = setting.radius;
 	renderer->controls->target = setting.target;
 
+	renderer->controls->yaw = -1.18;
+	renderer->controls->pitch = -0.29;
+	renderer->controls->radius = 21.65;
+	renderer->controls->target = {6.54, 7.16, 5.20};
+
 	auto potreedata = PotreeData::create(setting.path_potree);
 	auto las_encode_444 = ComputeLasData::create(setting.path_las);
 	auto las_standard = LasStandardData::create(setting.path_las);
@@ -234,7 +239,7 @@ int main(){
 	});
 
 	{ // 4-4-4 byte format
-		auto computeLoopLas       = new ComputeLoopLas(renderer.get(), las_encode_444);
+		auto computeLoopLas       = new ComputeLoopLas(renderer.get(), lasLoaderSparse);
 		auto computeLoopLas2      = new ComputeLoopLas2(renderer.get(), las_encode_444);
 		auto computeLoopLasHqs    = new ComputeLoopLasHqs(renderer.get(), las_encode_444);
 		// auto computeLoopLasHqsVR  = new ComputeLoopLasHqsVR(renderer.get(), las_encode_444);

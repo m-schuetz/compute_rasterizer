@@ -128,6 +128,7 @@ void main(){
 		}
 
 		uint32_t color = ssRGBA[closestPointID];
+		// color = ssRGBA[2];
 		// color = closestPointID;
 		// color = 0xFF0000FF;
 

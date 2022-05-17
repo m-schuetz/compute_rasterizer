@@ -22,12 +22,12 @@ using nlohmann::json;
 
 struct PotreeData : public Resource {
 
-	static constexpr uint32_t STEPS_30BIT = 1073741824;
-	static constexpr uint32_t MASK_30BIT = 1073741823;
-	static constexpr uint32_t STEPS_20BIT = 1048576;
-	static constexpr uint32_t MASK_20BIT = 1048575;
-	static constexpr uint32_t STEPS_10BIT = 1024;
-	static constexpr uint32_t MASK_10BIT = 1023;
+	//uint32_t STEPS_30BIT = 1073741824;
+	//uint32_t MASK_30BIT = 1073741823;
+	//uint32_t STEPS_20BIT = 1048576;
+	//uint32_t MASK_20BIT = 1048575;
+	//uint32_t STEPS_10BIT = 1024;
+	//uint32_t MASK_10BIT = 1023;
 
 	struct LoaderTask{
 		shared_ptr<Buffer> buffer = nullptr;

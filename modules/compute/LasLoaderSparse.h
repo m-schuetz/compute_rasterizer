@@ -2,6 +2,7 @@
 #pragma once
 
 #include <string>
+#include <filesystem>
 
 #include "glm/common.hpp"
 #include "glm/matrix.hpp"
@@ -13,6 +14,8 @@
 
 using namespace std;
 using glm::vec3;
+
+namespace fs = std::filesystem;
 
 struct LasLoaderSparse {
 
@@ -42,7 +45,6 @@ struct LasLoaderSparse {
 
 		// index of first point in the sparse gpu buffer
 		int64_t sparse_point_offset = 0;
-		int64_t sparse_batch_offset = 0;
 	};
 
 	struct LoadTask{
@@ -52,8 +54,9 @@ struct LasLoaderSparse {
 	};
 
 	struct Batch{
-		int64_t firstPoint_file;
-		int64_t firstPoint_sparseBuffer;
+		int64_t chunk_pointOffset;
+		int64_t file_pointOffset;
+		int64_t sparse_pointOffset;
 		int64_t numPoints;
 
 		dvec3 min = {Infinity, Infinity, Infinity};
@@ -64,7 +67,9 @@ struct LasLoaderSparse {
 	vector<LoadTask> loadTasks;
 
 	int64_t numPoints = 0;
+	int64_t numPointsLoaded = 0;
 	int64_t numBatches = 0;
+	int64_t numBatchesLoaded = 0;
 	int64_t bytesReserved = 0;
 
 	shared_ptr<Renderer> renderer = nullptr;
@@ -142,7 +147,6 @@ struct LasLoaderSparse {
 			lasfile->numBatches = lasfile->numPoints / POINTS_PER_WORKGROUP + 1;
 
 			lasfile->sparse_point_offset = this->numPoints;
-			lasfile->sparse_batch_offset = this->numBatches;
 			
 			this->files.push_back(lasfile);
 			this->numPoints += lasfile->numPoints;
@@ -173,6 +177,8 @@ struct LasLoaderSparse {
 	}
 
 	// continue progressively loading some data
+	// batch: workgroup batch
+	// chunk: multiple(~100) workgroup batches loaded from file at once
 	void process(){
 
 		if(loadTasks.size() == 0){
@@ -184,30 +190,42 @@ struct LasLoaderSparse {
 
 		auto lasfile = task.lasfile;
 		string path = lasfile->path;
-		int64_t start = lasfile->bytesPerPoint + task.firstPoint * lasfile->bytesPerPoint;
-		int64_t size = task.numPoints * lasfile->bytesPerPoint;
-		auto source = readBinaryFile(path, start, size);
+		int64_t file_byteOffset = lasfile->offsetToPointData + task.firstPoint * lasfile->bytesPerPoint;
+		int64_t file_byteSize = task.numPoints * lasfile->bytesPerPoint;
+		auto source = readBinaryFile(path, file_byteOffset, file_byteSize);
+		int64_t sparse_batchOffset = this->numBatchesLoaded;
+		int64_t sparse_pointOffset = lasfile->sparse_point_offset + task.firstPoint;
+
+		cout << "load " << fs::path(path).filename() 
+			<< ", start: " << formatNumber(file_byteOffset) 
+			<< ", size: " << formatNumber(file_byteSize) 
+			<< ", points: " << formatNumber(task.numPoints) << endl;
 
 		// compute batch metadata
 		int64_t numBatches = task.numPoints / POINTS_PER_WORKGROUP;
 		vector<Batch> batches;
 
-		int64_t batchLocalOffset = 0;
+		int64_t chunk_pointsProcessed = 0;
 		for(int i = 0; i < numBatches; i++){
 
-			int64_t remaining = task.numPoints - batchLocalOffset;
+			int64_t remaining = task.numPoints - chunk_pointsProcessed;
 			int64_t numPointsInBatch = std::min(int64_t(POINTS_PER_WORKGROUP), remaining);
 
 			Batch batch;
-
-			batch.firstPoint_file = batchLocalOffset;
-			batch.firstPoint_sparseBuffer = lasfile->sparse_point_offset + batchLocalOffset;
+			
+			batch.min = {Infinity, Infinity, Infinity};
+			batch.max = {-Infinity, -Infinity, -Infinity};
+			batch.chunk_pointOffset = chunk_pointsProcessed;
+			batch.file_pointOffset = task.firstPoint + chunk_pointsProcessed;
+			batch.sparse_pointOffset = sparse_pointOffset + chunk_pointsProcessed;
 			batch.numPoints = numPointsInBatch;
 
-			batchLocalOffset += numPointsInBatch;
+			batches.push_back(batch);
+
+			chunk_pointsProcessed += numPointsInBatch;
 		}
 
-		auto bBatches = make_shared<Buffer>(sizeof(Batch) * numBatches); 
+		auto bBatches = make_shared<Buffer>(64 * numBatches); 
 		auto bXyzLow  = make_shared<Buffer>(4 * task.numPoints);
 		auto bXyzMed  = make_shared<Buffer>(4 * task.numPoints);
 		auto bXyzHig  = make_shared<Buffer>(4 * task.numPoints);
@@ -219,11 +237,11 @@ struct LasLoaderSparse {
 
 		// load batches/points
 		for(int batchIndex = 0; batchIndex < numBatches; batchIndex++){
-			Batch batch = batches[batchIndex];
+			Batch& batch = batches[batchIndex];
 
 			// compute batch bounding box
 			for(int i = 0; i < batch.numPoints; i++){
-				int index_pointFile = batch.firstPoint_file + i;
+				int index_pointFile = batch.chunk_pointOffset + i;
 				
 				int32_t X = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 0);
 				int32_t Y = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 4);
@@ -243,9 +261,39 @@ struct LasLoaderSparse {
 
 			dvec3 batchBoxSize = batch.max - batch.min;
 
+			cout << "batch[" << batchIndex << "]"
+				<< ", boxSize: [" << batchBoxSize.x << ", " << batchBoxSize.y << ", " << batchBoxSize.z << "]" 
+				<< ", chunk_pointOffset: " << batch.chunk_pointOffset 
+				<< ", file_pointOffset: " << batch.file_pointOffset 
+				<< ", sparse_pointOffset: " << batch.sparse_pointOffset << endl;
+
+			{
+				int64_t batchByteOffset = 64 * batchIndex;
+				
+				bBatches->set<float>(batch.min.x             , batchByteOffset +  4);
+				bBatches->set<float>(batch.min.y             , batchByteOffset +  8);
+				bBatches->set<float>(batch.min.z             , batchByteOffset + 12);
+				bBatches->set<float>(batch.max.x             , batchByteOffset + 16);
+				bBatches->set<float>(batch.max.y             , batchByteOffset + 20);
+				bBatches->set<float>(batch.max.z             , batchByteOffset + 24);
+				bBatches->set<uint32_t>(batch.numPoints         , batchByteOffset + 28);
+				bBatches->set<uint32_t>(batch.sparse_pointOffset, batchByteOffset + 32);
+			}
+
+			int offset_rgb = 0;
+			if(lasfile->pointFormat == 2){
+				offset_rgb = 20;
+			}else if(lasfile->pointFormat == 3){
+				offset_rgb = 28;
+			}else if(lasfile->pointFormat == 7){
+				offset_rgb = 30;
+			}else if(lasfile->pointFormat == 8){
+				offset_rgb = 30;
+			}
+
 			// load data
 			for(int i = 0; i < batch.numPoints; i++){
-				int index_pointFile = batch.firstPoint_file + i;
+				int index_pointFile = batch.chunk_pointOffset + i;
 				
 				int32_t X = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 0);
 				int32_t Y = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 4);
@@ -293,15 +341,28 @@ struct LasLoaderSparse {
 					bXyzHig->set<uint32_t>(encoded, 4 * index_pointFile);
 				}
 
-				bColors->set<uint32_t>(0xFFFF00FF, 4 * index_pointFile);
+				{ // RGB
+					
+
+					int R = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 0);
+					int G = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 2);
+					int B = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 4);
+
+					R = R < 256 ? R : R / 256;
+					G = G < 256 ? G : G / 256;
+					B = B < 256 ? B : B / 256;
+
+					uint32_t color = R | (G << 8) | (B << 16);
+
+					bColors->set<uint32_t>(color, 4 * index_pointFile);
+				}
 			}
 
 
 		}
 
 		{ // commit physical memory in sparse buffers
-			int64_t globalPointIndex = lasfile->sparse_point_offset + task.firstPoint;
-			int64_t offset = 4 * globalPointIndex;
+			int64_t offset = 4 * sparse_pointOffset;
 			int64_t pageAlignedOffset = offset - (offset % PAGE_SIZE);
 
 			int64_t size = 4 * task.numPoints;
@@ -317,18 +378,26 @@ struct LasLoaderSparse {
 
 		// upload batch metadata
 		glNamedBufferSubData(ssBatches.handle, 
-			sizeof(Batch) * lasfile->sparse_batch_offset, 
+			64 * sparse_batchOffset, 
 			bBatches->size, 
 			bBatches->data);
 
+		cout << "upload workgroup batches metadata. #batches: " << batches.size()
+			<< ", offset: " << formatNumber(64 * sparse_batchOffset) 
+			<< ", size: " << formatNumber(bBatches->size) << endl;
+
 		// upload batch points
-		glNamedBufferSubData(ssXyzLow.handle, 4 * task.firstPoint, 4 * task.numPoints, bXyzLow->data);
-		glNamedBufferSubData(ssXyzMed.handle, 4 * task.firstPoint, 4 * task.numPoints, bXyzMed->data);
-		glNamedBufferSubData(ssXyzHig.handle, 4 * task.firstPoint, 4 * task.numPoints, bXyzHig->data);
+		glNamedBufferSubData(ssXyzLow.handle, 4 * sparse_pointOffset, 4 * task.numPoints, bXyzLow->data);
+		glNamedBufferSubData(ssXyzMed.handle, 4 * sparse_pointOffset, 4 * task.numPoints, bXyzMed->data);
+		glNamedBufferSubData(ssXyzHig.handle, 4 * sparse_pointOffset, 4 * task.numPoints, bXyzHig->data);
+		glNamedBufferSubData(ssColors.handle, 4 * sparse_pointOffset, 4 * task.numPoints, bColors->data);
 
-		cout << "loading " << start << ", " << size << ", " << path << endl;
+		cout << "upload file batch data" 
+			<< ", offset: " << formatNumber(4 * sparse_pointOffset) 
+			<< ", size: " << formatNumber(4 * task.numPoints) << endl;
 
-
+		this->numBatchesLoaded += batches.size();
+		this->numPointsLoaded += task.numPoints;
 
 	}
 

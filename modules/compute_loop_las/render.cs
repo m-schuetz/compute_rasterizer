@@ -29,8 +29,8 @@ struct Batch{
 	float max_z;
 	int numPoints;
 
-	int lod_offset;
-	int lod_numPoints;
+	int firstPoint;
+	int padding2;
 	int padding3;
 	int padding4;
 	int padding5;
@@ -266,10 +266,10 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 void main(){
 	
 	uint batchIndex = gl_WorkGroupID.x;
-	uint numPointsPerBatch = uniforms.pointsPerThread * gl_WorkGroupSize.x;
-	uint wgFirstPoint = batchIndex * numPointsPerBatch;
-
 	Batch batch = ssBatches[batchIndex];
+
+	uint wgFirstPoint = batch.firstPoint;
+	// wgFirstPoint = batchIndex * 80 * 128;
 
 	if(debug.enabled && gl_LocalInvocationID.x == 0){
 		atomicAdd(debug.numNodesProcessed, 1);

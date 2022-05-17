@@ -26,7 +26,7 @@
 #include "GLTimerQueries.h"
 #include "Method.h"
 #include "Runtime.h"
-#include "compute/ComputeLasLoader.h"
+#include "compute/LasLoaderSparse.h"
 
 using namespace std;
 using namespace std::chrono_literals;
@@ -69,11 +69,11 @@ struct ComputeLoopLas : public Method{
 	GLBuffer uniformBuffer;
 	UniformData uniformData;
 
-	shared_ptr<ComputeLasData> las = nullptr;
+	shared_ptr<LasLoaderSparse> las = nullptr;
 
 	Renderer* renderer = nullptr;
 
-	ComputeLoopLas(Renderer* renderer, shared_ptr<ComputeLasData> las){
+	ComputeLoopLas(Renderer* renderer, shared_ptr<LasLoaderSparse> las){
 
 		this->name = "loop_las";
 		this->description = R"ER01(
@@ -109,9 +109,11 @@ struct ComputeLoopLas : public Method{
 				Runtime::resource->unload(renderer);
 			}
 
-			las->load(renderer);
+			// las->process();
 
-			Runtime::resource = (Resource*)las.get();
+			// las->load(renderer);
+
+			// Runtime::resource = (Resource*)las.get();
 		}
 
 	}
@@ -120,7 +122,7 @@ struct ComputeLoopLas : public Method{
 
 		GLTimerQueries::timestamp("compute-loop-start");
 
-		las->process(renderer);
+		las->process();
 
 		if(las->numPointsLoaded == 0){
 			return;
@@ -172,9 +174,9 @@ struct ComputeLoopLas : public Method{
 			glBindBufferBase(GL_UNIFORM_BUFFER, 31, uniformBuffer.handle);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 40, las->ssBatches.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 41, las->ssXyz_12b.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyz_8b.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyz_4b.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 41, las->ssXyzHig.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyzMed.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyzLow.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 50, ssBoundingBoxes.handle);
