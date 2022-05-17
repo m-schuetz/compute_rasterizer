@@ -29,6 +29,9 @@ struct LasLoaderSparse {
 #define STEPS_10BIT 1024
 #define MASK_10BIT 1023
 
+	mutex mtx_upload;
+	mutex mtx_load;
+
 	struct LasFile{
 		string path;
 		int64_t numPoints = 0;
@@ -53,6 +56,18 @@ struct LasLoaderSparse {
 		int64_t numPoints;
 	};
 
+	struct UploadTask{
+		int64_t sparse_pointOffset;
+		int64_t sparse_batchOffset;
+		int64_t numPoints;
+		int64_t numBatches;
+		shared_ptr<Buffer> bXyzLow;
+		shared_ptr<Buffer> bXyzMed;
+		shared_ptr<Buffer> bXyzHig;
+		shared_ptr<Buffer> bColors;
+		shared_ptr<Buffer> bBatches;
+	};
+
 	struct Batch{
 		int64_t chunk_pointOffset;
 		int64_t file_pointOffset;
@@ -65,6 +80,7 @@ struct LasLoaderSparse {
 
 	vector<shared_ptr<LasFile>> files;
 	vector<LoadTask> loadTasks;
+	vector<UploadTask> uploadTasks;
 
 	int64_t numPoints = 0;
 	int64_t numPointsLoaded = 0;
@@ -101,6 +117,13 @@ struct LasLoaderSparse {
 			GLuint zero = 0;
 			glClearNamedBufferData(this->ssBatches.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		}
+
+		spawnLoader();
+		spawnLoader();
+		spawnLoader();
+		spawnLoader();
+		spawnLoader();
+		spawnLoader();
 	}
 
 	// add las files that are to be loaded progressively
@@ -158,6 +181,8 @@ struct LasLoaderSparse {
 			
 			int64_t pointOffset = 0;
 
+			unique_lock<mutex> lock(mtx_load);
+
 			while(pointOffset < lasfile->numPoints){
 
 				int64_t remaining = lasfile->numPoints - pointOffset;
@@ -172,6 +197,16 @@ struct LasLoaderSparse {
 
 				pointOffset += pointsInBatch;
 			}
+
+			// vector<LoadTask> cropped;
+			// cropped.push_back(loadTasks[0]);
+			// cropped.push_back(loadTasks[1]);
+			// cropped.push_back(loadTasks[2]);
+			// cropped.push_back(loadTasks[3]);
+			// cropped.push_back(loadTasks[4]);
+			// loadTasks = cropped;
+
+			//  std::reverse(loadTasks.begin(), loadTasks.end());
 		}
 
 	}
@@ -179,195 +214,253 @@ struct LasLoaderSparse {
 	// continue progressively loading some data
 	// batch: workgroup batch
 	// chunk: multiple(~100) workgroup batches loaded from file at once
+	void spawnLoader(){
+
+		thread t([&](){
+
+			while(true){
+
+				std::this_thread::sleep_for(10ms);
+
+				unique_lock<mutex> lock_load(mtx_load);
+				
+				if(loadTasks.size() == 0){
+					lock_load.unlock();
+
+					continue;
+				}
+
+				auto task = loadTasks.back();
+				loadTasks.pop_back();
+
+				lock_load.unlock();
+
+				static int64_t numBatchesLoaded = 0;
+
+				auto lasfile = task.lasfile;
+				string path = lasfile->path;
+				int64_t file_byteOffset = lasfile->offsetToPointData + task.firstPoint * lasfile->bytesPerPoint;
+				int64_t file_byteSize = task.numPoints * lasfile->bytesPerPoint;
+				auto source = readBinaryFile(path, file_byteOffset, file_byteSize);
+				// int64_t sparse_batchOffset = numBatchesLoaded;
+				int64_t sparse_pointOffset = lasfile->sparse_point_offset + task.firstPoint;
+
+				// compute batch metadata
+				int64_t numBatches = task.numPoints / POINTS_PER_WORKGROUP;
+				vector<Batch> batches;
+
+				int64_t chunk_pointsProcessed = 0;
+				for(int i = 0; i < numBatches; i++){
+
+					int64_t remaining = task.numPoints - chunk_pointsProcessed;
+					int64_t numPointsInBatch = std::min(int64_t(POINTS_PER_WORKGROUP), remaining);
+
+					Batch batch;
+					
+					batch.min = {Infinity, Infinity, Infinity};
+					batch.max = {-Infinity, -Infinity, -Infinity};
+					batch.chunk_pointOffset = chunk_pointsProcessed;
+					batch.file_pointOffset = task.firstPoint + chunk_pointsProcessed;
+					batch.sparse_pointOffset = sparse_pointOffset + chunk_pointsProcessed;
+					batch.numPoints = numPointsInBatch;
+
+					batches.push_back(batch);
+
+					chunk_pointsProcessed += numPointsInBatch;
+				}
+
+				auto bBatches = make_shared<Buffer>(64 * numBatches); 
+				auto bXyzLow  = make_shared<Buffer>(4 * task.numPoints);
+				auto bXyzMed  = make_shared<Buffer>(4 * task.numPoints);
+				auto bXyzHig  = make_shared<Buffer>(4 * task.numPoints);
+				auto bColors  = make_shared<Buffer>(4 * task.numPoints);
+
+				dvec3 boxMin = lasfile->boxMin;
+				dvec3 cScale = lasfile->scale;
+				dvec3 cOffset = lasfile->offset;
+
+				// load batches/points
+				for(int batchIndex = 0; batchIndex < numBatches; batchIndex++){
+					Batch& batch = batches[batchIndex];
+
+					// compute batch bounding box
+					for(int i = 0; i < batch.numPoints; i++){
+						int index_pointFile = batch.chunk_pointOffset + i;
+						
+						int32_t X = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 0);
+						int32_t Y = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 4);
+						int32_t Z = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 8);
+
+						double x = double(X) * cScale.x + cOffset.x - boxMin.x;
+						double y = double(Y) * cScale.y + cOffset.y - boxMin.y;
+						double z = double(Z) * cScale.z + cOffset.z - boxMin.z;
+
+						batch.min.x = std::min(batch.min.x, x);
+						batch.min.y = std::min(batch.min.y, y);
+						batch.min.z = std::min(batch.min.z, z);
+						batch.max.x = std::max(batch.max.x, x);
+						batch.max.y = std::max(batch.max.y, y);
+						batch.max.z = std::max(batch.max.z, z);
+					}
+
+					dvec3 batchBoxSize = batch.max - batch.min;
+
+					{
+						int64_t batchByteOffset = 64 * batchIndex;
+						
+						bBatches->set<float>(batch.min.x             , batchByteOffset +  4);
+						bBatches->set<float>(batch.min.y             , batchByteOffset +  8);
+						bBatches->set<float>(batch.min.z             , batchByteOffset + 12);
+						bBatches->set<float>(batch.max.x             , batchByteOffset + 16);
+						bBatches->set<float>(batch.max.y             , batchByteOffset + 20);
+						bBatches->set<float>(batch.max.z             , batchByteOffset + 24);
+						bBatches->set<uint32_t>(batch.numPoints         , batchByteOffset + 28);
+						bBatches->set<uint32_t>(batch.sparse_pointOffset, batchByteOffset + 32);
+					}
+
+					int offset_rgb = 0;
+					if(lasfile->pointFormat == 2){
+						offset_rgb = 20;
+					}else if(lasfile->pointFormat == 3){
+						offset_rgb = 28;
+					}else if(lasfile->pointFormat == 7){
+						offset_rgb = 30;
+					}else if(lasfile->pointFormat == 8){
+						offset_rgb = 30;
+					}
+
+					// load data
+					for(int i = 0; i < batch.numPoints; i++){
+						int index_pointFile = batch.chunk_pointOffset + i;
+						
+						int32_t X = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 0);
+						int32_t Y = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 4);
+						int32_t Z = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 8);
+
+						float x = float(double(X) * cScale.x + cOffset.x - boxMin.x);
+						float y = float(double(Y) * cScale.y + cOffset.y - boxMin.y);
+						float z = float(double(Z) * cScale.z + cOffset.z - boxMin.z);
+
+						uint32_t X30 = uint32_t(((x - batch.min.x) / batchBoxSize.x) * STEPS_30BIT);
+						uint32_t Y30 = uint32_t(((y - batch.min.y) / batchBoxSize.y) * STEPS_30BIT);
+						uint32_t Z30 = uint32_t(((z - batch.min.z) / batchBoxSize.z) * STEPS_30BIT);
+
+						X30 = min(X30, uint32_t(STEPS_30BIT - 1));
+						Y30 = min(Y30, uint32_t(STEPS_30BIT - 1));
+						Z30 = min(Z30, uint32_t(STEPS_30BIT - 1));
+
+						{ // low
+							uint32_t X_low = (X30 >> 20) & MASK_10BIT;
+							uint32_t Y_low = (Y30 >> 20) & MASK_10BIT;
+							uint32_t Z_low = (Z30 >> 20) & MASK_10BIT;
+
+							uint32_t encoded = X_low | (Y_low << 10) | (Z_low << 20);
+
+							bXyzLow->set<uint32_t>(encoded, 4 * index_pointFile);
+						}
+
+						{ // med
+							uint32_t X_med = (X30 >> 10) & MASK_10BIT;
+							uint32_t Y_med = (Y30 >> 10) & MASK_10BIT;
+							uint32_t Z_med = (Z30 >> 10) & MASK_10BIT;
+
+							uint32_t encoded = X_med | (Y_med << 10) | (Z_med << 20);
+
+							bXyzMed->set<uint32_t>(encoded, 4 * index_pointFile);
+						}
+
+						{ // hig
+							uint32_t X_hig = (X30 >>  0) & MASK_10BIT;
+							uint32_t Y_hig = (Y30 >>  0) & MASK_10BIT;
+							uint32_t Z_hig = (Z30 >>  0) & MASK_10BIT;
+
+							uint32_t encoded = X_hig | (Y_hig << 10) | (Z_hig << 20);
+
+							bXyzHig->set<uint32_t>(encoded, 4 * index_pointFile);
+						}
+
+						{ // RGB
+							
+
+							int R = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 0);
+							int G = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 2);
+							int B = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 4);
+
+							R = R < 256 ? R : R / 256;
+							G = G < 256 ? G : G / 256;
+							B = B < 256 ? B : B / 256;
+
+							uint32_t color = R | (G << 8) | (B << 16);
+
+							bColors->set<uint32_t>(color, 4 * index_pointFile);
+						}
+					}
+
+
+				}
+
+				// numBatchesLoaded += numBatches;
+
+				UploadTask uploadTask;
+				uploadTask.sparse_pointOffset = sparse_pointOffset;
+				// uploadTask.sparse_batchOffset = sparse_batchOffset;
+				uploadTask.numPoints = task.numPoints;
+				uploadTask.numBatches = numBatches;
+				uploadTask.bXyzLow = bXyzLow;
+				uploadTask.bXyzMed = bXyzMed;
+				uploadTask.bXyzHig = bXyzHig;
+				uploadTask.bColors = bColors;
+				uploadTask.bBatches = bBatches;
+				
+				unique_lock<mutex> lock_upload(mtx_upload);
+				uploadTasks.push_back(uploadTask);
+				lock_upload.unlock();
+
+			}
+			
+		});
+		t.detach();
+
+	}
+
 	void process(){
 
-		if(loadTasks.size() == 0){
+		// static int numProcessed = 0;
+
+		// FETCH TASK
+		unique_lock<mutex> lock(mtx_upload);
+
+		if(uploadTasks.size() == 0){
 			return;
 		}
 
-		auto task = loadTasks.back();
-		loadTasks.pop_back();
+		auto task = uploadTasks.back();
+		uploadTasks.pop_back();
 
-		auto lasfile = task.lasfile;
-		string path = lasfile->path;
-		int64_t file_byteOffset = lasfile->offsetToPointData + task.firstPoint * lasfile->bytesPerPoint;
-		int64_t file_byteSize = task.numPoints * lasfile->bytesPerPoint;
-		auto source = readBinaryFile(path, file_byteOffset, file_byteSize);
-		int64_t sparse_batchOffset = this->numBatchesLoaded;
-		int64_t sparse_pointOffset = lasfile->sparse_point_offset + task.firstPoint;
+		lock.unlock();
 
-		cout << "load " << fs::path(path).filename() 
-			<< ", start: " << formatNumber(file_byteOffset) 
-			<< ", size: " << formatNumber(file_byteSize) 
-			<< ", points: " << formatNumber(task.numPoints) << endl;
+		// if(numProcessed > 0){
+		// 	return;
+		// }
 
-		// compute batch metadata
-		int64_t numBatches = task.numPoints / POINTS_PER_WORKGROUP;
-		vector<Batch> batches;
-
-		int64_t chunk_pointsProcessed = 0;
-		for(int i = 0; i < numBatches; i++){
-
-			int64_t remaining = task.numPoints - chunk_pointsProcessed;
-			int64_t numPointsInBatch = std::min(int64_t(POINTS_PER_WORKGROUP), remaining);
-
-			Batch batch;
-			
-			batch.min = {Infinity, Infinity, Infinity};
-			batch.max = {-Infinity, -Infinity, -Infinity};
-			batch.chunk_pointOffset = chunk_pointsProcessed;
-			batch.file_pointOffset = task.firstPoint + chunk_pointsProcessed;
-			batch.sparse_pointOffset = sparse_pointOffset + chunk_pointsProcessed;
-			batch.numPoints = numPointsInBatch;
-
-			batches.push_back(batch);
-
-			chunk_pointsProcessed += numPointsInBatch;
-		}
-
-		auto bBatches = make_shared<Buffer>(64 * numBatches); 
-		auto bXyzLow  = make_shared<Buffer>(4 * task.numPoints);
-		auto bXyzMed  = make_shared<Buffer>(4 * task.numPoints);
-		auto bXyzHig  = make_shared<Buffer>(4 * task.numPoints);
-		auto bColors  = make_shared<Buffer>(4 * task.numPoints);
-
-		dvec3 boxMin = lasfile->boxMin;
-		dvec3 cScale = lasfile->scale;
-		dvec3 cOffset = lasfile->offset;
-
-		// load batches/points
-		for(int batchIndex = 0; batchIndex < numBatches; batchIndex++){
-			Batch& batch = batches[batchIndex];
-
-			// compute batch bounding box
-			for(int i = 0; i < batch.numPoints; i++){
-				int index_pointFile = batch.chunk_pointOffset + i;
-				
-				int32_t X = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 0);
-				int32_t Y = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 4);
-				int32_t Z = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 8);
-
-				double x = double(X) * cScale.x + cOffset.x - boxMin.x;
-				double y = double(Y) * cScale.y + cOffset.y - boxMin.y;
-				double z = double(Z) * cScale.z + cOffset.z - boxMin.z;
-
-				batch.min.x = std::min(batch.min.x, x);
-				batch.min.y = std::min(batch.min.y, y);
-				batch.min.z = std::min(batch.min.z, z);
-				batch.max.x = std::max(batch.max.x, x);
-				batch.max.y = std::max(batch.max.y, y);
-				batch.max.z = std::max(batch.max.z, z);
-			}
-
-			dvec3 batchBoxSize = batch.max - batch.min;
-
-			cout << "batch[" << batchIndex << "]"
-				<< ", boxSize: [" << batchBoxSize.x << ", " << batchBoxSize.y << ", " << batchBoxSize.z << "]" 
-				<< ", chunk_pointOffset: " << batch.chunk_pointOffset 
-				<< ", file_pointOffset: " << batch.file_pointOffset 
-				<< ", sparse_pointOffset: " << batch.sparse_pointOffset << endl;
-
-			{
-				int64_t batchByteOffset = 64 * batchIndex;
-				
-				bBatches->set<float>(batch.min.x             , batchByteOffset +  4);
-				bBatches->set<float>(batch.min.y             , batchByteOffset +  8);
-				bBatches->set<float>(batch.min.z             , batchByteOffset + 12);
-				bBatches->set<float>(batch.max.x             , batchByteOffset + 16);
-				bBatches->set<float>(batch.max.y             , batchByteOffset + 20);
-				bBatches->set<float>(batch.max.z             , batchByteOffset + 24);
-				bBatches->set<uint32_t>(batch.numPoints         , batchByteOffset + 28);
-				bBatches->set<uint32_t>(batch.sparse_pointOffset, batchByteOffset + 32);
-			}
-
-			int offset_rgb = 0;
-			if(lasfile->pointFormat == 2){
-				offset_rgb = 20;
-			}else if(lasfile->pointFormat == 3){
-				offset_rgb = 28;
-			}else if(lasfile->pointFormat == 7){
-				offset_rgb = 30;
-			}else if(lasfile->pointFormat == 8){
-				offset_rgb = 30;
-			}
-
-			// load data
-			for(int i = 0; i < batch.numPoints; i++){
-				int index_pointFile = batch.chunk_pointOffset + i;
-				
-				int32_t X = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 0);
-				int32_t Y = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 4);
-				int32_t Z = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 8);
-
-				float x = float(double(X) * cScale.x + cOffset.x - boxMin.x);
-				float y = float(double(Y) * cScale.y + cOffset.y - boxMin.y);
-				float z = float(double(Z) * cScale.z + cOffset.z - boxMin.z);
-
-				uint32_t X30 = uint32_t(((x - batch.min.x) / batchBoxSize.x) * STEPS_30BIT);
-				uint32_t Y30 = uint32_t(((y - batch.min.y) / batchBoxSize.y) * STEPS_30BIT);
-				uint32_t Z30 = uint32_t(((z - batch.min.z) / batchBoxSize.z) * STEPS_30BIT);
-
-				X30 = min(X30, uint32_t(STEPS_30BIT - 1));
-				Y30 = min(Y30, uint32_t(STEPS_30BIT - 1));
-				Z30 = min(Z30, uint32_t(STEPS_30BIT - 1));
-
-				{ // low
-					uint32_t X_low = (X30 >> 20) & MASK_10BIT;
-					uint32_t Y_low = (Y30 >> 20) & MASK_10BIT;
-					uint32_t Z_low = (Z30 >> 20) & MASK_10BIT;
-
-					uint32_t encoded = X_low | (Y_low << 10) | (Z_low << 20);
-
-					bXyzLow->set<uint32_t>(encoded, 4 * index_pointFile);
-				}
-
-				{ // med
-					uint32_t X_med = (X30 >> 10) & MASK_10BIT;
-					uint32_t Y_med = (Y30 >> 10) & MASK_10BIT;
-					uint32_t Z_med = (Z30 >> 10) & MASK_10BIT;
-
-					uint32_t encoded = X_med | (Y_med << 10) | (Z_med << 20);
-
-					bXyzMed->set<uint32_t>(encoded, 4 * index_pointFile);
-				}
-
-				{ // hig
-					uint32_t X_hig = (X30 >>  0) & MASK_10BIT;
-					uint32_t Y_hig = (Y30 >>  0) & MASK_10BIT;
-					uint32_t Z_hig = (Z30 >>  0) & MASK_10BIT;
-
-					uint32_t encoded = X_hig | (Y_hig << 10) | (Z_hig << 20);
-
-					bXyzHig->set<uint32_t>(encoded, 4 * index_pointFile);
-				}
-
-				{ // RGB
-					
-
-					int R = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 0);
-					int G = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 2);
-					int B = source->get<uint16_t>(index_pointFile * lasfile->bytesPerPoint + offset_rgb + 4);
-
-					R = R < 256 ? R : R / 256;
-					G = G < 256 ? G : G / 256;
-					B = B < 256 ? B : B / 256;
-
-					uint32_t color = R | (G << 8) | (B << 16);
-
-					bColors->set<uint32_t>(color, 4 * index_pointFile);
-				}
-			}
+		// numProcessed++;
 
 
-		}
+
+		// UPLOAD DATA TO GPU
 
 		{ // commit physical memory in sparse buffers
-			int64_t offset = 4 * sparse_pointOffset;
+			int64_t offset = 4 * task.sparse_pointOffset;
 			int64_t pageAlignedOffset = offset - (offset % PAGE_SIZE);
 
 			int64_t size = 4 * task.numPoints;
 			int64_t pageAlignedSize = size - (size % PAGE_SIZE) + PAGE_SIZE;
 			pageAlignedSize = std::min(pageAlignedSize, 4 * MAX_POINTS);
+
+			// pageAlignedOffset = 0;
+			// pageAlignedSize = 10 * 4'128'768;
+
+			cout << "commiting, offset: " << formatNumber(pageAlignedOffset) << ", size: " << formatNumber(pageAlignedSize) << endl;
 
 			for(auto glBuffer : {ssXyzLow, ssXyzMed, ssXyzHig, ssColors}){
 				glBindBuffer(GL_SHADER_STORAGE_BUFFER, glBuffer.handle);
@@ -376,28 +469,28 @@ struct LasLoaderSparse {
 			}
 		}
 
+		static int64_t numBatchesLoaded = 0;
+
 		// upload batch metadata
 		glNamedBufferSubData(ssBatches.handle, 
-			64 * sparse_batchOffset, 
-			bBatches->size, 
-			bBatches->data);
+			64 * numBatchesLoaded, 
+			task.bBatches->size, 
+			task.bBatches->data);
 
-		cout << "upload workgroup batches metadata. #batches: " << batches.size()
-			<< ", offset: " << formatNumber(64 * sparse_batchOffset) 
-			<< ", size: " << formatNumber(bBatches->size) << endl;
+		numBatchesLoaded += task.numBatches;
 
 		// upload batch points
-		glNamedBufferSubData(ssXyzLow.handle, 4 * sparse_pointOffset, 4 * task.numPoints, bXyzLow->data);
-		glNamedBufferSubData(ssXyzMed.handle, 4 * sparse_pointOffset, 4 * task.numPoints, bXyzMed->data);
-		glNamedBufferSubData(ssXyzHig.handle, 4 * sparse_pointOffset, 4 * task.numPoints, bXyzHig->data);
-		glNamedBufferSubData(ssColors.handle, 4 * sparse_pointOffset, 4 * task.numPoints, bColors->data);
+		glNamedBufferSubData(ssXyzLow.handle, 4 * task.sparse_pointOffset, 4 * task.numPoints, task.bXyzLow->data);
+		glNamedBufferSubData(ssXyzMed.handle, 4 * task.sparse_pointOffset, 4 * task.numPoints, task.bXyzMed->data);
+		glNamedBufferSubData(ssXyzHig.handle, 4 * task.sparse_pointOffset, 4 * task.numPoints, task.bXyzHig->data);
+		glNamedBufferSubData(ssColors.handle, 4 * task.sparse_pointOffset, 4 * task.numPoints, task.bColors->data);
 
-		cout << "upload file batch data" 
-			<< ", offset: " << formatNumber(4 * sparse_pointOffset) 
-			<< ", size: " << formatNumber(4 * task.numPoints) << endl;
+		cout << "uploading, offset: " << formatNumber(4 * task.sparse_pointOffset) << ", size: " << formatNumber(4 * task.numPoints) << endl;
 
-		this->numBatchesLoaded += batches.size();
+		this->numBatchesLoaded += task.numBatches;
 		this->numPointsLoaded += task.numPoints;
+
+		cout << "numBatchesLoaded: " << numBatchesLoaded << endl;
 
 	}
 

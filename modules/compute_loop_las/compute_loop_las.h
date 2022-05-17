@@ -184,6 +184,8 @@ struct ComputeLoopLas : public Method{
 			glBindImageTexture(0, fbo->colorAttachments[0]->handle, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8UI);
 
 			int numBatches = ceil(double(las->numPointsLoaded) / double(POINTS_PER_WORKGROUP));
+
+			// cout << "numBatches: " << numBatches << endl;
 			
 			glDispatchCompute(numBatches, 1, 1);
 

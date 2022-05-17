@@ -279,6 +279,8 @@ void main(){
 	vec3 wgMax = vec3(batch.max_x, batch.max_y, batch.max_z);
 	vec3 boxSize = wgMax - wgMin;
 
+	// debug.numPointsProcessed = uint(boxSize.x);
+
 	// FRUSTUM CULLING
 	if((uniforms.enableFrustumCulling != 0) && !intersectsFrustum(wgMin, wgMax)){
 		return;
@@ -351,14 +353,20 @@ void main(){
 
 	#endif
 
-		if(index > uniforms.numPoints){
-			return;
-		}
+		// if(index > uniforms.numPoints){
+		// 	return;
+		// }
+
+		// atomicAdd(debug.numPointsProcessed, 1);
 
 		// 2877987
 		// if(index != 2877440 + 547){
 		// 	continue;
 		// }
+
+		if(localIndex > batch.numPoints){
+			return;
+		}
 
 		if(debug.enabled){
 			atomicAdd(debug.numPointsProcessed, 1);

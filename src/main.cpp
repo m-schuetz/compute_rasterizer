@@ -217,10 +217,10 @@ int main(){
 	renderer->controls->radius = setting.radius;
 	renderer->controls->target = setting.target;
 
-	renderer->controls->yaw = -1.18;
-	renderer->controls->pitch = -0.29;
-	renderer->controls->radius = 21.65;
-	renderer->controls->target = {6.54, 7.16, 5.20};
+	renderer->controls->yaw = 0.53;
+	renderer->controls->pitch = -0.68;
+	renderer->controls->radius = 2310.47;
+	renderer->controls->target = {576.91, 886.62, 10.35};
 
 	auto potreedata = PotreeData::create(setting.path_potree);
 	auto las_encode_444 = ComputeLasData::create(setting.path_las);
