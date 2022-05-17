@@ -48,6 +48,9 @@ struct LasLoaderSparse {
 
 		// index of first point in the sparse gpu buffer
 		int64_t sparse_point_offset = 0;
+
+		bool isSelected = false;
+		bool isHovered = false;
 	};
 
 	struct LoadTask{

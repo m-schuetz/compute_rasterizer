@@ -228,6 +228,8 @@ int main(){
 
 	auto lasLoaderSparse = make_shared<LasLoaderSparse>(renderer);
 
+	Runtime::lasLoaderSparse = lasLoaderSparse;
+
 	renderer->onFileDrop([lasLoaderSparse](vector<string> files){
 		//cout << "files: " << files.size() << endl;
 
@@ -325,14 +327,7 @@ int main(){
 			Debug::set("state", state);
 		}
 
-		//{
-		//	float t = now();
-
-		//	renderer->controls->yaw = t;
-		//	renderer->controls->pitch = -0.32;
-		//	renderer->controls->radius = 24.50;
-		//	renderer->controls->target = {40.57, 29.45, 3.87};
-		//}
+		// renderer->drawBoundingBox({0.0, 0.0, 0.0}, {200.0, 200.0, 200.0}, {200, 0, 0});
 
 	};
 
@@ -412,6 +407,20 @@ int main(){
 			auto selected = Runtime::getSelectedMethod();
 			if(selected){
 				selected->render(renderer.get());
+			}
+		}
+
+		{
+			for(auto lasfile : Runtime::lasLoaderSparse->files){
+
+				if(lasfile->isHovered){
+					dvec3 position = (lasfile->boxMin + lasfile->boxMax) / 2.0;
+					dvec3 size = lasfile->boxMax - lasfile->boxMin;
+					position = size / 2.0;
+					renderer->drawBoundingBox(position, size, {200, 0, 0});
+				}
+				
+				//drawBoundingBox({0.0, 0.0, 0.0}, {200.0, 200.0, 200.0}, {200, 0, 0});
 			}
 		}
 

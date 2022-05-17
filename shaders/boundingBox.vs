@@ -70,7 +70,4 @@ void main() {
 		float((uColor >> 16) & 0xFF) / 255.0
 	);
 
-	// vColor = vec3(1.0, 0.0, 0.0);
-	// vColor = vec3(uColor) / 255.0;
-
 }

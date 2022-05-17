@@ -1,4 +1,6 @@
 
+#include <filesystem>
+
 #include "Renderer.h"
 
 #include "drawBoundingBoxes.h"
@@ -8,6 +10,7 @@
 #include "GLTimerQueries.h"
 #include "Runtime.h"
 
+namespace fs = std::filesystem;
 
 auto _controls = make_shared<OrbitControls>();
 
@@ -299,6 +302,12 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 
 			render();
 
+			{
+				auto& view = this->views[0];
+
+				glBindFramebuffer(GL_FRAMEBUFFER, view.framebuffer->handle);
+			}
+
 			if(vrEnabled){
 
 				{ // LEFT
@@ -329,8 +338,8 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 
 				
 			}else{
-				glBindFramebuffer(GL_FRAMEBUFFER, 0);
-				glViewport(0, 0, this->width, this->height);
+				//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+				//glViewport(0, 0, this->width, this->height);
 
 				_drawBoundingBoxes(camera.get(), drawQueue.boundingBoxes);
 				_drawBoxes(camera.get(), drawQueue.boxes);
@@ -662,6 +671,48 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			auto selected = Runtime::getSelectedMethod();
 			if(selected){
 				ImGui::Text(selected->description.c_str());
+			}
+
+			ImGui::End();
+		}
+
+		{ // IMGUI DATA SETS
+			ImGui::Begin("Data Sets");
+
+			auto lasfiles = Runtime::lasLoaderSparse;
+
+			static int item_current_idx = 0;
+			int numItems = lasfiles == nullptr ? 0 : lasfiles->files.size();
+
+			ImGui::Text("Point Clouds:");
+			if (ImGui::BeginListBox("##listbox 3", ImVec2(-FLT_MIN, (6 + numItems) * ImGui::GetTextLineHeightWithSpacing()))){
+				for (int n = 0; n < numItems; n++){
+					const bool is_selected = (item_current_idx == n);
+
+					auto lasfile = lasfiles->files[n];
+					string filename = fs::path(lasfile->path).filename().string();
+
+					//dvec3 position = (lasfile->boxMin + lasfile->boxMax) / 2.0;
+					//dvec3 size = lasfile->boxMax - lasfile->boxMin;
+					//drawBoundingBox(position, size, {200, 0, 0});
+					//drawBoundingBox({0.0, 0.0, 0.0}, {200.0, 200.0, 200.0}, {200, 0, 0});
+
+					if (ImGui::Selectable(filename.c_str(), is_selected)) {
+						item_current_idx = n;
+					}
+
+					lasfile->isHovered = ImGui::IsItemHovered();
+
+					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+					if (is_selected) {
+						ImGui::SetItemDefaultFocus();
+					}
+
+					
+
+					lasfile->isSelected = is_selected;
+				}
+				ImGui::EndListBox();
 			}
 
 			ImGui::End();
