@@ -121,12 +121,9 @@ struct LasLoaderSparse {
 			glClearNamedBufferData(this->ssBatches.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		}
 
-		spawnLoader();
-		spawnLoader();
-		spawnLoader();
-		spawnLoader();
-		spawnLoader();
-		spawnLoader();
+		for(int i = 0; i < 10; i++){
+			spawnLoader();
+		}
 	}
 
 	// add las files that are to be loaded progressively
