@@ -748,7 +748,7 @@ the fast software-rasterization of point clouds.)ER01");
 			int numItems = lasfiles == nullptr ? 0 : lasfiles->files.size();
 
 			ImGui::Text("Point Clouds:");
-			if (ImGui::BeginListBox("##listbox 3", ImVec2(-FLT_MIN, (6 + numItems) * ImGui::GetTextLineHeightWithSpacing()))){
+			if (ImGui::BeginListBox("##listbox 3", ImVec2(-FLT_MIN, (4) * ImGui::GetTextLineHeightWithSpacing()))){
 				for (int n = 0; n < numItems; n++){
 					const bool is_selected = (item_current_idx == n);
 
@@ -758,14 +758,6 @@ the fast software-rasterization of point clouds.)ER01");
 					if (ImGui::Selectable(filename.c_str(), is_selected)) {
 						item_current_idx = n;
 					}
-
-					// {
-					// 	auto text = u8"◎";
-					// 	float font_size = ImGui::GetFontSize();
-					// 	ImGui::SameLine(ImGui::GetWindowSize().x / 2 - font_size + (font_size / 2));
-					// 	ImGui::Text("o");
-					// 	// ImGui::Separator();
-					// }
 
 					lasfile->isHovered = ImGui::IsItemHovered();
 					lasfile->isDoubleClicked = ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0);
@@ -779,6 +771,7 @@ the fast software-rasterization of point clouds.)ER01");
 				}
 				ImGui::EndListBox();
 			}
+			ImGui::Text("Double click point cloud to zoom.");
 
 			ImGui::End();
 		}
