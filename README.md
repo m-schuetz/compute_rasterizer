@@ -24,7 +24,7 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 # Features and Limitations
 
 * Renders up to one billion points in about 8 milliseconds (hence 2 billion points in real-time, 60fps) on an RTX 3090.
-* You need to make sure not to load more than your GPU memory can handle. You'll need about 160MB for every 100 million points, plus 1GB or 2GB overhead. 
+* You need to make sure not to load more than your GPU memory can handle. You'll need about 1.6GB for every 100 million points, plus 1GB or 2GB overhead. 
 * Drag & Drop a LAS file into the window to load it. (no LAZ, yet)
 * Requires Windows and NVIDIA GPUs. Pull requests for AMD support are welcome.
 * Transforms each point cloud to the origin separately, and therefore won't work with multiple scans/tiles that are supposed to be in the same coordinate reference system. 
