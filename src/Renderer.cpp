@@ -126,29 +126,30 @@ void Renderer::init(){
 	GLFWmonitor** monitors = glfwGetMonitors(&numMonitors);
 
 	cout << "<create windows>" << endl;
-	if (numMonitors > 1) {
-		const GLFWvidmode * modeLeft = glfwGetVideoMode(monitors[0]);
-		const GLFWvidmode * modeRight = glfwGetVideoMode(monitors[1]);
+	// if (numMonitors > 1) {
+	// 	const GLFWvidmode * modeLeft = glfwGetVideoMode(monitors[0]);
+	// 	const GLFWvidmode * modeRight = glfwGetVideoMode(monitors[1]);
 
-		window = glfwCreateWindow(modeRight->width, modeRight->height - 300, "Simple example", nullptr, nullptr);
+	// 	window = glfwCreateWindow(modeRight->width, modeRight->height - 300, "Simple example", nullptr, nullptr);
 
-		if (!window) {
-			glfwTerminate();
-			exit(EXIT_FAILURE);
-		}
+	// 	if (!window) {
+	// 		glfwTerminate();
+	// 		exit(EXIT_FAILURE);
+	// 	}
 
-		glfwSetWindowPos(window, modeLeft->width, 0);
-	} else {
+	// 	glfwSetWindowPos(window, modeLeft->width, 0);
+	// } else 
+	{
 		const GLFWvidmode * mode = glfwGetVideoMode(monitors[0]);
 
-		window = glfwCreateWindow(mode->width / 2, mode->height / 2, "Simple example", nullptr, nullptr);
+		window = glfwCreateWindow(mode->width - 100, mode->height - 100, "Simple example", nullptr, nullptr);
 
 		if (!window) {
 			glfwTerminate();
 			exit(EXIT_FAILURE);
 		}
 
-		glfwSetWindowPos(window, mode->width / 2, 2 * mode->height / 3);
+		glfwSetWindowPos(window, 50, 50);
 	}
 
 	cout << "<set input callbacks>" << endl;
@@ -359,11 +360,22 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		auto windowSize_infos = ImVec2(490, 240);
+		auto windowSize_perf = ImVec2(490, 340);
+		auto windowSize_datasets = ImVec2(490, 160);
+		auto windowSize_debug = ImVec2(490, 200);
+
+		auto windowSize_state = ImVec2(370, 320);
+		auto windowSize_settings = ImVec2(370, 370);
+
 		{ // RENDER IMGUI PERFORMANCE WINDOW
 
 			stringstream ssFPS; 
 			ssFPS << this->fps;
 			string strFps = ssFPS.str();
+
+			ImGui::SetNextWindowPos(ImVec2(10, 10 + windowSize_infos.y + 10));
+			ImGui::SetNextWindowSize(windowSize_perf);
 
 			ImGui::Begin("Performance");
 			ImGui::Text((rightPad("FPS:", 30) + strFps).c_str());
@@ -455,6 +467,9 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			ssFPS << this->fps;
 			string strFps = ssFPS.str();
 
+			ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - windowSize_state.x - 10, 10));
+			ImGui::SetNextWindowSize(windowSize_state);
+
 			ImGui::Begin("State");
 			ImGui::Text((rightPad("FPS:", 10) + strFps).c_str());
 
@@ -464,6 +479,12 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 				formatNumber(camera->position.z, 2);
 
 			ImGui::Text((rightPad("campos:", 10) + strCamera).c_str());
+
+			string strPoints = "";
+			if(Runtime::lasLoaderSparse){
+				strPoints = formatNumber(Runtime::lasLoaderSparse->numPointsLoaded);
+			}
+			ImGui::Text((rightPad("#points:", 10) + strPoints).c_str());
 
 			ImGui::Separator(); 
 
@@ -506,7 +527,12 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 
 		{ // RENDER IMGUI INPUT
 
-			ImGui::Begin("Input");
+			ImGui::SetNextWindowPos(ImVec2(
+				10, 
+				10 + windowSize_infos.y + 10 + windowSize_perf.y + 10 + windowSize_datasets.y + 10));
+			ImGui::SetNextWindowSize(windowSize_debug);
+
+			ImGui::Begin("Debug Stuff");
 			
 			//if (ImGui::Button("toggle update")){
 			//	Debug::updateEnabled = !Debug::updateEnabled;
@@ -540,12 +566,12 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 				Debug::colorizeOverdraw = checked;
 			}
 
-			{
-				static bool checked = Debug::boolMisc; 
-				ImGui::Checkbox("misc", &checked);
+			// {
+			// 	static bool checked = Debug::boolMisc; 
+			// 	ImGui::Checkbox("misc", &checked);
 
-				Debug::boolMisc = checked;
-			}
+			// 	Debug::boolMisc = checked;
+			// }
 
 			if (ImGui::Button("copy camera")) {
 				auto pos = controls->getPosition();
@@ -564,29 +590,57 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 				toClipboard(str);
 			}
 
-			if (ImGui::Button("copy vr matrices")) {
-				Debug::requestCopyVrMatrices = true;
-			}
+			// if (ImGui::Button("copy vr matrices")) {
+			// 	Debug::requestCopyVrMatrices = true;
+			// }
 
 			if (ImGui::Button("reset view")) {
 				Debug::requestResetView = true;
 			}
 
-			if (ImGui::Button("copy tree")) {
+			// if (ImGui::Button("copy tree")) {
 
-				Debug::doCopyTree = true;
-			}
+			// 	Debug::doCopyTree = true;
+			// }
 
-			if (ImGui::Button("toggle VR")) {
+			// if (ImGui::Button("toggle VR")) {
 
-				this->toggleVR();
-			}
+			// 	this->toggleVR();
+			// }
 
 
 			ImGui::End();
 		}
 
+		{ // RENDER IMGUI INFOS
+
+			ImGui::SetNextWindowPos(ImVec2(10, 10));
+			ImGui::SetNextWindowSize(windowSize_infos);
+
+			ImGui::Begin("Infos");
+
+			ImGui::Text(R"ER01(Semi-user-friendly version of the research prototype for 
+the fast software-rasterization of point clouds.)ER01");
+			ImGui::Text(R"ER01(
+- Drag&Drop LAS files to load them. (no LAZ!)
+- Requires Windows and NVIDIA GPUs. 
+  PRs for AMD are welcome.
+- Loads all points of the dropped point clouds, 
+  regardless of available GPU memory. 
+  Make sure you have about 2GB + 16 byte per point of GPU memory.
+  (e.g. about 18GB GPU memory for 1 billion points)
+- Maximum of 1 billion points.
+				)ER01");
+			ImGui::Text("URL: https://github.com/m-schuetz/compute_rasterizer");
+			
+			ImGui::End();
+		}
+
 		{ // IMGUI SETTINGS WINDOW
+
+			ImGui::SetNextWindowPos(ImVec2(ImGui::GetIO().DisplaySize.x - windowSize_settings.x - 10, 10 + windowSize_state.y + 10));
+			ImGui::SetNextWindowSize(windowSize_settings);
+
 			ImGui::Begin("Settings");
 
 			//const char* items[] = { 
@@ -638,12 +692,12 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			ImGui::SliderFloat("rotation", &LOD, 0.0, 20.0);
 			Debug::LOD = LOD;
 
-			{
-				static bool checked = Debug::lodEnabled; 
-				ImGui::Checkbox("enable LOD", &checked);
+			// {
+			// 	static bool checked = Debug::lodEnabled; 
+			// 	ImGui::Checkbox("enable LOD", &checked);
 
-				Debug::lodEnabled = checked;
-			}
+			// 	Debug::lodEnabled = checked;
+			// }
 
 			{
 				static bool checked = Debug::frustumCullingEnabled; 
@@ -678,6 +732,12 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 		}
 
 		{ // IMGUI DATA SETS
+
+			ImGui::SetNextWindowPos(ImVec2(
+				10, 
+				10 + windowSize_infos.y + 10 + windowSize_perf.y + 10));
+			ImGui::SetNextWindowSize(windowSize_datasets);
+
 			ImGui::Begin("Data Sets");
 
 			auto lasfiles = Runtime::lasLoaderSparse;

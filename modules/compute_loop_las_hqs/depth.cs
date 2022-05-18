@@ -32,9 +32,9 @@ struct Batch{
 	float max_x;
 	float max_y;
 	float max_z;
-	
 	int numPoints;
-	int padding1;
+
+	int firstPoint;
 	int padding2;
 	int padding3;
 	int padding4;
@@ -43,6 +43,7 @@ struct Batch{
 	int padding7;
 	int padding8;
 };
+
 
 struct BoundingBox{
 	vec4 position;   //   16   0
@@ -212,10 +213,9 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 void main(){
 	
 	uint batchIndex = gl_WorkGroupID.x;
-	uint numPointsPerBatch = uniforms.pointsPerThread * gl_WorkGroupSize.x;
-	uint wgFirstPoint = batchIndex * numPointsPerBatch;
-
 	Batch batch = ssBatches[batchIndex];
+
+	uint wgFirstPoint = batch.firstPoint;
 
 	if(debug.enabled && gl_LocalInvocationID.x == 0){
 		atomicAdd(debug.depth_numNodesProcessed, 1);

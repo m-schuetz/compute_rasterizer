@@ -271,7 +271,6 @@ void main(){
 	Batch batch = ssBatches[batchIndex];
 
 	uint wgFirstPoint = batch.firstPoint;
-	// wgFirstPoint = batchIndex * 80 * 128;
 
 	if(debug.enabled && gl_LocalInvocationID.x == 0){
 		atomicAdd(debug.numNodesProcessed, 1);
