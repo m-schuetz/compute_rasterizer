@@ -123,10 +123,10 @@ struct LasLoaderSparse {
 			glClearNamedBufferData(this->ssBatches.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		}
 
-		for(int i = 0; i < 10; i++){
-			spawnLoader();
-		}
-		// spawnLoader();
+		// for(int i = 0; i < 10; i++){
+		// 	spawnLoader();
+		// }
+		spawnLoader();
 	}
 
 	// add las files that are to be loaded progressively
@@ -220,22 +220,24 @@ struct LasLoaderSparse {
 	// chunk: multiple(~100) workgroup batches loaded from file at once
 	void spawnLoader(){
 
-		thread t([&](){
+		auto ref = this;
+
+		thread t([ref](){
 
 			while(true){
 
 				std::this_thread::sleep_for(10ms);
 
-				unique_lock<mutex> lock_load(mtx_load);
+				unique_lock<mutex> lock_load(ref->mtx_load);
 				
-				if(loadTasks.size() == 0){
+				if(ref->loadTasks.size() == 0){
 					lock_load.unlock();
 
 					continue;
 				}
 
-				auto task = loadTasks.back();
-				loadTasks.pop_back();
+				auto task = ref->loadTasks.back();
+				ref->loadTasks.pop_back();
 
 				lock_load.unlock();
 
@@ -251,6 +253,11 @@ struct LasLoaderSparse {
 
 				// compute batch metadata
 				int64_t numBatches = task.numPoints / POINTS_PER_WORKGROUP;
+				if((task.numPoints % POINTS_PER_WORKGROUP) != 0){
+					numBatches++;
+				}
+
+
 				vector<Batch> batches;
 
 				int64_t chunk_pointsProcessed = 0;
@@ -416,8 +423,8 @@ struct LasLoaderSparse {
 				uploadTask.bColors = bColors;
 				uploadTask.bBatches = bBatches;
 				
-				unique_lock<mutex> lock_upload(mtx_upload);
-				uploadTasks.push_back(uploadTask);
+				unique_lock<mutex> lock_upload(ref->mtx_upload);
+				ref->uploadTasks.push_back(uploadTask);
 				lock_upload.unlock();
 
 			}
