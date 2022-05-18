@@ -1,4 +1,8 @@
 
+<center>
+<img src="docs/teaser.jpg" width="50%">
+</center>
+
 # About
 
 This repository contains the source code for our papers about real-time software rasterization of point clouds, which can be 10 to 100 times faster than GL_POINTS. This is possible because GL_POINTS is built upon the triangle-oriented rendering pipeline that is not optimal for pixel-sized points.
@@ -10,10 +14,12 @@ The latest improvement also groups about 10k points into batches, and each compu
 The main branch is a slightly more user friendly version that allows loading LAS files via drag&drop. Other branches contain snapshots of the code made after evaluations for specific paper submissions:
 
 * ["Software Rasterization of 2 Billion Points in Real-Time"](https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/) <br>
-In branch [compute_rasterizer_2022](https://github.com/m-schuetz/compute_rasterizer/tree/compute_rasterizer_2022)
+In branch [compute_rasterizer_2022](https://github.com/m-schuetz/compute_rasterizer/tree/compute_rasterizer_2022)<br>
+[paper](https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/) - <a href="https://www.youtube.com/watch?v=9h-ElMfVIOY">video</a>
 
 * ["Rendering Point Clouds with Compute Shaders and Vertex Order Optimization"](https://www.cg.tuwien.ac.at/research/publications/2021/SCHUETZ-2021-PCC/)<br>
 In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasterizer/tree/compute_rasterizer_2021)
+
 
 # Features and Limitations
 
@@ -22,12 +28,6 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 * Drag & Drop a LAS file into the window to load it. (no LAZ, yet)
 * Requires Windows and NVIDIA GPUs. Pull requests for AMD support are welcome.
 * Transforms each point cloud to the origin separately, and therefore won't work with multiple scans/tiles that are supposed to be in the same coordinate reference system. 
-
-<center>
-<img src="docs/teaser.jpg" width="50%">
-</center>
-
-[paper](https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/) - <a href="https://www.youtube.com/watch?v=9h-ElMfVIOY">video</a>
 
 # Building
 
@@ -66,3 +66,17 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 		<td><a href="./modules/compute_loop_nodes_hqs">./modules/compute_loop_nodes_hqs</a></td>
 	</tr>
 </table>
+
+# Citing
+<pre>
+@article{SCHUETZ-2022-PCC,
+	title =      "Software Rasterization of 2 Billion Points in Real Time",
+	author =     "Markus Sch\"{u}tz and Bernhard Kerbl and Michael Wimmer",
+	publisher = {arXiv},
+	year =       "2022",
+	month =      apr,
+	URL =        "https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/",
+	doi = {10.48550/ARXIV.2204.01287},
+	copyright = {Creative Commons Attribution 4.0 International}
+}
+<pre>
