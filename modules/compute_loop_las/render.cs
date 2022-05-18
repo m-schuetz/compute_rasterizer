@@ -97,6 +97,8 @@ layout(std140, binding = 31) uniform UniformData{
 	int showBoundingBox;
 	int numPoints;
 	ivec2 imageSize;
+	bool colorizeChunks;
+	bool colorizeOverdraw;
 } uniforms;
 
 uint SPECTRAL[5] = {
@@ -353,17 +355,6 @@ void main(){
 
 	#endif
 
-		// if(index > uniforms.numPoints){
-		// 	return;
-		// }
-
-		// atomicAdd(debug.numPointsProcessed, 1);
-
-		// 2877987
-		// if(index != 2877440 + 547){
-		// 	continue;
-		// }
-
 		if(localIndex > batch.numPoints){
 			return;
 		}
@@ -371,6 +362,16 @@ void main(){
 		if(debug.enabled){
 			atomicAdd(debug.numPointsProcessed, 1);
 		}
+
+		// if(localIndex > 3406){
+		// 	continue;
+		// }
+
+		// if(localIndex != 3406){
+		// 	continue;
+		// }
+
+
 
 		vec3 point;
 		
@@ -444,15 +445,6 @@ void main(){
 			float y = float(Y) * (boxSize.y / STEPS_10BIT) + wgMin.y;
 			float z = float(Z) * (boxSize.z / STEPS_10BIT) + wgMin.z;
 
-			// int bits = 10 - 8;
-			// X = (X >> bits) << bits;
-			// Y = (Y >> bits) << bits;
-			// Z = (Z >> bits) << bits;
-
-			// x = float(X) * (boxSize.x / STEPS_10BIT) + wgMin.x;
-			// y = float(Y) * (boxSize.y / STEPS_10BIT) + wgMin.y;
-			// z = float(Z) * (boxSize.z / STEPS_10BIT) + wgMin.z;
-
 			point = vec3(x, y, z);
 		}
 		
@@ -468,13 +460,21 @@ void main(){
 			ivec2 pixelCoords = ivec2(imgPos);
 			int pixelID = pixelCoords.x + pixelCoords.y * uniforms.imageSize.x;
 
-			// index = (batchIndex * batchIndex) % 20011;
-			// index = index * 1234;
+			
+			uint64_t colorComponent;
+
+			if(uniforms.colorizeChunks){
+				colorComponent = batchIndex * 1234567;
+			}else{
+				colorComponent = uint64_t(index);
+			}
+
 			uint32_t depth = floatBitsToInt(pos.w);
-			uint64_t newPoint = (uint64_t(depth) << 32UL) | uint64_t(index);
+			uint64_t newPoint = (uint64_t(depth) << 32UL) | colorComponent;
 
 			uint64_t oldPoint = ssFramebuffer[pixelID];
 			if(newPoint < oldPoint){
+				
 				atomicMin(ssFramebuffer[pixelID], newPoint);
 
 				if(debug.enabled){

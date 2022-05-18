@@ -26,6 +26,8 @@ layout(std140, binding = 31) uniform UniformData{
 	int showBoundingBox;
 	int numPoints;
 	ivec2 imageSize;
+	bool colorizeChunks;
+	bool colorizeOverdraw;
 } uniforms;
 
 layout (std430, binding = 30) buffer abc_2 { 
@@ -127,10 +129,13 @@ void main(){
 		}
 		}
 
-		uint32_t color = ssRGBA[closestPointID];
-		// color = ssRGBA[2];
-		// color = closestPointID;
-		// color = 0xFF0000FF;
+		uint32_t color = 0;
+		
+		if(uniforms.colorizeChunks){
+			color = closestPointID;
+		}else{
+			color = ssRGBA[closestPointID];
+		}
 
 		if(closestPointID == 0){
 			color = 0x00443322;

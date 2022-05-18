@@ -51,6 +51,7 @@ struct LasLoaderSparse {
 
 		bool isSelected = false;
 		bool isHovered = false;
+		bool isDoubleClicked = false;
 	};
 
 	struct LoadTask{
@@ -60,6 +61,7 @@ struct LasLoaderSparse {
 	};
 
 	struct UploadTask{
+		shared_ptr<LasFile> lasfile;
 		int64_t sparse_pointOffset;
 		int64_t sparse_batchOffset;
 		int64_t numPoints;
@@ -124,10 +126,11 @@ struct LasLoaderSparse {
 		for(int i = 0; i < 10; i++){
 			spawnLoader();
 		}
+		// spawnLoader();
 	}
 
 	// add las files that are to be loaded progressively
-	void add(string path){
+	shared_ptr<LasFile> add(string path){
 
 		auto lasfile = make_shared<LasFile>();
 
@@ -209,6 +212,7 @@ struct LasLoaderSparse {
 			//  std::reverse(loadTasks.begin(), loadTasks.end());
 		}
 
+		return lasfile;
 	}
 
 	// continue progressively loading some data
@@ -337,9 +341,9 @@ struct LasLoaderSparse {
 						int32_t Y = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 4);
 						int32_t Z = source->get<int32_t>(index_pointFile * lasfile->bytesPerPoint + 8);
 
-						float x = float(double(X) * cScale.x + cOffset.x - boxMin.x);
-						float y = float(double(Y) * cScale.y + cOffset.y - boxMin.y);
-						float z = float(double(Z) * cScale.z + cOffset.z - boxMin.z);
+						double x = double(X) * cScale.x + cOffset.x - boxMin.x;
+						double y = double(Y) * cScale.y + cOffset.y - boxMin.y;
+						double z = double(Z) * cScale.z + cOffset.z - boxMin.z;
 
 						uint32_t X30 = uint32_t(((x - batch.min.x) / batchBoxSize.x) * STEPS_30BIT);
 						uint32_t Y30 = uint32_t(((y - batch.min.y) / batchBoxSize.y) * STEPS_30BIT);
@@ -402,8 +406,8 @@ struct LasLoaderSparse {
 				// numBatchesLoaded += numBatches;
 
 				UploadTask uploadTask;
+				uploadTask.lasfile = lasfile;
 				uploadTask.sparse_pointOffset = sparse_pointOffset;
-				// uploadTask.sparse_batchOffset = sparse_batchOffset;
 				uploadTask.numPoints = task.numPoints;
 				uploadTask.numBatches = numBatches;
 				uploadTask.bXyzLow = bXyzLow;
@@ -489,6 +493,7 @@ struct LasLoaderSparse {
 
 		this->numBatchesLoaded += task.numBatches;
 		this->numPointsLoaded += task.numPoints;
+		task.lasfile->numPointsLoaded += task.numPoints;
 
 		cout << "numBatchesLoaded: " << numBatchesLoaded << endl;
 

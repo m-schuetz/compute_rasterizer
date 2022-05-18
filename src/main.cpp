@@ -222,6 +222,14 @@ int main(){
 	renderer->controls->radius = 2310.47;
 	renderer->controls->target = {576.91, 886.62, 10.35};
 
+
+	renderer->controls->yaw = -3.03;
+	renderer->controls->pitch = -0.41;
+	renderer->controls->radius = 1.16;
+	renderer->controls->target = {1.41, 8.09, 3.07};
+
+
+
 	auto potreedata = PotreeData::create(setting.path_potree);
 	auto las_encode_444 = ComputeLasData::create(setting.path_las);
 	auto las_standard = LasStandardData::create(setting.path_las);
@@ -230,14 +238,26 @@ int main(){
 
 	Runtime::lasLoaderSparse = lasLoaderSparse;
 
-	renderer->onFileDrop([lasLoaderSparse](vector<string> files){
+	renderer->onFileDrop([lasLoaderSparse, renderer](vector<string> files){
 		//cout << "files: " << files.size() << endl;
 
 		for(auto file : files){
 			if(iEndsWith(file, "las")){
-				lasLoaderSparse->add(file);
+				auto lasfile = lasLoaderSparse->add(file);
+
+				// zoom to point cloud
+				auto size = lasfile->boxMax - lasfile->boxMin;
+				auto position = size / 2.0;
+				auto radius = glm::length(size) / 1.5;
+
+				renderer->controls->yaw = 0.53;
+				renderer->controls->pitch = -0.68;
+				renderer->controls->radius = radius;
+				renderer->controls->target = position;
 			}
 		}
+
+		glfwFocusWindow(renderer->window);
 	});
 
 	{ // 4-4-4 byte format
@@ -327,6 +347,20 @@ int main(){
 			Debug::set("state", state);
 		}
 
+		for(auto lasfile : Runtime::lasLoaderSparse->files){
+			if(lasfile->isDoubleClicked){
+
+				auto size = lasfile->boxMax - lasfile->boxMin;
+				auto position = size / 2.0;
+				auto radius = glm::length(size) / 1.5;
+
+				renderer->controls->yaw = 0.53;
+				renderer->controls->pitch = -0.68;
+				renderer->controls->radius = radius;
+				renderer->controls->target = position;
+			}
+		}
+
 		// renderer->drawBoundingBox({0.0, 0.0, 0.0}, {200.0, 200.0, 200.0}, {200, 0, 0});
 
 	};
@@ -410,19 +444,20 @@ int main(){
 			}
 		}
 
-		{
-			for(auto lasfile : Runtime::lasLoaderSparse->files){
+		
+		for(auto lasfile : Runtime::lasLoaderSparse->files){
 
-				if(lasfile->isHovered){
-					dvec3 position = (lasfile->boxMin + lasfile->boxMax) / 2.0;
-					dvec3 size = lasfile->boxMax - lasfile->boxMin;
-					position = size / 2.0;
-					renderer->drawBoundingBox(position, size, {200, 0, 0});
-				}
-				
-				//drawBoundingBox({0.0, 0.0, 0.0}, {200.0, 200.0, 200.0}, {200, 0, 0});
+			dvec3 size = lasfile->boxMax - lasfile->boxMin;
+			dvec3 position = size / 2.0;
+
+			if(lasfile->isHovered){
+				renderer->drawBoundingBox(position, size, {255, 255, 0});
+			}else if(lasfile->numPointsLoaded < lasfile->numPoints){
+				renderer->drawBoundingBox(position, size, {255, 0, 0});
 			}
+			
 		}
+		
 
 	};
 

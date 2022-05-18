@@ -73,12 +73,15 @@ void drop_callback(GLFWwindow* window, int count, const char **paths){
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods){
 
+	cout << "start button: " << button << ", action: " << action << ", mods: " << mods << endl;
+
 	ImGuiIO& io = ImGui::GetIO();
 	if(io.WantCaptureMouse){
 		return;
 	}
 
-	cout << "button: " << button << ", action: " << action << ", mods: " << mods << endl;
+	cout << "end button: " << button << ", action: " << action << ", mods: " << mods << endl;
+
 
 	if(action == 1){
 		Runtime::mouseButtons = Runtime::mouseButtons | (1 << button);
@@ -86,8 +89,6 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		uint32_t mask = ~(1 << button);
 		Runtime::mouseButtons = Runtime::mouseButtons & mask;
 	}
-
-	
 
 	_controls->onMouseButton(button, action, mods);
 }
@@ -692,23 +693,25 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 					auto lasfile = lasfiles->files[n];
 					string filename = fs::path(lasfile->path).filename().string();
 
-					//dvec3 position = (lasfile->boxMin + lasfile->boxMax) / 2.0;
-					//dvec3 size = lasfile->boxMax - lasfile->boxMin;
-					//drawBoundingBox(position, size, {200, 0, 0});
-					//drawBoundingBox({0.0, 0.0, 0.0}, {200.0, 200.0, 200.0}, {200, 0, 0});
-
 					if (ImGui::Selectable(filename.c_str(), is_selected)) {
 						item_current_idx = n;
 					}
 
+					// {
+					// 	auto text = u8"◎";
+					// 	float font_size = ImGui::GetFontSize();
+					// 	ImGui::SameLine(ImGui::GetWindowSize().x / 2 - font_size + (font_size / 2));
+					// 	ImGui::Text("o");
+					// 	// ImGui::Separator();
+					// }
+
 					lasfile->isHovered = ImGui::IsItemHovered();
+					lasfile->isDoubleClicked = ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0);
 
 					// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 					if (is_selected) {
 						ImGui::SetItemDefaultFocus();
 					}
-
-					
 
 					lasfile->isSelected = is_selected;
 				}

@@ -292,24 +292,6 @@ void processPoints(){
 		Y = min(Y, STEPS_30BIT - 1);
 		Z = min(Z, STEPS_30BIT - 1);
 
-		// if(globalIndex == 2877987){
-		// 	debug.index = globalIndex;
-		// 	debug.x = point.position.x;
-		// 	debug.y = point.position.y;
-		// 	debug.z = point.position.z;
-		// 	debug.X = X;
-		// 	debug.Y = Y;
-		// 	debug.Z = Z;
-		// 	debug.min_x = wgMin.x;
-		// 	debug.min_y = wgMin.y;
-		// 	debug.min_z = wgMin.z;
-		// 	debug.size_x = boxSize.x;
-		// 	debug.size_y = boxSize.y;
-		// 	debug.size_z = boxSize.z;
-
-		// 	debug.check = 1234;
-		// }
-
 		{ // 4 byte
 
 			uint32_t X_4b = (X >> 20) & MASK_10BIT;
