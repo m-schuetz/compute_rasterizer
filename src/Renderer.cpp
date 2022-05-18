@@ -617,7 +617,7 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			ImGui::SetNextWindowPos(ImVec2(10, 10));
 			ImGui::SetNextWindowSize(windowSize_infos);
 
-			ImGui::Begin("Infos");
+			ImGui::Begin("Infos, features and limitations");
 
 			ImGui::Text(R"ER01(Semi-user-friendly version of the research prototype for 
 the fast software-rasterization of point clouds.)ER01");
@@ -630,6 +630,8 @@ the fast software-rasterization of point clouds.)ER01");
   Make sure you have about 2GB + 16 byte per point of GPU memory.
   (e.g. about 18GB GPU memory for 1 billion points)
 - Maximum of 1 billion points.
+- All data sets transformed to origin.
+  (can't load multiple tiles relative to same origin)
 				)ER01");
 			ImGui::Text("URL: https://github.com/m-schuetz/compute_rasterizer");
 			

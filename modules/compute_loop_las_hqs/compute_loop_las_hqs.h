@@ -108,13 +108,13 @@ averages overlapping points
 
 	void update(Renderer* renderer){
 
-		if(Runtime::resource != (Resource*)las.get()){
+		// if(Runtime::resource != (Resource*)las.get()){
 
-			if(Runtime::resource != nullptr){
-				Runtime::resource->unload(renderer);
-			}
+		// 	if(Runtime::resource != nullptr){
+		// 		Runtime::resource->unload(renderer);
+		// 	}
 
-		}
+		// }
 
 	}
 
