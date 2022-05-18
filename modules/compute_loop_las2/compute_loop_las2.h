@@ -25,13 +25,11 @@
 #include "Renderer.h"
 #include "GLTimerQueries.h"
 #include "Method.h"
-#include "compute/ComputeLasLoader.h"
+#include "compute/LasLoaderSparse.h"
 
 using namespace std;
 using namespace std::chrono_literals;
 using nlohmann::json;
-
-
 
 struct ComputeLoopLas2 : public Method{
 
@@ -46,6 +44,8 @@ struct ComputeLoopLas2 : public Method{
 		int showBoundingBox;
 		int numPoints;
 		ivec2 imageSize;
+		int colorizeChunks;
+		int colorizeOverdraw;
 	};
 
 	struct DebugData{
@@ -68,13 +68,13 @@ struct ComputeLoopLas2 : public Method{
 	GLBuffer uniformBuffer;
 	UniformData uniformData;
 
-	shared_ptr<ComputeLasData> las = nullptr;
+	shared_ptr<LasLoaderSparse> las = nullptr;
 
 	Renderer* renderer = nullptr;
 
-	ComputeLoopLas2(Renderer* renderer, shared_ptr<ComputeLasData> las){
+	ComputeLoopLas2(Renderer* renderer, shared_ptr<LasLoaderSparse> las){
 
-		this->name = "loop_las2";
+		this->name = "loop_las_prefetch";
 		this->description = R"ER01(
 - Each thread renders X points.
 - Loads points from LAS file
@@ -110,10 +110,7 @@ struct ComputeLoopLas2 : public Method{
 			if(Runtime::resource != nullptr){
 				Runtime::resource->unload(renderer);
 			}
-
-			las->load(renderer);
-
-			Runtime::resource = (Resource*)las.get();
+			
 		}
 
 	}
@@ -122,14 +119,13 @@ struct ComputeLoopLas2 : public Method{
 
 		GLTimerQueries::timestamp("compute-loop-start");
 
-		las->process(renderer);
-
-		auto fbo = renderer->views[0].framebuffer;
-		auto camera = renderer->camera;
+		las->process();
 
 		if(las->numPointsLoaded == 0){
 			return;
 		}
+
+		auto fbo = renderer->views[0].framebuffer;
 
 		// Update Uniform Buffer
 		{
@@ -151,6 +147,8 @@ struct ComputeLoopLas2 : public Method{
 			uniformData.enableFrustumCulling = Debug::frustumCullingEnabled ? 1 : 0;
 			uniformData.showBoundingBox = Debug::showBoundingBox ? 1 : 0;
 			uniformData.imageSize = {fbo->width, fbo->height};
+			uniformData.colorizeChunks = Debug::colorizeChunks;
+			uniformData.colorizeOverdraw = Debug::colorizeOverdraw;
 
 			glNamedBufferSubData(uniformBuffer.handle, 0, sizeof(UniformData), &uniformData);
 		}
@@ -175,9 +173,9 @@ struct ComputeLoopLas2 : public Method{
 			glBindBufferBase(GL_UNIFORM_BUFFER, 31, uniformBuffer.handle);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 40, las->ssBatches.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 41, las->ssXyz_12b.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyz_8b.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyz_4b.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 41, las->ssXyzHig.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyzMed.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyzLow.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 50, ssBoundingBoxes.handle);

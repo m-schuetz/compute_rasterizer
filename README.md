@@ -1,28 +1,39 @@
 
 # About
 
-This repository contains the source code for our papers about compute rasterization of point clouds. The project is currently crude and difficult to use, but we plan to add the option to drag&drop your own point clouds after vacation. We will also add a test data set by then.
+This repository contains the source code for our papers about real-time software rasterization of point clouds, which can be 10 to 100 times faster than GL_POINTS. This is possible because GL_POINTS is built upon the triangle-oriented rendering pipeline that is not optimal for pixel-sized points.
+
+The basic idea is to spawn a compute shader that transforms points to screen space, encodes depth and color into a single 64 bit integer, and uses atomicMin to compute the closest point for each pixel. The color value is then extracted from the interleaved depth+color buffer and converted into a regular OpenGL texture for display. 
+
+The latest improvement also groups about 10k points into batches, and each compute workgroup(128 threads) renders a batch(10k points), i.e., each thread renders about 80 points. This allows several batch-level optimizations such as frustum culling, LOD rendering, and adaptive precision. Adaptive precision picks a sufficient coordinate precision (typically just 10 bit per axis) depending on the projected batch size, which boosts brute-force performance due to lower memory bandwidth requirements.
+
+The main branch is a slightly more user friendly version that allows loading LAS files via drag&drop. Other branches contain snapshots of the code made after evaluations for specific paper submissions:
 
 * ["Software Rasterization of 2 Billion Points in Real-Time"](https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/) <br>
-Current branch
+In branch [compute_rasterizer_2022](https://github.com/m-schuetz/compute_rasterizer/tree/compute_rasterizer_2022)
 
 * ["Rendering Point Clouds with Compute Shaders and Vertex Order Optimization"](https://www.cg.tuwien.ac.at/research/publications/2021/SCHUETZ-2021-PCC/)<br>
 In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasterizer/tree/compute_rasterizer_2021)
 
+# Features and Limitations
+
+* Renders up to one billion points in about 8 milliseconds (hence 2 billion points in real-time, 60fps) on an RTX 3090.
+* You need to make sure not to load more than your GPU memory can handle. You'll need about 160MB for every 100 million points, plus 1GB or 2GB overhead. 
+* Drag & Drop a LAS file into the window to load it. (no LAZ, yet)
+* Requires Windows and NVIDIA GPUs. Pull requests for AMD support are welcome.
+* Transforms each point cloud to the origin separately, and therefore won't work with multiple scans/tiles that are supposed to be in the same coordinate reference system. 
+
+<center>
 <img src="docs/teaser.jpg" width="50%">
+</center>
 
 [paper](https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/) - <a href="https://www.youtube.com/watch?v=9h-ElMfVIOY">video</a>
 
-# Getting Started
+# Building
 
 * Clone the repository
-* Modify ./src/main.cpp so that it loads your own data set.
-    * Add a new setting
-	* Change ```Setting setting = settings["..."];``` to your own setting.
 * Compile build/ComputeRasterizer.sln with Visual Studio 2022.
 * Run (ctrl + f5)
-
-Currently, only point clouds in LAS format are supported.
 
 <table>
 	<tr>

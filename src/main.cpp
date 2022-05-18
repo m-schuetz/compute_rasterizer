@@ -35,6 +35,8 @@
 #include "compute/LasLoaderStandard.h"
 #include "compute/PotreeData.h"
 
+#include "compute/LasLoaderSparse.h"
+
 
 
 using namespace std;
@@ -57,149 +59,149 @@ int main(){
 
 	auto tStart = now();
 
-	struct Setting{
-		string path_potree = "";
-		string path_las = "";
-		float yaw = 0.0;
-		float pitch = 0.0;
-		float radius = 0.0;
-		dvec3 target;
-	};
+	// struct Setting{
+	// 	string path_potree = "";
+	// 	string path_las = "";
+	// 	float yaw = 0.0;
+	// 	float pitch = 0.0;
+	// 	float radius = 0.0;
+	// 	dvec3 target;
+	// };
 	
-	unordered_map<string, Setting> settings;
+	// unordered_map<string, Setting> settings;
 	
-	{ // RETZ
-		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/retz/potree"; 
-		setting.path_las = "F:/temp/wgtest/retz/pointcloud.las"; 
-		setting.yaw = 6.91;
-		setting.pitch = -0.78;
-		setting.radius = 569.49;
-		setting.target = {569.57, 867.56, 29.91};
+	// { // RETZ
+	// 	Setting setting;
+	// 	setting.path_potree = "F:/temp/wgtest/retz/potree"; 
+	// 	setting.path_las = "F:/temp/wgtest/retz/pointcloud.las"; 
+	// 	setting.yaw = 6.91;
+	// 	setting.pitch = -0.78;
+	// 	setting.radius = 569.49;
+	// 	setting.target = {569.57, 867.56, 29.91};
 
-		settings["retz"] = setting;
-	}
+	// 	settings["retz"] = setting;
+	// }
 	
-	{ // Eclepens
-		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/eclepens/potree";
-		setting.path_las = "F:/temp/wgtest/eclepens/eclepens.las";
-		setting.yaw = 6.65;
-		setting.pitch = -0.71;
-		setting.radius = 1109.77;
-		setting.target = {514.05, 475.84, -156.43};
+	// { // Eclepens
+	// 	Setting setting;
+	// 	setting.path_potree = "F:/temp/wgtest/eclepens/potree";
+	// 	setting.path_las = "F:/temp/wgtest/eclepens/eclepens.las";
+	// 	setting.yaw = 6.65;
+	// 	setting.pitch = -0.71;
+	// 	setting.radius = 1109.77;
+	// 	setting.target = {514.05, 475.84, -156.43};
 
-		settings["eclepens"] = setting;
-	}
+	// 	settings["eclepens"] = setting;
+	// }
 
-	{ // Eclepens - morton
-		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/eclepens/potree";
-		setting.path_las = "F:/temp/wgtest/eclepens/eclepens_morton.las";
-		setting.yaw = 6.65;
-		setting.pitch = -0.71;
-		setting.radius = 1109.77;
-		setting.target = {514.05, 475.84, -156.43};
+	// { // Eclepens - morton
+	// 	Setting setting;
+	// 	setting.path_potree = "F:/temp/wgtest/eclepens/potree";
+	// 	setting.path_las = "F:/temp/wgtest/eclepens/eclepens_morton.las";
+	// 	setting.yaw = 6.65;
+	// 	setting.pitch = -0.71;
+	// 	setting.radius = 1109.77;
+	// 	setting.target = {514.05, 475.84, -156.43};
 
-		settings["eclepens_morton"] = setting;
-	}
+	// 	settings["eclepens_morton"] = setting;
+	// }
 	
-	{ // Eclepens at home
-		Setting setting;
-		setting.path_potree = "E:/dev/pointclouds/paper_testdata/eclepens/potree";
-		setting.path_las = "E:/dev/pointclouds/paper_testdata/eclepens/eclepens_morton.las";
-		setting.yaw = 6.65;
-		setting.pitch = -0.71;
-		setting.radius = 1109.77;
-		setting.target = {514.05, 475.84, -156.43};
+	// { // Eclepens at home
+	// 	Setting setting;
+	// 	setting.path_potree = "E:/dev/pointclouds/paper_testdata/eclepens/potree";
+	// 	setting.path_las = "E:/dev/pointclouds/paper_testdata/eclepens/eclepens_morton.las";
+	// 	setting.yaw = 6.65;
+	// 	setting.pitch = -0.71;
+	// 	setting.radius = 1109.77;
+	// 	setting.target = {514.05, 475.84, -156.43};
 
-		settings["eclepens_morton_home"] = setting;
-	}
-
-
-	{// MORRO BAY
-		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/morro_bay/potree_morro_bay_278M_morton"; 
-		setting.path_las = "F:/temp/wgtest/morro_bay/morro_bay_278M_morton.las"; 
-		setting.yaw = -0.15;
-		setting.pitch = -0.57;
-		setting.radius = 3166.32;
-		setting.target = {2239.05, 1713.63, -202.02};
-
-		settings["morrobay_morton"] = setting;
-	}
-
-	{ // ENDEAVOR
-		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/endeavor/potree"; 
-		setting.path_las = "F:/temp/wgtest/endeavor/morton.las"; 
-		setting.yaw = -12.08;
-		setting.pitch = -0.60;
-		setting.radius = 149.96;
-		setting.target = {609.85, 610.98, 510.22};
-
-		settings["endeavor"] = setting;
-	}
+	// 	settings["eclepens_morton_home"] = setting;
+	// }
 
 
-	{ // Candi Banyunibo outside
-		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/candi_banyunibo/potree"; 
-		setting.path_las = "F:/temp/wgtest/candi_banyunibo/morton.las"; 
-		setting.yaw = -13.63;
-		setting.pitch = 0.07;
-		setting.radius = 20.26;
-		setting.target = {38.64, 29.22, 5.23};
+	// {// MORRO BAY
+	// 	Setting setting;
+	// 	setting.path_potree = "F:/temp/wgtest/morro_bay/potree_morro_bay_278M_morton"; 
+	// 	setting.path_las = "F:/temp/wgtest/morro_bay/morro_bay_278M_morton.las"; 
+	// 	setting.yaw = -0.15;
+	// 	setting.pitch = -0.57;
+	// 	setting.radius = 3166.32;
+	// 	setting.target = {2239.05, 1713.63, -202.02};
 
-		settings["banyunibo_outside_morton"] = setting;
-	}
+	// 	settings["morrobay_morton"] = setting;
+	// }
 
-	{ // Candi Banyunibo inside
-		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/candi_banyunibo/potree"; 
-		setting.path_las = "F:/temp/wgtest/candi_banyunibo/morton.las"; 
-		setting.yaw = -18.35;
-		setting.pitch = 0.32;
-		setting.radius = 3.01;
-		setting.target = {41.48, 31.31, 4.96};
+	// { // ENDEAVOR
+	// 	Setting setting;
+	// 	setting.path_potree = "F:/temp/wgtest/endeavor/potree"; 
+	// 	setting.path_las = "F:/temp/wgtest/endeavor/morton.las"; 
+	// 	setting.yaw = -12.08;
+	// 	setting.pitch = -0.60;
+	// 	setting.radius = 149.96;
+	// 	setting.target = {609.85, 610.98, 510.22};
 
-		settings["banyunibo_inside_morton"] = setting;
-	}
+	// 	settings["endeavor"] = setting;
+	// }
 
 
-	{ // Niederweiden
-		Setting setting;
-		setting.path_potree = "F:/temp/wgtest/niederweiden/potree"; 
-		setting.path_las = "F:/temp/wgtest/niederweiden/morton.las"; 
-		setting.yaw = 14.51;
-		setting.pitch = -0.59;
-		setting.radius = 76.96;
-		setting.target = {62.38, 85.53, 3.14};
+	// { // Candi Banyunibo outside
+	// 	Setting setting;
+	// 	setting.path_potree = "F:/temp/wgtest/candi_banyunibo/potree"; 
+	// 	setting.path_las = "F:/temp/wgtest/candi_banyunibo/morton.las"; 
+	// 	setting.yaw = -13.63;
+	// 	setting.pitch = 0.07;
+	// 	setting.radius = 20.26;
+	// 	setting.target = {38.64, 29.22, 5.23};
 
-		settings["niederweiden_morton"] = setting;
-	}
+	// 	settings["banyunibo_outside_morton"] = setting;
+	// }
 
-	{ // Test
-		Setting setting;
-		setting.path_potree = "D:/dev/pointclouds/tuwien_baugeschichte/candi Banyunibo/Scan10 - POLYDATA - Candi_Banyunibo010.las_converted";
-		//setting.path_las = "D:/dev/pointclouds/tuwien_baugeschichte/candi Banyunibo/morton/10.las";
-		// setting.path_las = "D:/dev/pointclouds/tuwien_baugeschichte/candi Banyunibo/candi_banyunibo.las";
-		setting.path_las = "F:/temp/wgtest/banyunibo_laserscans/merged.las";
+	// { // Candi Banyunibo inside
+	// 	Setting setting;
+	// 	setting.path_potree = "F:/temp/wgtest/candi_banyunibo/potree"; 
+	// 	setting.path_las = "F:/temp/wgtest/candi_banyunibo/morton.las"; 
+	// 	setting.yaw = -18.35;
+	// 	setting.pitch = 0.32;
+	// 	setting.radius = 3.01;
+	// 	setting.target = {41.48, 31.31, 4.96};
 
-		// outside
-		setting.yaw = 4.39;
-		setting.pitch = -0.18;
-		setting.radius = 8.60;
-		setting.target = {25.09, 36.09, 2.77};
+	// 	settings["banyunibo_inside_morton"] = setting;
+	// }
 
-		// Inside
-		setting.yaw = 6.69;
-		setting.pitch = -0.00;
-		setting.radius = 1.87;
-		setting.target = {41.44, 31.27, 4.31};
 
-		settings["arbegen"] = setting;
-	}
+	// { // Niederweiden
+	// 	Setting setting;
+	// 	setting.path_potree = "F:/temp/wgtest/niederweiden/potree"; 
+	// 	setting.path_las = "F:/temp/wgtest/niederweiden/morton.las"; 
+	// 	setting.yaw = 14.51;
+	// 	setting.pitch = -0.59;
+	// 	setting.radius = 76.96;
+	// 	setting.target = {62.38, 85.53, 3.14};
+
+	// 	settings["niederweiden_morton"] = setting;
+	// }
+
+	// { // Test
+	// 	Setting setting;
+	// 	setting.path_potree = "D:/dev/pointclouds/tuwien_baugeschichte/candi Banyunibo/Scan10 - POLYDATA - Candi_Banyunibo010.las_converted";
+	// 	//setting.path_las = "D:/dev/pointclouds/tuwien_baugeschichte/candi Banyunibo/morton/10.las";
+	// 	// setting.path_las = "D:/dev/pointclouds/tuwien_baugeschichte/candi Banyunibo/candi_banyunibo.las";
+	// 	setting.path_las = "F:/temp/wgtest/banyunibo_laserscans/merged.las";
+
+	// 	// outside
+	// 	setting.yaw = 4.39;
+	// 	setting.pitch = -0.18;
+	// 	setting.radius = 8.60;
+	// 	setting.target = {25.09, 36.09, 2.77};
+
+	// 	// Inside
+	// 	setting.yaw = 6.69;
+	// 	setting.pitch = -0.00;
+	// 	setting.radius = 1.87;
+	// 	setting.target = {41.44, 31.27, 4.31};
+
+	// 	settings["arbegen"] = setting;
+	// }
 
 	// parametric functions
 	// renderer->controls->yaw = 0.41;
@@ -207,67 +209,110 @@ int main(){
 	// renderer->controls->radius = 13.45;
 	// renderer->controls->target = {0.00, 0.00, 0.00};
 
-	Setting setting = settings["banyunibo_inside_morton"];
+	// Setting setting = settings["eclepens_morton"];
+	// //Setting setting = settings["niederweiden_morton"];
 	
-	renderer->controls->yaw = setting.yaw;
-	renderer->controls->pitch = setting.pitch;
-	renderer->controls->radius = setting.radius;
-	renderer->controls->target = setting.target;
+	// renderer->controls->yaw = setting.yaw;
+	// renderer->controls->pitch = setting.pitch;
+	// renderer->controls->radius = setting.radius;
+	// renderer->controls->target = setting.target;
 
-	auto potreedata = PotreeData::create(setting.path_potree);
-	auto las_encode_444 = ComputeLasData::create(setting.path_las);
-	auto las_standard = LasStandardData::create(setting.path_las);
+	renderer->controls->yaw = 0.53;
+	renderer->controls->pitch = -0.68;
+	renderer->controls->radius = 2310.47;
+	renderer->controls->target = {576.91, 886.62, 10.35};
+
+
+	// renderer->controls->yaw = -3.03;
+	// renderer->controls->pitch = -0.41;
+	// renderer->controls->radius = 1.16;
+	// renderer->controls->target = {1.41, 8.09, 3.07};
+
+
+
+	// auto potreedata = PotreeData::create(setting.path_potree);
+	// auto las_encode_444 = ComputeLasData::create(setting.path_las);
+	// auto las_standard = LasStandardData::create(setting.path_las);
+
+	auto lasLoaderSparse = make_shared<LasLoaderSparse>(renderer);
+
+	Runtime::lasLoaderSparse = lasLoaderSparse;
+
+	renderer->onFileDrop([lasLoaderSparse, renderer](vector<string> files){
+		//cout << "files: " << files.size() << endl;
+
+		for(auto file : files){
+			if(iEndsWith(file, "las")){
+				auto lasfile = lasLoaderSparse->add(file);
+
+				// zoom to point cloud
+				auto size = lasfile->boxMax - lasfile->boxMin;
+				auto position = size / 2.0;
+				auto radius = glm::length(size) / 1.5;
+
+				renderer->controls->yaw = 0.53;
+				renderer->controls->pitch = -0.68;
+				renderer->controls->radius = radius;
+				renderer->controls->target = position;
+			}
+		}
+
+		glfwFocusWindow(renderer->window);
+	});
 
 	{ // 4-4-4 byte format
-		auto computeLoopLas       = new ComputeLoopLas(renderer.get(), las_encode_444);
-		auto computeLoopLas2      = new ComputeLoopLas2(renderer.get(), las_encode_444);
-		auto computeLoopLasHqs    = new ComputeLoopLasHqs(renderer.get(), las_encode_444);
+		auto computeLoopLas       = new ComputeLoopLas(renderer.get(), lasLoaderSparse);
+		auto computeLoopLas2      = new ComputeLoopLas2(renderer.get(), lasLoaderSparse);
+		auto computeLoopLasHqs    = new ComputeLoopLasHqs(renderer.get(), lasLoaderSparse);
 		// auto computeLoopLasHqsVR  = new ComputeLoopLasHqsVR(renderer.get(), las_encode_444);
-		auto computeCUDALas       = new ComputeLoopLasCUDA(renderer.get(), las_encode_444);
+		// auto computeCUDALas       = new ComputeLoopLasCUDA(renderer.get(), las_encode_444);
 		Runtime::addMethod((Method*)computeLoopLas);
 		Runtime::addMethod((Method*)computeLoopLas2);
 		Runtime::addMethod((Method*)computeLoopLasHqs);
 		// Runtime::addMethod((Method*)computeLoopLasHqsVR);
-		Runtime::addMethod((Method*)computeCUDALas);
+		// Runtime::addMethod((Method*)computeCUDALas);
 	}
 
-	{ // POTREE FORMAT
-		auto computeLoopNodes = new ComputeLoopNodes(renderer.get(), potreedata);
-		auto computeLoopNodesHqs = new ComputeLoopNodesHqs(renderer.get(), potreedata);
-		auto computeLoopNodesHqsVr = new ComputeLoopNodesHqsVr(renderer.get(), potreedata);
-		Runtime::addMethod((Method*)computeLoopNodes);
-		Runtime::addMethod((Method*)computeLoopNodesHqs);
-		Runtime::addMethod((Method*)computeLoopNodesHqsVr);
-	}
+	//{ // POTREE FORMAT
+	//	auto computeLoopNodes = new ComputeLoopNodes(renderer.get(), potreedata);
+	//	auto computeLoopNodesHqs = new ComputeLoopNodesHqs(renderer.get(), potreedata);
+	//	auto computeLoopNodesHqsVr = new ComputeLoopNodesHqsVr(renderer.get(), potreedata);
+	//	Runtime::addMethod((Method*)computeLoopNodes);
+	//	Runtime::addMethod((Method*)computeLoopNodesHqs);
+	//	Runtime::addMethod((Method*)computeLoopNodesHqsVr);
+	//}
 
-	{ // OLD METHODS / 16 byte format
-		//auto computeEarlyZ = new ComputeEarlyZ(renderer.get(), las_standard);
-		//auto computeEarlyZReduce = new ComputeEarlyZReduce(renderer.get(), las_standard);
-		auto computeDedup = new ComputeDedup(renderer.get(), las_standard);
-		auto compute2021Hqs = new Compute2021HQS(renderer.get(), las_standard);
-		auto compute2021GL = new ComputeGL(renderer.get(), las_standard);
-		//Runtime::addMethod((Method*)computeEarlyZ);
-		//Runtime::addMethod((Method*)computeEarlyZReduce);
-		Runtime::addMethod((Method*)computeDedup);
-		Runtime::addMethod((Method*)compute2021Hqs);
-		Runtime::addMethod((Method*)compute2021GL);
-	}
+	//{ // OLD METHODS / 16 byte format
+	//	//auto computeEarlyZ = new ComputeEarlyZ(renderer.get(), las_standard);
+	//	//auto computeEarlyZReduce = new ComputeEarlyZReduce(renderer.get(), las_standard);
+	//	auto computeDedup = new ComputeDedup(renderer.get(), las_standard);
+	//	auto compute2021Hqs = new Compute2021HQS(renderer.get(), las_standard);
+	//	auto compute2021GL = new ComputeGL(renderer.get(), las_standard);
+	//	//Runtime::addMethod((Method*)computeEarlyZ);
+	//	//Runtime::addMethod((Method*)computeEarlyZReduce);
+	//	Runtime::addMethod((Method*)computeDedup);
+	//	Runtime::addMethod((Method*)compute2021Hqs);
+	//	Runtime::addMethod((Method*)compute2021GL);
+	//}
 
 	// { // PARAMETRIC
 	// auto computeParametric = new ComputeParametric(renderer.get());
 	// Runtime::addMethod((Method*)computeParametric);
 	// }
 
+
 	auto update = [&](){
 
-		if(Debug::requestResetView){
-			renderer->controls->yaw = setting.yaw;
-			renderer->controls->pitch = setting.pitch;
-			renderer->controls->radius = setting.radius;
-			renderer->controls->target = setting.target;
+		//if(Debug::requestResetView){
+		//	renderer->controls->yaw = setting.yaw;
+		//	renderer->controls->pitch = setting.pitch;
+		//	renderer->controls->radius = setting.radius;
+		//	renderer->controls->target = setting.target;
 
-			Debug::requestResetView = false;
-		}
+		//	Debug::requestResetView = false;
+		//}
+
+		lasLoaderSparse->process();
 
 		auto selected = Runtime::getSelectedMethod();
 		if(selected){
@@ -302,14 +347,21 @@ int main(){
 			Debug::set("state", state);
 		}
 
-		//{
-		//	float t = now();
+		for(auto lasfile : Runtime::lasLoaderSparse->files){
+			if(lasfile->isDoubleClicked){
 
-		//	renderer->controls->yaw = t;
-		//	renderer->controls->pitch = -0.32;
-		//	renderer->controls->radius = 24.50;
-		//	renderer->controls->target = {40.57, 29.45, 3.87};
-		//}
+				auto size = lasfile->boxMax - lasfile->boxMin;
+				auto position = size / 2.0;
+				auto radius = glm::length(size) / 1.5;
+
+				renderer->controls->yaw = 0.53;
+				renderer->controls->pitch = -0.68;
+				renderer->controls->radius = radius;
+				renderer->controls->target = position;
+			}
+		}
+
+		// renderer->drawBoundingBox({0.0, 0.0, 0.0}, {200.0, 200.0, 200.0}, {200, 0, 0});
 
 	};
 
@@ -391,6 +443,21 @@ int main(){
 				selected->render(renderer.get());
 			}
 		}
+
+		
+		for(auto lasfile : Runtime::lasLoaderSparse->files){
+
+			dvec3 size = lasfile->boxMax - lasfile->boxMin;
+			dvec3 position = size / 2.0;
+
+			if(lasfile->isHovered){
+				renderer->drawBoundingBox(position, size, {255, 255, 0});
+			}else if(lasfile->numPointsLoaded < lasfile->numPoints){
+				renderer->drawBoundingBox(position, size, {255, 0, 0});
+			}
+			
+		}
+		
 
 	};
 

@@ -25,13 +25,11 @@
 #include "Renderer.h"
 #include "GLTimerQueries.h"
 #include "Method.h"
-#include "compute/ComputeLasLoader.h"
+#include "compute/LasLoaderSparse.h"
 
 using namespace std;
 using namespace std::chrono_literals;
 using nlohmann::json;
-
-
 
 struct ComputeLoopLasHqs : public Method{
 
@@ -76,11 +74,11 @@ struct ComputeLoopLasHqs : public Method{
 	GLBuffer uniformBuffer;
 	UniformData uniformData;
 
-	shared_ptr<ComputeLasData> las = nullptr;
+	shared_ptr<LasLoaderSparse> las = nullptr;
 
 	Renderer* renderer = nullptr;
 
-	ComputeLoopLasHqs(Renderer* renderer, shared_ptr<ComputeLasData> las){
+	ComputeLoopLasHqs(Renderer* renderer, shared_ptr<LasLoaderSparse> las){
 
 		this->name = "loop_las_hqs";
 		this->description = R"ER01(
@@ -110,16 +108,13 @@ averages overlapping points
 
 	void update(Renderer* renderer){
 
-		if(Runtime::resource != (Resource*)las.get()){
+		// if(Runtime::resource != (Resource*)las.get()){
 
-			if(Runtime::resource != nullptr){
-				Runtime::resource->unload(renderer);
-			}
+		// 	if(Runtime::resource != nullptr){
+		// 		Runtime::resource->unload(renderer);
+		// 	}
 
-			las->load(renderer);
-
-			Runtime::resource = (Resource*)las.get();
-		}
+		// }
 
 	}
 
@@ -127,14 +122,13 @@ averages overlapping points
 
 		GLTimerQueries::timestamp("compute-loop-start");
 
-		las->process(renderer);
+		las->process();
 
 		if(las->numPointsLoaded == 0){
 			return;
 		}
 
 		auto fbo = renderer->views[0].framebuffer;
-		auto camera = renderer->camera;
 
 		// Update Uniform Buffer
 		{
@@ -181,10 +175,11 @@ averages overlapping points
 			glBindBufferBase(GL_UNIFORM_BUFFER, 31, uniformBuffer.handle);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 40, las->ssBatches.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 41, las->ssXyz_12b.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyz_8b.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyz_4b.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 41, las->ssXyzHig.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyzMed.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyzLow.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
+
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 50, ssBoundingBoxes.handle);
 
 			glBindImageTexture(0, fbo->colorAttachments[0]->handle, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8UI);
@@ -208,10 +203,11 @@ averages overlapping points
 			glBindBufferBase(GL_UNIFORM_BUFFER, 31, uniformBuffer.handle);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 40, las->ssBatches.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 41, las->ssXyz_12b.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyz_8b.handle);
-			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyz_4b.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 41, las->ssXyzHig.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyzMed.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyzLow.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
+			
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 50, ssBoundingBoxes.handle);
 
 			glBindImageTexture(0, fbo->colorAttachments[0]->handle, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8UI);

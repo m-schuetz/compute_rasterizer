@@ -29,8 +29,8 @@ struct Batch{
 	float max_z;
 	int numPoints;
 
-	int lod_offset;
-	int lod_numPoints;
+	int firstPoint;
+	int padding2;
 	int padding3;
 	int padding4;
 	int padding5;
@@ -97,6 +97,8 @@ layout(std140, binding = 31) uniform UniformData{
 	int showBoundingBox;
 	int numPoints;
 	ivec2 imageSize;
+	bool colorizeChunks;
+	bool colorizeOverdraw;
 } uniforms;
 
 uint SPECTRAL[5] = {
@@ -266,10 +268,9 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 void main(){
 	
 	uint batchIndex = gl_WorkGroupID.x;
-	uint numPointsPerBatch = uniforms.pointsPerThread * gl_WorkGroupSize.x;
-	uint wgFirstPoint = batchIndex * numPointsPerBatch;
-
 	Batch batch = ssBatches[batchIndex];
+
+	uint wgFirstPoint = batch.firstPoint;
 
 	if(debug.enabled && gl_LocalInvocationID.x == 0){
 		atomicAdd(debug.numNodesProcessed, 1);
@@ -278,6 +279,8 @@ void main(){
 	vec3 wgMin = vec3(batch.min_x, batch.min_y, batch.min_z);
 	vec3 wgMax = vec3(batch.max_x, batch.max_y, batch.max_z);
 	vec3 boxSize = wgMax - wgMin;
+
+	// debug.numPointsProcessed = uint(boxSize.x);
 
 	// FRUSTUM CULLING
 	if((uniforms.enableFrustumCulling != 0) && !intersectsFrustum(wgMin, wgMax)){
@@ -351,18 +354,23 @@ void main(){
 
 	#endif
 
-		if(index > uniforms.numPoints){
+		if(localIndex > batch.numPoints){
 			return;
 		}
-
-		// 2877987
-		// if(index != 2877440 + 547){
-		// 	continue;
-		// }
 
 		if(debug.enabled){
 			atomicAdd(debug.numPointsProcessed, 1);
 		}
+
+		// if(localIndex > 3406){
+		// 	continue;
+		// }
+
+		// if(localIndex != 3406){
+		// 	continue;
+		// }
+
+
 
 		vec3 point;
 		
@@ -436,15 +444,6 @@ void main(){
 			float y = float(Y) * (boxSize.y / STEPS_10BIT) + wgMin.y;
 			float z = float(Z) * (boxSize.z / STEPS_10BIT) + wgMin.z;
 
-			// int bits = 10 - 8;
-			// X = (X >> bits) << bits;
-			// Y = (Y >> bits) << bits;
-			// Z = (Z >> bits) << bits;
-
-			// x = float(X) * (boxSize.x / STEPS_10BIT) + wgMin.x;
-			// y = float(Y) * (boxSize.y / STEPS_10BIT) + wgMin.y;
-			// z = float(Z) * (boxSize.z / STEPS_10BIT) + wgMin.z;
-
 			point = vec3(x, y, z);
 		}
 		
@@ -460,13 +459,21 @@ void main(){
 			ivec2 pixelCoords = ivec2(imgPos);
 			int pixelID = pixelCoords.x + pixelCoords.y * uniforms.imageSize.x;
 
-			// index = (batchIndex * batchIndex) % 20011;
-			// index = index * 1234;
+			
+			uint64_t colorComponent;
+
+			if(uniforms.colorizeChunks){
+				colorComponent = batchIndex * 1234567;
+			}else{
+				colorComponent = uint64_t(index);
+			}
+
 			uint32_t depth = floatBitsToInt(pos.w);
-			uint64_t newPoint = (uint64_t(depth) << 32UL) | uint64_t(index);
+			uint64_t newPoint = (uint64_t(depth) << 32UL) | colorComponent;
 
 			uint64_t oldPoint = ssFramebuffer[pixelID];
 			if(newPoint < oldPoint){
+				
 				atomicMin(ssFramebuffer[pixelID], newPoint);
 
 				if(debug.enabled){

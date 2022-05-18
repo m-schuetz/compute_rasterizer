@@ -66,7 +66,7 @@ void _drawBoundingBoxes(Camera* camera, vector<Box>& boxes){
 		buffer.set<uint32_t>(color, stride * i + 32);
 	}
 
-	glNamedBufferSubData(ssBoxes, 0, stride * boxes.size(), buffer.data);
+	glNamedBufferSubData(ssBoxes, stride, stride * boxes.size(), buffer.data);
 
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, ssBoxes);
 
