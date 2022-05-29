@@ -33,6 +33,7 @@ struct LasLoaderSparse {
 	mutex mtx_load;
 
 	struct LasFile{
+		int64_t fileIndex = 0;
 		string path;
 		int64_t numPoints = 0;
 		int64_t numPointsLoaded = 0;
@@ -78,6 +79,7 @@ struct LasLoaderSparse {
 		int64_t file_pointOffset;
 		int64_t sparse_pointOffset;
 		int64_t numPoints;
+		int64_t file_index;
 
 		dvec3 min = {Infinity, Infinity, Infinity};
 		dvec3 max = {-Infinity, -Infinity, -Infinity};
@@ -92,6 +94,7 @@ struct LasLoaderSparse {
 	int64_t numBatches = 0;
 	int64_t numBatchesLoaded = 0;
 	int64_t bytesReserved = 0;
+	int64_t numFiles = 0;
 
 	shared_ptr<Renderer> renderer = nullptr;
 
@@ -133,6 +136,9 @@ struct LasLoaderSparse {
 	shared_ptr<LasFile> add(string path){
 
 		auto lasfile = make_shared<LasFile>();
+
+		lasfile->fileIndex = this->numFiles;
+		this->numFiles++;
 
 		{ // load lasfile metadata
 			lasfile->path = path;
@@ -200,16 +206,6 @@ struct LasLoaderSparse {
 
 				pointOffset += pointsInBatch;
 			}
-
-			// vector<LoadTask> cropped;
-			// cropped.push_back(loadTasks[0]);
-			// cropped.push_back(loadTasks[1]);
-			// cropped.push_back(loadTasks[2]);
-			// cropped.push_back(loadTasks[3]);
-			// cropped.push_back(loadTasks[4]);
-			// loadTasks = cropped;
-
-			//  std::reverse(loadTasks.begin(), loadTasks.end());
 		}
 
 		return lasfile;
@@ -319,14 +315,15 @@ struct LasLoaderSparse {
 					{
 						int64_t batchByteOffset = 64 * batchIndex;
 						
-						bBatches->set<float>(batch.min.x             , batchByteOffset +  4);
-						bBatches->set<float>(batch.min.y             , batchByteOffset +  8);
-						bBatches->set<float>(batch.min.z             , batchByteOffset + 12);
-						bBatches->set<float>(batch.max.x             , batchByteOffset + 16);
-						bBatches->set<float>(batch.max.y             , batchByteOffset + 20);
-						bBatches->set<float>(batch.max.z             , batchByteOffset + 24);
-						bBatches->set<uint32_t>(batch.numPoints         , batchByteOffset + 28);
-						bBatches->set<uint32_t>(batch.sparse_pointOffset, batchByteOffset + 32);
+						bBatches->set<float>(batch.min.x                  , batchByteOffset +  4);
+						bBatches->set<float>(batch.min.y                  , batchByteOffset +  8);
+						bBatches->set<float>(batch.min.z                  , batchByteOffset + 12);
+						bBatches->set<float>(batch.max.x                  , batchByteOffset + 16);
+						bBatches->set<float>(batch.max.y                  , batchByteOffset + 20);
+						bBatches->set<float>(batch.max.z                  , batchByteOffset + 24);
+						bBatches->set<uint32_t>(batch.numPoints           , batchByteOffset + 28);
+						bBatches->set<uint32_t>(batch.sparse_pointOffset  , batchByteOffset + 32);
+						bBatches->set<uint32_t>(lasfile->fileIndex        , batchByteOffset + 36);
 					}
 
 					int offset_rgb = 0;
@@ -406,11 +403,7 @@ struct LasLoaderSparse {
 							bColors->set<uint32_t>(color, 4 * index_pointFile);
 						}
 					}
-
-
 				}
-
-				// numBatchesLoaded += numBatches;
 
 				UploadTask uploadTask;
 				uploadTask.lasfile = lasfile;
@@ -450,14 +443,6 @@ struct LasLoaderSparse {
 
 		lock.unlock();
 
-		// if(numProcessed > 0){
-		// 	return;
-		// }
-
-		// numProcessed++;
-
-
-
 		// UPLOAD DATA TO GPU
 
 		{ // commit physical memory in sparse buffers
@@ -467,9 +452,6 @@ struct LasLoaderSparse {
 			int64_t size = 4 * task.numPoints;
 			int64_t pageAlignedSize = size - (size % PAGE_SIZE) + PAGE_SIZE;
 			pageAlignedSize = std::min(pageAlignedSize, 4 * MAX_POINTS);
-
-			// pageAlignedOffset = 0;
-			// pageAlignedSize = 10 * 4'128'768;
 
 			cout << "commiting, offset: " << formatNumber(pageAlignedOffset) << ", size: " << formatNumber(pageAlignedSize) << endl;
 

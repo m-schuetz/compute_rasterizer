@@ -241,20 +241,31 @@ int main(){
 	renderer->onFileDrop([lasLoaderSparse, renderer](vector<string> files){
 		//cout << "files: " << files.size() << endl;
 
+		dvec3 boxMin = {Infinity, Infinity, Infinity};
+		dvec3 boxMax = {-Infinity, -Infinity, -Infinity};
+		int numValidFiles = 0;
+
 		for(auto file : files){
 			if(iEndsWith(file, "las")){
 				auto lasfile = lasLoaderSparse->add(file);
 
-				// zoom to point cloud
-				auto size = lasfile->boxMax - lasfile->boxMin;
-				auto position = size / 2.0;
-				auto radius = glm::length(size) / 1.5;
+				boxMin = glm::min(boxMin, lasfile->boxMin);
+				boxMax = glm::max(boxMax, lasfile->boxMax);
 
-				renderer->controls->yaw = 0.53;
-				renderer->controls->pitch = -0.68;
-				renderer->controls->radius = radius;
-				renderer->controls->target = position;
+				numValidFiles++;
 			}
+		}
+
+		{
+			// zoom to point cloud
+			auto size = boxMax - boxMin;
+			auto position = (boxMax + boxMin) / 2.0;
+			auto radius = glm::length(size) / 1.5;
+
+			renderer->controls->yaw = 0.53;
+			renderer->controls->pitch = -0.68;
+			renderer->controls->radius = radius;
+			renderer->controls->target = position;
 		}
 
 		glfwFocusWindow(renderer->window);
@@ -448,7 +459,7 @@ int main(){
 		for(auto lasfile : Runtime::lasLoaderSparse->files){
 
 			dvec3 size = lasfile->boxMax - lasfile->boxMin;
-			dvec3 position = size / 2.0;
+			dvec3 position = (lasfile->boxMax + lasfile->boxMin) / 2.0;
 
 			if(lasfile->isHovered){
 				renderer->drawBoundingBox(position, size, {255, 255, 0});

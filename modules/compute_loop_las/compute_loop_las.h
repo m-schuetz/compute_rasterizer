@@ -12,6 +12,7 @@
 #include <glm/gtx/transform.hpp>
 #include "nlohmann/json.hpp"
 #include <glm/gtc/matrix_transform.hpp> 
+#include <glm/gtc/type_ptr.hpp> 
 
 #include "unsuck.hpp"
 
@@ -68,8 +69,10 @@ struct ComputeLoopLas : public Method{
 	GLBuffer ssFramebuffer;
 	GLBuffer ssDebug;
 	GLBuffer ssBoundingBoxes;
+	GLBuffer ssFiles;
 	GLBuffer uniformBuffer;
 	UniformData uniformData;
+	shared_ptr<Buffer> ssFilesBuffer;
 
 	shared_ptr<LasLoaderSparse> las = nullptr;
 
@@ -93,14 +96,18 @@ struct ComputeLoopLas : public Method{
 
 		this->renderer = renderer;
 
+		ssFilesBuffer = make_shared<Buffer>(10'000 * 128);
+
 		ssFramebuffer = renderer->createBuffer(8 * 2048 * 2048);
 		ssDebug = renderer->createBuffer(256);
 		ssBoundingBoxes = renderer->createBuffer(48 * 1'000'000);
+		ssFiles = renderer->createBuffer(ssFilesBuffer->size);
 		uniformBuffer = renderer->createUniformBuffer(512);
 
 		GLuint zero = 0;
 		glClearNamedBufferData(ssDebug.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		glClearNamedBufferData(ssBoundingBoxes.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
+		glClearNamedBufferData(ssFiles.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 	}
 	
 	void update(Renderer* renderer){
@@ -126,9 +133,8 @@ struct ComputeLoopLas : public Method{
 		}
 
 		auto fbo = renderer->views[0].framebuffer;
-
-		// Update Uniform Buffer
-		{
+		
+		{ // Update Uniform Buffer
 			mat4 world;
 			mat4 view = renderer->views[0].view;
 			mat4 proj = renderer->views[0].proj;
@@ -151,6 +157,42 @@ struct ComputeLoopLas : public Method{
 			uniformData.colorizeOverdraw = Debug::colorizeOverdraw;
 
 			glNamedBufferSubData(uniformBuffer.handle, 0, sizeof(UniformData), &uniformData);
+		}
+
+		{ // update file buffer
+
+			for(int i = 0; i < las->files.size(); i++){
+				auto lasfile = las->files[i];
+
+				dmat4 world = glm::translate(dmat4(), lasfile->boxMin);
+				dmat4 view = renderer->views[0].view;
+				dmat4 proj = renderer->views[0].proj;
+				dmat4 worldView = view * world;
+				dmat4 worldViewProj = proj * view * world;
+
+				mat4 transform = worldViewProj;
+				mat4 fWorld = world;
+
+				memcpy(
+					ssFilesBuffer->data_u8 + 256 * i + 0, 
+					glm::value_ptr(transform), 
+					64);
+
+				if(Debug::updateFrustum){
+					memcpy(
+						ssFilesBuffer->data_u8 + 256 * i + 64, 
+						glm::value_ptr(transform), 
+						64);
+				}
+
+				memcpy(
+					ssFilesBuffer->data_u8 + 256 * i + 128, 
+					glm::value_ptr(fWorld), 
+					64);
+
+			}
+
+			glNamedBufferSubData(ssFiles.handle, 0, 256 * las->files.size(), ssFilesBuffer->data);
 		}
 
 		if(Debug::enableShaderDebugValue){
@@ -177,6 +219,7 @@ struct ComputeLoopLas : public Method{
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyzMed.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyzLow.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 45, ssFiles.handle);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 50, ssBoundingBoxes.handle);
 

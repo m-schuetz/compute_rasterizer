@@ -126,19 +126,20 @@ void Renderer::init(){
 	GLFWmonitor** monitors = glfwGetMonitors(&numMonitors);
 
 	cout << "<create windows>" << endl;
-	// if (numMonitors > 1) {
-	// 	const GLFWvidmode * modeLeft = glfwGetVideoMode(monitors[0]);
-	// 	const GLFWvidmode * modeRight = glfwGetVideoMode(monitors[1]);
+	if (numMonitors > 1) {
+		const GLFWvidmode * modeLeft = glfwGetVideoMode(monitors[0]);
+		const GLFWvidmode * modeRight = glfwGetVideoMode(monitors[1]);
 
-	// 	window = glfwCreateWindow(modeRight->width, modeRight->height - 300, "Simple example", nullptr, nullptr);
+		window = glfwCreateWindow(modeRight->width, modeRight->height - 300, "Simple example", nullptr, nullptr);
 
-	// 	if (!window) {
-	// 		glfwTerminate();
-	// 		exit(EXIT_FAILURE);
-	// 	}
+		if (!window) {
+			glfwTerminate();
+			exit(EXIT_FAILURE);
+		}
 
-	// 	glfwSetWindowPos(window, modeLeft->width, 0);
-	// } else 
+		glfwSetWindowPos(window, modeLeft->width, 0);
+	} 
+	else 
 	{
 		const GLFWvidmode * mode = glfwGetVideoMode(monitors[0]);
 
