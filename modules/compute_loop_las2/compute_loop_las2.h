@@ -12,6 +12,7 @@
 #include <glm/gtx/transform.hpp>
 #include "nlohmann/json.hpp"
 #include <glm/gtc/matrix_transform.hpp> 
+#include <glm/gtc/type_ptr.hpp> 
 
 #include "unsuck.hpp"
 
@@ -30,6 +31,8 @@
 using namespace std;
 using namespace std::chrono_literals;
 using nlohmann::json;
+
+using glm::ivec2;
 
 struct ComputeLoopLas2 : public Method{
 
@@ -106,17 +109,10 @@ struct ComputeLoopLas2 : public Method{
 		GLuint zero = 0;
 		glClearNamedBufferData(ssDebug.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		glClearNamedBufferData(ssBoundingBoxes.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
+		glClearNamedBufferData(ssFiles.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 	}
 	
 	void update(Renderer* renderer){
-
-		if(Runtime::resource != (Resource*)las.get()){
-
-			if(Runtime::resource != nullptr){
-				Runtime::resource->unload(renderer);
-			}
-			
-		}
 
 	}
 
@@ -131,9 +127,8 @@ struct ComputeLoopLas2 : public Method{
 		}
 
 		auto fbo = renderer->views[0].framebuffer;
-
-		// Update Uniform Buffer
-		{
+		
+		{ // Update Uniform Buffer
 			mat4 world;
 			mat4 view = renderer->views[0].view;
 			mat4 proj = renderer->views[0].proj;
@@ -173,19 +168,19 @@ struct ComputeLoopLas2 : public Method{
 				mat4 fWorld = world;
 
 				memcpy(
-					ssFilesBuffer->data_u8 + 256 * i + 0, 
+					ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 0, 
 					glm::value_ptr(transform), 
 					64);
 
 				if(Debug::updateFrustum){
 					memcpy(
-						ssFilesBuffer->data_u8 + 256 * i + 64, 
+						ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 64, 
 						glm::value_ptr(transform), 
 						64);
 				}
 
 				memcpy(
-					ssFilesBuffer->data_u8 + 256 * i + 128, 
+					ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 128, 
 					glm::value_ptr(fWorld), 
 					64);
 
@@ -200,7 +195,7 @@ struct ComputeLoopLas2 : public Method{
 
 			glNamedBufferSubData(ssDebug.handle, 0, sizeof(DebugData), &data);
 		}
-
+		
 		// RENDER
 		if(csRender->program != -1){
 			GLTimerQueries::timestamp("draw-start");
@@ -278,7 +273,6 @@ struct ComputeLoopLas2 : public Method{
 			auto camera = renderer->camera;
 			renderer->drawBoundingBoxes(camera.get(), ssBoundingBoxes);
 		}
-
 
 		{ // CLEAR
 			glMemoryBarrier(GL_ALL_BARRIER_BITS);

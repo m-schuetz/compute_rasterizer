@@ -64,9 +64,9 @@ layout(local_size_x = 128, local_size_y = 1) in;
 
 layout (std430, binding =  1) buffer abc_0 { uint64_t ssFramebuffer[]; };
 layout (std430, binding = 40) buffer abc_2 { Batch    ssBatches[];     };
-layout (std430, binding = 41) buffer abc_3 { uvec4 ssXyz_12b[];     };
-layout (std430, binding = 42) buffer abc_4 { uvec4 ssXyz_8b[];      };
-layout (std430, binding = 43) buffer abc_5 { uvec4 ssXyz_4b[];      };
+layout (std430, binding = 41) buffer abc_3 { uvec4    ssXyz_12b[];     };
+layout (std430, binding = 42) buffer abc_4 { uvec4    ssXyz_8b[];      };
+layout (std430, binding = 43) buffer abc_5 { uvec4    ssXyz_4b[];      };
 layout (std430, binding = 44) buffer abc_6 { uint32_t ssRGBA[];        };
 layout (std430, binding = 45) buffer abc_7 { File     ssFiles[];     };
 
@@ -92,7 +92,7 @@ layout (std430, binding = 50) buffer data_bb {
 } boundingBoxes;
 
 layout(std140, binding = 31) uniform UniformData{
-	mat4 world;
+	mat4 pad0; //mat4 world;
 	mat4 view;
 	mat4 proj;
 	mat4 transform;
@@ -102,6 +102,8 @@ layout(std140, binding = 31) uniform UniformData{
 	int showBoundingBox;
 	int numPoints;
 	ivec2 imageSize;
+	bool colorizeChunks;
+	bool colorizeOverdraw;
 } uniforms;
 
 uint SPECTRAL[5] = {
@@ -311,6 +313,8 @@ void main(){
 	}
 
 	int loopSize = uniforms.pointsPerThread;
+
+	// level = 4;
 	
 	if(level == 0){
 		uint base = wgFirstPoint / 4 + gl_LocalInvocationID.x;
@@ -332,6 +336,11 @@ void main(){
 
 			for (int j = 0; j < 4; j++){
 				uint index = 4 * (base + i * gl_WorkGroupSize.x) + j; 
+
+				uint localIndex = index - wgFirstPoint;
+				if(localIndex > batch.numPoints){
+					return;
+				}
 
 				uint32_t b4 = encodedw_4b[j];
 				uint32_t b8 = encodedw_8b[j];
@@ -384,6 +393,11 @@ void main(){
 			for (int j = 0; j < 4; j++){
 				uint index = 4 * (base + i * gl_WorkGroupSize.x) + j; 
 
+				uint localIndex = index - wgFirstPoint;
+				if(localIndex > batch.numPoints){
+					return;
+				}
+
 				uint32_t b4 = encodedw_4b[j];
 				uint32_t b8 = encodedw_8b[j];
 
@@ -427,7 +441,13 @@ void main(){
 
 			for (int j = 0; j < 4; j++){
 				uint index = 4 * (base + i * gl_WorkGroupSize.x) + j; 
+
 				uint32_t encoded = encodedw[j];
+
+				uint localIndex = index - wgFirstPoint;
+				if(localIndex > batch.numPoints){
+					return;
+				}
 				
 				uint32_t X = (encoded >>  0) & MASK_10BIT;
 				uint32_t Y = (encoded >> 10) & MASK_10BIT;

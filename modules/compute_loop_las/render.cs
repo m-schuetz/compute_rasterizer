@@ -80,11 +80,6 @@ layout (std430, binding = 30) buffer abc_1 {
 	uint32_t numPointsVisible;
 } debug;
 
-// layout (std430, binding = 45) buffer data_lod {
-// 	int numPoints;
-// 	uint32_t ssLOD[];
-// } lod;
-
 layout (std430, binding = 50) buffer data_bb {
 	uint count;
 	uint instanceCount;
@@ -118,64 +113,6 @@ uint SPECTRAL[5] = {
 	0x0061aefd,
 	0x001c19d7
 };
-
-// void renderLOD(Batch batch){
-// 	int loopSize = int(ceil(float(batch.lod_numPoints) / 128.0));
-
-// 	for(int i = 0; i < loopSize; i++){
-
-// 		uint localIndex = i * gl_WorkGroupSize.x + gl_LocalInvocationID.x;
-// 		int lodPointIndex = int(batch.lod_offset + localIndex);
-
-// 		if(localIndex < batch.lod_numPoints)
-// 		{
-
-// 			uint32_t encoded = lod.ssLOD[16 + lodPointIndex];
-// 			// set leftmost bit to flag as lod point
-// 			uint32_t pointIndex = lodPointIndex | 0x80000000;
-
-// 			vec3 wgMin = vec3(batch.min_x, batch.min_y, batch.min_z);
-// 			vec3 wgMax = vec3(batch.max_x, batch.max_y, batch.max_z);
-// 			vec3 boxSize = wgMax - wgMin;
-
-// 			uint32_t X = (encoded >>  0) & MASK_10BIT;
-// 			uint32_t Y = (encoded >> 10) & MASK_10BIT;
-// 			uint32_t Z = (encoded >> 20) & MASK_10BIT;
-
-// 			float x = float(X) * (boxSize.x / STEPS_10BIT) + wgMin.x;
-// 			float y = float(Y) * (boxSize.y / STEPS_10BIT) + wgMin.y;
-// 			float z = float(Z) * (boxSize.z / STEPS_10BIT) + wgMin.z;
-
-// 			vec3 point = vec3(x, y, z);
-			
-// 			// now project to screen
-// 			vec4 pos = vec4(point, 1.0);
-// 			pos = uniforms.transform * pos;
-// 			pos.xyz = pos.xyz / pos.w;
-
-// 			bool isInsideFrustum = true;
-// 			if(pos.w <= 0.0 || pos.x < -1.0 || pos.x > 1.0 || pos.y < -1.0 || pos.y > 1.0){
-// 				isInsideFrustum = false;
-// 			}
-
-// 			if(isInsideFrustum){
-// 				vec2 imgPos = (pos.xy * 0.5 + 0.5) * uniforms.imageSize;
-// 				ivec2 pixelCoords = ivec2(imgPos);
-// 				int pixelID = pixelCoords.x + pixelCoords.y * uniforms.imageSize.x;
-
-// 				uint32_t depth = floatBitsToInt(pos.w);
-// 				uint64_t newPoint = (uint64_t(depth) << 32UL) | pointIndex;
-
-// 				uint64_t oldPoint = ssFramebuffer[pixelID];
-// 				if(newPoint < oldPoint){
-// 					atomicMin(ssFramebuffer[pixelID], newPoint);
-// 				}
-// 			}
-// 		}
-// 	}
-
-// 	return;
-// }
 
 struct Plane{
 	vec3 normal;
@@ -309,8 +246,6 @@ void main(){
 	vec3 wgMax = vec3(batch.max_x, batch.max_y, batch.max_z);
 	vec3 boxSize = wgMax - wgMin;
 
-	// debug.numPointsProcessed = uint(boxSize.x);
-
 	// FRUSTUM CULLING
 	if((uniforms.enableFrustumCulling != 0) && !intersectsFrustum(file.transformFrustum, wgMin, wgMax)){
 		return;
@@ -345,15 +280,7 @@ void main(){
 		box.color = color;
 
 		boundingBoxes.ssBoxes[boxIndex] = box;
-
-		// debug.numPointsRendered = 100000;
 	}
-
-	// if(level > 3 && false){
-	// 	renderLOD(batch);
-
-	// 	return;
-	// }
 
 	if(debug.enabled && gl_LocalInvocationID.x == 0){
 		atomicAdd(debug.numNodesRendered, 1);
@@ -393,16 +320,6 @@ void main(){
 		if(debug.enabled){
 			atomicAdd(debug.numPointsProcessed, 1);
 		}
-
-		// if(localIndex > 3406){
-		// 	continue;
-		// }
-
-		// if(localIndex != 3406){
-		// 	continue;
-		// }
-
-
 
 		vec3 point;
 		

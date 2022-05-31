@@ -26,7 +26,6 @@
 #include "Renderer.h"
 #include "GLTimerQueries.h"
 #include "Method.h"
-#include "Runtime.h"
 #include "compute/LasLoaderSparse.h"
 
 using namespace std;
@@ -93,12 +92,13 @@ struct ComputeLoopLas : public Method{
 
 		csRender = new Shader({ {"./modules/compute_loop_las/render.cs", GL_COMPUTE_SHADER} });
 		csResolve = new Shader({ {"./modules/compute_loop_las/resolve.cs", GL_COMPUTE_SHADER} });
+		
+		ssFramebuffer = renderer->createBuffer(8 * 2048 * 2048);
 
 		this->renderer = renderer;
 
 		ssFilesBuffer = make_shared<Buffer>(10'000 * 128);
 
-		ssFramebuffer = renderer->createBuffer(8 * 2048 * 2048);
 		ssDebug = renderer->createBuffer(256);
 		ssBoundingBoxes = renderer->createBuffer(48 * 1'000'000);
 		ssFiles = renderer->createBuffer(ssFilesBuffer->size);
@@ -109,16 +109,8 @@ struct ComputeLoopLas : public Method{
 		glClearNamedBufferData(ssBoundingBoxes.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		glClearNamedBufferData(ssFiles.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 	}
-	
+
 	void update(Renderer* renderer){
-
-		if(Runtime::resource != (Resource*)las.get()){
-
-			if(Runtime::resource != nullptr){
-				Runtime::resource->unload(renderer);
-			}
-
-		}
 
 	}
 
@@ -174,19 +166,19 @@ struct ComputeLoopLas : public Method{
 				mat4 fWorld = world;
 
 				memcpy(
-					ssFilesBuffer->data_u8 + 256 * i + 0, 
+					ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 0, 
 					glm::value_ptr(transform), 
 					64);
 
 				if(Debug::updateFrustum){
 					memcpy(
-						ssFilesBuffer->data_u8 + 256 * i + 64, 
+						ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 64, 
 						glm::value_ptr(transform), 
 						64);
 				}
 
 				memcpy(
-					ssFilesBuffer->data_u8 + 256 * i + 128, 
+					ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 128, 
 					glm::value_ptr(fWorld), 
 					64);
 
@@ -239,6 +231,7 @@ struct ComputeLoopLas : public Method{
 			glUseProgram(csResolve->program);
 			
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 1, ssFramebuffer.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 30, ssDebug.handle);
 			glBindBufferBase(GL_UNIFORM_BUFFER, 31, uniformBuffer.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
 

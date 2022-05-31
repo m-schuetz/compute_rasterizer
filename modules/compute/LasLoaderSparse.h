@@ -11,11 +11,35 @@
 #include "unsuck.hpp"
 #include "Shader.h"
 #include "Resources.h"
+#include "TaskPool.h"
 
 using namespace std;
 using glm::vec3;
 
 namespace fs = std::filesystem;
+
+struct LasFile{
+	int64_t fileIndex = 0;
+	string path;
+	int64_t numPoints = 0;
+	int64_t numPointsLoaded = 0;
+	uint32_t offsetToPointData = 0;
+	int pointFormat = 0;
+	uint32_t bytesPerPoint = 0;
+	dvec3 scale = {1.0, 1.0, 1.0};
+	dvec3 offset = {0.0, 0.0, 0.0};
+	dvec3 boxMin;
+	dvec3 boxMax;
+	
+	int64_t numBatches = 0;
+
+	// index of first point in the sparse gpu buffer
+	int64_t sparse_point_offset = 0;
+
+	bool isSelected = false;
+	bool isHovered = false;
+	bool isDoubleClicked = false;
+};
 
 struct LasLoaderSparse {
 
@@ -31,29 +55,6 @@ struct LasLoaderSparse {
 
 	mutex mtx_upload;
 	mutex mtx_load;
-
-	struct LasFile{
-		int64_t fileIndex = 0;
-		string path;
-		int64_t numPoints = 0;
-		int64_t numPointsLoaded = 0;
-		uint32_t offsetToPointData = 0;
-		int pointFormat = 0;
-		uint32_t bytesPerPoint = 0;
-		dvec3 scale = {1.0, 1.0, 1.0};
-		dvec3 offset = {0.0, 0.0, 0.0};
-		dvec3 boxMin;
-		dvec3 boxMax;
-		
-		int64_t numBatches = 0;
-
-		// index of first point in the sparse gpu buffer
-		int64_t sparse_point_offset = 0;
-
-		bool isSelected = false;
-		bool isHovered = false;
-		bool isDoubleClicked = false;
-	};
 
 	struct LoadTask{
 		shared_ptr<LasFile> lasfile;
@@ -126,10 +127,149 @@ struct LasLoaderSparse {
 			glClearNamedBufferData(this->ssBatches.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		}
 
-		// for(int i = 0; i < 10; i++){
-		// 	spawnLoader();
-		// }
-		spawnLoader();
+		int numThreads = 1;
+		auto cpuData = getCpuData();
+
+		if(cpuData.numProcessors == 1) numThreads = 1;
+		if(cpuData.numProcessors == 2) numThreads = 1;
+		if(cpuData.numProcessors == 3) numThreads = 2;
+		if(cpuData.numProcessors == 4) numThreads = 3;
+		if(cpuData.numProcessors == 5) numThreads = 4;
+		if(cpuData.numProcessors == 6) numThreads = 4;
+		if(cpuData.numProcessors == 7) numThreads = 5;
+		if(cpuData.numProcessors == 8) numThreads = 5;
+		if(cpuData.numProcessors  > 8) numThreads = (cpuData.numProcessors / 2) + 1;
+
+		cout << "start loading points with " << numThreads << " threads" << endl;
+
+		for(int i = 0; i < numThreads; i++){
+			spawnLoader();
+		}
+		// spawnLoader();
+	}
+
+	void add(vector<string> files, std::function<void(vector<shared_ptr<LasFile>>)> callback){
+
+		vector<shared_ptr<LasFile>> lasfiles;
+		static mutex mtx_lasfiles;
+
+		struct Task{
+			string file;
+			int fileIndex;
+		};
+
+		auto ref = this;
+
+		auto processor = [ref, &lasfiles](shared_ptr<Task> task){
+
+			auto lasfile = make_shared<LasFile>();
+			lasfile->fileIndex = task->fileIndex;
+			lasfile->path = task->file;
+
+			auto buffer_header = readBinaryFile(lasfile->path, 0, 375);
+
+			int versionMajor = buffer_header->get<uint8_t>(24);
+			int versionMinor = buffer_header->get<uint8_t>(25);
+
+			if(versionMajor == 1 && versionMinor < 4){
+				lasfile->numPoints = buffer_header->get<uint32_t>(107);
+			}else{
+				lasfile->numPoints = buffer_header->get<uint64_t>(247);
+			}
+
+			lasfile->numPoints = min(lasfile->numPoints, 1'000'000'000ll);
+
+			lasfile->offsetToPointData = buffer_header->get<uint32_t>(96);
+			lasfile->pointFormat = buffer_header->get<uint8_t>(104);
+			lasfile->bytesPerPoint = buffer_header->get<uint16_t>(105);
+			
+			lasfile->scale.x = buffer_header->get<double>(131);
+			lasfile->scale.y = buffer_header->get<double>(139);
+			lasfile->scale.z = buffer_header->get<double>(147);
+			
+			lasfile->offset.x = buffer_header->get<double>(155);
+			lasfile->offset.y = buffer_header->get<double>(163);
+			lasfile->offset.z = buffer_header->get<double>(171);
+			
+			lasfile->boxMin.x = buffer_header->get<double>(187);
+			lasfile->boxMin.y = buffer_header->get<double>(203);
+			lasfile->boxMin.z = buffer_header->get<double>(219);
+			
+			lasfile->boxMax.x = buffer_header->get<double>(179);
+			lasfile->boxMax.y = buffer_header->get<double>(195);
+			lasfile->boxMax.z = buffer_header->get<double>(211);
+
+			
+			
+			{
+				unique_lock<mutex> lock1(mtx_lasfiles);
+				
+				lasfile->numBatches = lasfile->numPoints / POINTS_PER_WORKGROUP + 1;
+
+				lasfile->sparse_point_offset = ref->numPoints;
+				
+				ref->files.push_back(lasfile);
+				ref->numPoints += lasfile->numPoints;
+				ref->numBatches += lasfile->numBatches;
+
+				lasfiles.push_back(lasfile);
+			}
+
+			{ // create load tasks
+
+				unique_lock<mutex> lock2(ref->mtx_load);
+				
+				int64_t pointOffset = 0;
+
+				while(pointOffset < lasfile->numPoints){
+
+					int64_t remaining = lasfile->numPoints - pointOffset;
+					int64_t pointsInBatch = min(int64_t(MAX_POINTS_PER_BATCH), remaining);
+
+					LoadTask task;
+					task.lasfile = lasfile;
+					task.firstPoint = pointOffset;
+					task.numPoints = pointsInBatch;
+
+					ref->loadTasks.push_back(task);
+
+					pointOffset += pointsInBatch;
+				}
+			}
+
+		};
+
+		auto cpuData = getCpuData();
+		int numThreads = cpuData.numProcessors;
+
+		//if(cpuData.numProcessors == 1) numThreads = 1;
+		//if(cpuData.numProcessors == 2) numThreads = 1;
+		//if(cpuData.numProcessors == 3) numThreads = 2;
+		//if(cpuData.numProcessors == 4) numThreads = 3;
+		//if(cpuData.numProcessors == 5) numThreads = 4;
+		//if(cpuData.numProcessors == 6) numThreads = 4;
+		//if(cpuData.numProcessors == 7) numThreads = 5;
+		//if(cpuData.numProcessors == 8) numThreads = 5;
+		//if(cpuData.numProcessors  > 8) numThreads = (cpuData.numProcessors / 2) + 1;
+
+		//cout << "start loading file metadata with " << numThreads << " threads" << endl;
+
+		TaskPool<Task> pool(numThreads, processor);
+
+		for(auto file : files){
+			auto task = make_shared<Task>();
+			task->file = file;
+			task->fileIndex = this->numFiles;
+			this->numFiles++;
+
+			pool.addTask(task);
+		}
+
+		pool.close();
+		pool.waitTillEmpty();
+
+		callback(lasfiles);
+
 	}
 
 	// add las files that are to be loaded progressively
