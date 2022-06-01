@@ -30,13 +30,22 @@ struct Batch{
 	int numPoints;
 
 	int firstPoint;
-	int padding2;
+	int fileIndex;
 	int padding3;
 	int padding4;
 	int padding5;
 	int padding6;
 	int padding7;
 	int padding8;
+};
+
+// metadata for each file
+// each file has its own worldViewProj matrix
+struct File{
+	mat4 transform;
+	mat4 transformFrustum;
+	mat4 world;
+	mat4 padding;
 };
 
 struct BoundingBox{
@@ -59,6 +68,7 @@ layout (std430, binding = 41) buffer abc_3 { uint32_t ssXyz_12b[];     };
 layout (std430, binding = 42) buffer abc_4 { uint32_t ssXyz_8b[];      };
 layout (std430, binding = 43) buffer abc_5 { uint32_t ssXyz_4b[];      };
 layout (std430, binding = 44) buffer abc_6 { uint32_t ssRGBA[];        };
+layout (std430, binding = 45) buffer abc_7 { File     ssFiles[];     };
 
 layout (std430, binding = 30) buffer abc_1 { 
 	uint32_t value;
@@ -69,11 +79,6 @@ layout (std430, binding = 30) buffer abc_1 {
 	uint32_t numNodesRendered;
 	uint32_t numPointsVisible;
 } debug;
-
-// layout (std430, binding = 45) buffer data_lod {
-// 	int numPoints;
-// 	uint32_t ssLOD[];
-// } lod;
 
 layout (std430, binding = 50) buffer data_bb {
 	uint count;
@@ -87,7 +92,7 @@ layout (std430, binding = 50) buffer data_bb {
 } boundingBoxes;
 
 layout(std140, binding = 31) uniform UniformData{
-	mat4 world;
+	mat4 pad0; //mat4 world;
 	mat4 view;
 	mat4 proj;
 	mat4 transform;
@@ -108,64 +113,6 @@ uint SPECTRAL[5] = {
 	0x0061aefd,
 	0x001c19d7
 };
-
-// void renderLOD(Batch batch){
-// 	int loopSize = int(ceil(float(batch.lod_numPoints) / 128.0));
-
-// 	for(int i = 0; i < loopSize; i++){
-
-// 		uint localIndex = i * gl_WorkGroupSize.x + gl_LocalInvocationID.x;
-// 		int lodPointIndex = int(batch.lod_offset + localIndex);
-
-// 		if(localIndex < batch.lod_numPoints)
-// 		{
-
-// 			uint32_t encoded = lod.ssLOD[16 + lodPointIndex];
-// 			// set leftmost bit to flag as lod point
-// 			uint32_t pointIndex = lodPointIndex | 0x80000000;
-
-// 			vec3 wgMin = vec3(batch.min_x, batch.min_y, batch.min_z);
-// 			vec3 wgMax = vec3(batch.max_x, batch.max_y, batch.max_z);
-// 			vec3 boxSize = wgMax - wgMin;
-
-// 			uint32_t X = (encoded >>  0) & MASK_10BIT;
-// 			uint32_t Y = (encoded >> 10) & MASK_10BIT;
-// 			uint32_t Z = (encoded >> 20) & MASK_10BIT;
-
-// 			float x = float(X) * (boxSize.x / STEPS_10BIT) + wgMin.x;
-// 			float y = float(Y) * (boxSize.y / STEPS_10BIT) + wgMin.y;
-// 			float z = float(Z) * (boxSize.z / STEPS_10BIT) + wgMin.z;
-
-// 			vec3 point = vec3(x, y, z);
-			
-// 			// now project to screen
-// 			vec4 pos = vec4(point, 1.0);
-// 			pos = uniforms.transform * pos;
-// 			pos.xyz = pos.xyz / pos.w;
-
-// 			bool isInsideFrustum = true;
-// 			if(pos.w <= 0.0 || pos.x < -1.0 || pos.x > 1.0 || pos.y < -1.0 || pos.y > 1.0){
-// 				isInsideFrustum = false;
-// 			}
-
-// 			if(isInsideFrustum){
-// 				vec2 imgPos = (pos.xy * 0.5 + 0.5) * uniforms.imageSize;
-// 				ivec2 pixelCoords = ivec2(imgPos);
-// 				int pixelID = pixelCoords.x + pixelCoords.y * uniforms.imageSize.x;
-
-// 				uint32_t depth = floatBitsToInt(pos.w);
-// 				uint64_t newPoint = (uint64_t(depth) << 32UL) | pointIndex;
-
-// 				uint64_t oldPoint = ssFramebuffer[pixelID];
-// 				if(newPoint < oldPoint){
-// 					atomicMin(ssFramebuffer[pixelID], newPoint);
-// 				}
-// 			}
-// 		}
-// 	}
-
-// 	return;
-// }
 
 struct Plane{
 	vec3 normal;
@@ -195,22 +142,40 @@ Plane createPlane(float x, float y, float z, float w){
 	return plane;
 }
 
-Plane[6] frustumPlanes(){
+Plane[6] frustumPlanes(mat4 worldViewProj){
+
+	float m_0  = worldViewProj[0][0];
+	float m_1  = worldViewProj[0][1];
+	float m_2  = worldViewProj[0][2];
+	float m_3  = worldViewProj[0][3];
+	float m_4  = worldViewProj[1][0];
+	float m_5  = worldViewProj[1][1];
+	float m_6  = worldViewProj[1][2];
+	float m_7  = worldViewProj[1][3];
+	float m_8  = worldViewProj[2][0];
+	float m_9  = worldViewProj[2][1];
+	float m_10 = worldViewProj[2][2];
+	float m_11 = worldViewProj[2][3];
+	float m_12 = worldViewProj[3][0];
+	float m_13 = worldViewProj[3][1];
+	float m_14 = worldViewProj[3][2];
+	float m_15 = worldViewProj[3][3];
+
 	Plane planes[6] = {
-		createPlane(t( 3) - t(0), t( 7) - t(4), t(11) - t( 8), t(15) - t(12)),
-		createPlane(t( 3) + t(0), t( 7) + t(4), t(11) + t( 8), t(15) + t(12)),
-		createPlane(t( 3) + t(1), t( 7) + t(5), t(11) + t( 9), t(15) + t(13)),
-		createPlane(t( 3) - t(1), t( 7) - t(5), t(11) - t( 9), t(15) - t(13)),
-		createPlane(t( 3) - t(2), t( 7) - t(6), t(11) - t(10), t(15) - t(14)),
-		createPlane(t( 3) + t(2), t( 7) + t(6), t(11) + t(10), t(15) + t(14)),
+		createPlane(m_3 - m_0, m_7 - m_4, m_11 -  m_8, m_15 - m_12),
+		createPlane(m_3 + m_0, m_7 + m_4, m_11 +  m_8, m_15 + m_12),
+		createPlane(m_3 + m_1, m_7 + m_5, m_11 +  m_9, m_15 + m_13),
+		createPlane(m_3 - m_1, m_7 - m_5, m_11 -  m_9, m_15 - m_13),
+		createPlane(m_3 - m_2, m_7 - m_6, m_11 - m_10, m_15 - m_14),
+		createPlane(m_3 + m_2, m_7 + m_6, m_11 + m_10, m_15 + m_14),
 	};
 
 	return planes;
 }
 
-bool intersectsFrustum(vec3 wgMin, vec3 wgMax){
+bool intersectsFrustum(mat4 worldViewProj, vec3 wgMin, vec3 wgMax){
 
-	Plane[] planes = frustumPlanes();
+	Plane[] planes = frustumPlanes(worldViewProj);
 	
 	for(int i = 0; i < 6; i++){
 
@@ -231,12 +196,12 @@ bool intersectsFrustum(vec3 wgMin, vec3 wgMax){
 	return true;
 }
 
-int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
+int getPrecisionLevel(vec3 wgMin, vec3 wgMax, mat4 world){
 	
 	vec3 wgCenter = (wgMin + wgMax) / 2.0;
 	float wgRadius = distance(wgMin, wgMax);
 
-	vec4 viewCenter = uniforms.view * uniforms.world * vec4(wgCenter, 1.0);
+	vec4 viewCenter = uniforms.view * world * vec4(wgCenter, 1.0);
 	vec4 viewEdge = viewCenter + vec4(wgRadius, 0.0, 0.0, 0.0);
 
 	vec4 projCenter = uniforms.proj * viewCenter;
@@ -269,6 +234,7 @@ void main(){
 	
 	uint batchIndex = gl_WorkGroupID.x;
 	Batch batch = ssBatches[batchIndex];
+	File file = ssFiles[batch.fileIndex];
 
 	uint wgFirstPoint = batch.firstPoint;
 
@@ -280,14 +246,12 @@ void main(){
 	vec3 wgMax = vec3(batch.max_x, batch.max_y, batch.max_z);
 	vec3 boxSize = wgMax - wgMin;
 
-	// debug.numPointsProcessed = uint(boxSize.x);
-
 	// FRUSTUM CULLING
-	if((uniforms.enableFrustumCulling != 0) && !intersectsFrustum(wgMin, wgMax)){
+	if((uniforms.enableFrustumCulling != 0) && !intersectsFrustum(file.transformFrustum, wgMin, wgMax)){
 		return;
 	}
 
-	int level = getPrecisionLevel(wgMin, wgMax);
+	int level = getPrecisionLevel(wgMin, wgMax, file.world);
 
 	// POPULATE BOUNDING BOX BUFFER, if enabled
 	if((uniforms.showBoundingBox != 0) && gl_LocalInvocationID.x == 0){ 
@@ -297,8 +261,11 @@ void main(){
 		boundingBoxes.first = 0;
 		boundingBoxes.baseInstance = 0;
 
-		vec3 wgPos = (wgMin + wgMax) / 2.0;
-		vec3 wgSize = wgMax - wgMin;
+		vec3 worldMin = (file.world * vec4(wgMin, 1.0)).xyz;
+		vec3 worldMax = (file.world * vec4(wgMax, 1.0)).xyz;
+
+		vec3 wgPos = (worldMin + worldMax) / 2.0;
+		vec3 wgSize = worldMax - worldMin;
 
 		uint color = 0x0000FF00;
 		if(level > 0){
@@ -313,15 +280,7 @@ void main(){
 		box.color = color;
 
 		boundingBoxes.ssBoxes[boxIndex] = box;
-
-		// debug.numPointsRendered = 100000;
 	}
-
-	// if(level > 3 && false){
-	// 	renderLOD(batch);
-
-	// 	return;
-	// }
 
 	if(debug.enabled && gl_LocalInvocationID.x == 0){
 		atomicAdd(debug.numNodesRendered, 1);
@@ -354,23 +313,13 @@ void main(){
 
 	#endif
 
-		if(localIndex > batch.numPoints){
+		if(localIndex >= batch.numPoints){
 			return;
 		}
 
 		if(debug.enabled){
 			atomicAdd(debug.numPointsProcessed, 1);
 		}
-
-		// if(localIndex > 3406){
-		// 	continue;
-		// }
-
-		// if(localIndex != 3406){
-		// 	continue;
-		// }
-
-
 
 		vec3 point;
 		
@@ -449,7 +398,7 @@ void main(){
 		
 		// now project to screen
 		vec4 pos = vec4(point, 1.0);
-		pos = uniforms.transform * pos;
+		pos = file.transform * pos;
 		pos.xyz = pos.xyz / pos.w;
 
 		bool isInsideFrustum = !(pos.w <= 0.0 || pos.x < -1.0 || pos.x > 1.0 || pos.y < -1.0 || pos.y > 1.0);
