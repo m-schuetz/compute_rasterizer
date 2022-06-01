@@ -243,7 +243,7 @@ int main(){
 		vector<string> lasfiles;
 
 		for(auto file : files){
-			if(iEndsWith(file, "las")){
+			if(iEndsWith(file, "las") || iEndsWith(file, "laz")){
 				lasfiles.push_back(file);
 			}
 		}

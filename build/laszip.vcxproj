@@ -1,0 +1,331 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{57010B68-87C5-33AE-8633-D479ABB84636}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>laszip</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)bin\$(Configuration)_$(Platform)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">laszip.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">laszip</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\$(Configuration)_$(Platform)</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)obj\$(Configuration)_$(Platform)</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">laszip</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(SolutionDir)..\build_laszip\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">laszip.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">laszip</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(SolutionDir)..\build_laszip\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">laszip.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">laszip</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;OPENCV_VERSION=;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;LASZIP_DLL_EXPORT=1;LASZIPDLL_EXPORTS;UNORDERED;HAVE_UNORDERED_MAP=1;CMAKE_INTDIR="Debug";laszip_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;OPENCV_VERSION=;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;LASZIP_DLL_EXPORT=1;LASZIPDLL_EXPORTS;UNORDERED;HAVE_UNORDERED_MAP=1;CMAKE_INTDIR=\"Debug\";laszip_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(SolutionDir)Debug/laszip.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)Debug/laszip.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OPENCV_VERSION=;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;LASZIP_DLL_EXPORT=1;LASZIPDLL_EXPORTS;UNORDERED;HAVE_UNORDERED_MAP=1;CMAKE_INTDIR="Release";laszip_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OPENCV_VERSION=;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;LASZIP_DLL_EXPORT=1;LASZIPDLL_EXPORTS;UNORDERED;HAVE_UNORDERED_MAP=1;CMAKE_INTDIR=\"Release\";laszip_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(SolutionDir)Release/laszip.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)Release/laszip.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OPENCV_VERSION=;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;LASZIP_DLL_EXPORT=1;LASZIPDLL_EXPORTS;UNORDERED;HAVE_UNORDERED_MAP=1;CMAKE_INTDIR="MinSizeRel";laszip_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OPENCV_VERSION=;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;LASZIP_DLL_EXPORT=1;LASZIPDLL_EXPORTS;UNORDERED;HAVE_UNORDERED_MAP=1;CMAKE_INTDIR=\"MinSizeRel\";laszip_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(SolutionDir)MinSizeRel/laszip.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)MinSizeRel/laszip.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OPENCV_VERSION=;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;LASZIP_DLL_EXPORT=1;LASZIPDLL_EXPORTS;UNORDERED;HAVE_UNORDERED_MAP=1;CMAKE_INTDIR="RelWithDebInfo";laszip_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;OPENCV_VERSION=;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNING;_SCL_SECURE_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;LASZIP_DLL_EXPORT=1;LASZIPDLL_EXPORTS;UNORDERED;HAVE_UNORDERED_MAP=1;CMAKE_INTDIR=\"RelWithDebInfo\";laszip_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\libs\laszip\.\dll;$(SolutionDir)..\libs\laszip\.\src;$(SolutionDir)..\libs\laszip\..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(SolutionDir)RelWithDebInfo/laszip.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)RelWithDebInfo/laszip.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\arithmeticdecoder.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\arithmeticdecoder.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\arithmeticencoder.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\arithmeticencoder.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\arithmeticmodel.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\arithmeticmodel.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamin.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamin_array.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamin_file.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamin_istream.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreaminout.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreaminout_file.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout_array.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout_file.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout_nil.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout_ostream.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\endian.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\integercompressor.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\integercompressor.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasattributer.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasindex.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasindex.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasinterval.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasinterval.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laspoint.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasquadtree.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasquadtree.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasquantizer.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditem.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v1.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v1.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v2.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v2.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v3.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v3.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v4.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v4.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemraw.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreadpoint.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreadpoint.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasunzipper.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasunzipper.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitem.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v1.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v1.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v2.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v2.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v3.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v3.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v4.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v4.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemraw.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswritepoint.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswritepoint.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laszip.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip_common_v1.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip_common_v2.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip_common_v3.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip_decompress_selective_v3.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laszip_dll.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laszipper.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszipper.hpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\mydefs.cpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\mydefs.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

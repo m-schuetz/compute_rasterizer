@@ -313,7 +313,7 @@ void main(){
 
 	#endif
 
-		if(localIndex > batch.numPoints){
+		if(localIndex >= batch.numPoints){
 			return;
 		}
 

@@ -59,6 +59,9 @@
     <ClCompile Include="..\libs\glew\glew.c">
       <Filter>headers</Filter>
     </ClCompile>
+    <ClCompile Include="..\modules\compute\LasLoaderSparse.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\imgui\backends\imgui_impl_glfw.h">
