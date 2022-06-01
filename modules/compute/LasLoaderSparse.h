@@ -242,18 +242,6 @@ struct LasLoaderSparse {
 		auto cpuData = getCpuData();
 		int numThreads = cpuData.numProcessors;
 
-		//if(cpuData.numProcessors == 1) numThreads = 1;
-		//if(cpuData.numProcessors == 2) numThreads = 1;
-		//if(cpuData.numProcessors == 3) numThreads = 2;
-		//if(cpuData.numProcessors == 4) numThreads = 3;
-		//if(cpuData.numProcessors == 5) numThreads = 4;
-		//if(cpuData.numProcessors == 6) numThreads = 4;
-		//if(cpuData.numProcessors == 7) numThreads = 5;
-		//if(cpuData.numProcessors == 8) numThreads = 5;
-		//if(cpuData.numProcessors  > 8) numThreads = (cpuData.numProcessors / 2) + 1;
-
-		//cout << "start loading file metadata with " << numThreads << " threads" << endl;
-
 		TaskPool<Task> pool(numThreads, processor);
 
 		for(auto file : files){
