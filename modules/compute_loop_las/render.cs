@@ -68,6 +68,9 @@ layout (std430, binding = 30) buffer abc_1 {
 	uint32_t numPointsRendered;
 	uint32_t numNodesRendered;
 	uint32_t numPointsVisible;
+	uint32_t numLow;
+	uint32_t numMed;
+	uint32_t numHig;
 } debug;
 
 // layout (std430, binding = 45) buffer data_lod {
@@ -260,6 +263,10 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 		level = 0;
 	}
 
+	// if(pixelSize < 32){
+	// 	level = 10;
+	// }
+
 	return level;
 }
 
@@ -286,6 +293,66 @@ void main(){
 
 	int level = getPrecisionLevel(wgMin, wgMax);
 
+	// if(level != 10){
+	// 	return;
+	// }
+
+	// if(((batchIndex) % 2) == 0){
+	// 	return;
+	// }
+
+	// if(((batchIndex) % 3) == 0){
+	// 	return;
+	// }
+	// if(((batchIndex) % 5) == 0){
+	// 	return;
+	// }
+	// if(((batchIndex) % 7) == 0){
+	// 	return;
+	// }
+	// if(((batchIndex) % 11) == 0){
+	// 	return;
+	// }
+
+	// level = 2;
+
+	uint32_t boxColor = 0x000000FF;
+	// { // paper figure: bit resolution
+
+	// 	// RETZ
+	// 	// float upper = 1350.0;
+		
+	// 	// MORRO BAY
+	// 	float lower = 3450.0;
+	// 	float upper = 3900.0;
+
+	// 	// if(length(boxSize) < 300)
+	// 	if(length(boxSize) < lower || length(boxSize) > upper)
+	// 	// if(length(boxSize) < upper)
+	// 	// if(length(boxSize) < 300 || length(boxSize) > 350)
+	// 	{
+	// 		// return;
+	// 	}
+
+	// 	// if(length(boxSize) < upper)
+	// 	if(length(boxSize) < lower || length(boxSize) > upper)
+	// 	{
+	// 		boxColor = 0x0000ffff;
+	// 	}else{
+	// 		boxColor = 0x000000FF;
+	// 	}
+	// }
+
+	if(debug.enabled && gl_LocalInvocationID.x == 0){
+		if(level == 0){
+			atomicAdd(debug.numHig, 1);
+		}else if(level == 1){
+			atomicAdd(debug.numMed, 1);
+		}else{
+			atomicAdd(debug.numLow, 1);
+		}
+	}
+
 	// POPULATE BOUNDING BOX BUFFER, if enabled
 	if((uniforms.showBoundingBox != 0) && gl_LocalInvocationID.x == 0){ 
 		uint boxIndex = atomicAdd(boundingBoxes.instanceCount, 1);
@@ -303,6 +370,7 @@ void main(){
 		}
 
 		color = SPECTRAL[level];
+		color = boxColor;
 
 		BoundingBox box;
 		box.position = vec4(wgPos, 0.0);
@@ -313,12 +381,6 @@ void main(){
 
 		// debug.numPointsRendered = 100000;
 	}
-
-	// if(level > 3 && false){
-	// 	renderLOD(batch);
-
-	// 	return;
-	// }
 
 	if(debug.enabled && gl_LocalInvocationID.x == 0){
 		atomicAdd(debug.numNodesRendered, 1);
@@ -355,10 +417,10 @@ void main(){
 			return;
 		}
 
-		// 2877987
-		// if(index != 2877440 + 547){
-		// 	continue;
+		// if(index > 25 * 1000 * 1000){
+		// 	return;
 		// }
+
 
 		if(debug.enabled){
 			atomicAdd(debug.numPointsProcessed, 1);
@@ -477,5 +539,7 @@ void main(){
 		}
 
 	}
+
+	// debug.numNodesRendered = int(boxSize.z * 10.0);
 
 }

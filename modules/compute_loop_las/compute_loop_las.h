@@ -57,6 +57,9 @@ struct ComputeLoopLas : public Method{
 		uint32_t numPointsRendered = 0;
 		uint32_t numNodesRendered = 0;
 		uint32_t numPointsVisible = 0;
+		uint32_t numLow = 0;
+		uint32_t numMed = 0;
+		uint32_t numHig = 0;
 	};
 
 	string source = "";
@@ -127,6 +130,94 @@ struct ComputeLoopLas : public Method{
 		}
 
 		auto fbo = renderer->views[0].framebuffer;
+
+		if(Runtime::requestReadBatches){
+
+			int numBatches = ceil(double(las->numPointsLoaded) / double(POINTS_PER_WORKGROUP));
+			auto buffer = renderer->readBuffer(las->ssBatches, 0, 64 * numBatches);
+
+			vec3 min = vec3(Infinity, Infinity, Infinity);
+			vec3 max = vec3(-Infinity, -Infinity, -Infinity);
+
+			vector<float> diagonals;
+
+			float datasetDiagonal = glm::length(las->boxMax - las->boxMin);
+
+			for(int i = 0; i < numBatches; i++){
+				vec3 batchMin = {
+					buffer->get<float>(64 * i +  4),
+					buffer->get<float>(64 * i +  8),
+					buffer->get<float>(64 * i + 12)
+				};
+
+				vec3 batchMax = {
+					buffer->get<float>(64 * i + 16),
+					buffer->get<float>(64 * i + 20),
+					buffer->get<float>(64 * i + 24)
+				};
+
+				float diagonal = glm::length(batchMax - batchMin);
+
+				diagonals.push_back(diagonal);
+
+				min.x = std::min(min.x, batchMin.x);
+				min.y = std::min(min.y, batchMin.y);
+				min.z = std::min(min.z, batchMin.z);
+				max.x = std::max(max.x, batchMax.x);
+				max.y = std::max(max.y, batchMax.y);
+				max.z = std::max(max.z, batchMax.z);
+			}
+
+			//float numBins = 128.0;
+			//vector<int> histogram(int(numBins), 0.0);
+
+			//for(int i = 0; i < numBatches; i++){
+			//	vec3 batchMin = {
+			//		buffer->get<float>(64 * i +  4),
+			//		buffer->get<float>(64 * i +  8),
+			//		buffer->get<float>(64 * i + 12)
+			//	};
+
+			//	vec3 batchMax = {
+			//		buffer->get<float>(64 * i + 16),
+			//		buffer->get<float>(64 * i + 20),
+			//		buffer->get<float>(64 * i + 24)
+			//	};
+
+			//	float diagonal = glm::length(batchMax - batchMin);
+			//	float u = diagonal / datasetDiagonal;
+
+			//	int bin = std::min(u * numBins, numBins - 1.0f);
+
+			//	histogram[bin]++;
+			//}
+
+			std::sort(diagonals.begin(), diagonals.end());
+
+			float minDiagonal = diagonals[0];
+			float lower_quartile = diagonals[int(float(diagonals.size()) * 0.25)];
+			float median = diagonals[int(float(diagonals.size()) * 0.50)];
+			float upper_quartile = diagonals[int(float(diagonals.size()) * 0.75)];
+			float maxDiagonal = diagonals[diagonals.size() - 1];
+
+			stringstream ss;
+			ss << "batches: " << numBatches << endl;
+			ss << "min: " << min.x << ", " << min.y << ", " << min.z << endl;
+			ss << "max: " << max.x << ", " << max.y << ", " << max.z << endl;
+			//ss << "histogram bounds: " << minDiagonal << " - " << maxDiagonal << endl;
+			ss << "maxDiagonal: " << maxDiagonal << endl;
+			ss << "min-lower-median-upper-max: " << minDiagonal << ", " << lower_quartile << ", " << median << ", " << upper_quartile << ", " << maxDiagonal << endl;
+
+			//ss << "histogram: ";
+			//for(float i = 0.0; i < numBins; i += 1.0){
+			//	ss << histogram[int(i)] << "\t";
+			//}
+			ss << endl;
+
+			writeFile("./misc.txt", ss.str());
+
+			Runtime::requestReadBatches = false;
+		}
 
 		// Update Uniform Buffer
 		{
@@ -222,6 +313,9 @@ struct ComputeLoopLas : public Method{
 			dbg->pushFrameStat("#points rendered"        , formatNumber(data.numPointsRendered));
 			dbg->pushFrameStat("divider" , "");
 			dbg->pushFrameStat("#points visible"         , formatNumber(data.numPointsVisible));
+			dbg->pushFrameStat("#low"                    , formatNumber(data.numLow));
+			dbg->pushFrameStat("#med"                    , formatNumber(data.numMed));
+			dbg->pushFrameStat("#hig"                    , formatNumber(data.numHig));
 
 			glMemoryBarrier(GL_ALL_BARRIER_BITS);
 		}

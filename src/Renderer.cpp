@@ -563,13 +563,15 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			}
 
 			if (ImGui::Button("copy tree")) {
-
 				Debug::doCopyTree = true;
 			}
 
 			if (ImGui::Button("toggle VR")) {
-
 				this->toggleVR();
+			}
+
+			if (ImGui::Button("Read Batches")) {
+				this->readBatches();
 			}
 
 
@@ -587,7 +589,7 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			//	"loop_las",
 			//	"loop_las_hqs"
 			//};
-			static int item_current_idx = 0;
+			static int item_current_idx = 1;
 			int numItems = Runtime::methods.size();
 			string currentGroup = "none";
 
@@ -774,6 +776,10 @@ void Renderer::toggleVR() {
 		this->vrEnabled = true;
 	}
 
+}
+
+void Renderer::readBatches(){
+	Runtime::requestReadBatches = true;
 }
 
 void Renderer::setVR(bool enable) {

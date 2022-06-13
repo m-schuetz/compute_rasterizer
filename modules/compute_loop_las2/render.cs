@@ -247,6 +247,11 @@ void main(){
 	}
 
 	int level = getPrecisionLevel(wgMin, wgMax);
+	// level = 2;
+
+	// if(level >= 2 && gl_LocalInvocationID.x == 0){
+	// 	atomicAdd(debug.numNodesRendered, 1);
+	// }
 
 	// POPULATE BOUNDING BOX BUFFER, if enabled
 	if((uniforms.showBoundingBox != 0) && gl_LocalInvocationID.x == 0){ 
@@ -275,10 +280,21 @@ void main(){
 	}
 
 	if(debug.enabled && gl_LocalInvocationID.x == 0){
-		atomicAdd(debug.numNodesRendered, 1);
+		//atomicAdd(debug.numNodesRendered, 1);
 	}
 
-	int loopSize = uniforms.pointsPerThread;
+	// int loopSize = uniforms.pointsPerThread;
+	int loopSize = batch.numPoints / int(gl_WorkGroupSize.x);
+	if((batch.numPoints % int(gl_WorkGroupSize.x)) != 0){
+		loopSize++;
+	}
+
+	// if(batch.numPoints != 12800){
+	// 	loopSize++;
+	// }
+
+	// loopSize++;
+	// loopSize = 100;
 	
 	if(level == 0){
 		uint base = wgFirstPoint / 4 + gl_LocalInvocationID.x;
@@ -300,6 +316,10 @@ void main(){
 
 			for (int j = 0; j < 4; j++){
 				uint index = 4 * (base + i * gl_WorkGroupSize.x) + j; 
+
+				// if(index > uniforms.numPoints){
+				// 	continue;
+				// }
 
 				uint32_t b4 = encodedw_4b[j];
 				uint32_t b8 = encodedw_8b[j];
@@ -352,6 +372,10 @@ void main(){
 			for (int j = 0; j < 4; j++){
 				uint index = 4 * (base + i * gl_WorkGroupSize.x) + j; 
 
+				// if(index > uniforms.numPoints){
+				// 	continue;
+				// }
+
 				uint32_t b4 = encodedw_4b[j];
 				uint32_t b8 = encodedw_8b[j];
 
@@ -395,6 +419,11 @@ void main(){
 
 			for (int j = 0; j < 4; j++){
 				uint index = 4 * (base + i * gl_WorkGroupSize.x) + j; 
+
+				// if(index > uniforms.numPoints){
+				// 	return;
+				// }
+
 				uint32_t encoded = encodedw[j];
 				
 				uint32_t X = (encoded >>  0) & MASK_10BIT;

@@ -80,7 +80,7 @@ int main(){
 		settings["retz"] = setting;
 	}
 	
-	{ // Eclepens
+	{ // Eclepens original
 		Setting setting;
 		setting.path_potree = "F:/temp/wgtest/eclepens/potree";
 		setting.path_las = "F:/temp/wgtest/eclepens/eclepens.las";
@@ -89,7 +89,19 @@ int main(){
 		setting.radius = 1109.77;
 		setting.target = {514.05, 475.84, -156.43};
 
-		settings["eclepens"] = setting;
+		settings["eclepens_original"] = setting;
+	}
+
+	{ // Eclepens original closeup
+		Setting setting;
+		setting.path_potree = "F:/temp/wgtest/eclepens/potree";
+		setting.path_las = "F:/temp/wgtest/eclepens/eclepens.las";
+		setting.yaw = 13.14;
+		setting.pitch = -0.03;
+		setting.radius = 76.96;
+		setting.target = {564.03, 330.49, 19.08};
+
+		settings["eclepens_original_closeup"] = setting;
 	}
 
 	{ // Eclepens - morton
@@ -102,6 +114,18 @@ int main(){
 		setting.target = {514.05, 475.84, -156.43};
 
 		settings["eclepens_morton"] = setting;
+	}
+
+	{ // Eclepens - morton closeup
+		Setting setting;
+		setting.path_potree = "F:/temp/wgtest/eclepens/potree";
+		setting.path_las = "F:/temp/wgtest/eclepens/eclepens_morton.las";
+		setting.yaw = 13.14;
+		setting.pitch = -0.03;
+		setting.radius = 76.96;
+		setting.target = {564.03, 330.49, 19.08};
+
+		settings["eclepens_morton_closeup"] = setting;
 	}
 	
 	{ // Eclepens at home
@@ -116,8 +140,31 @@ int main(){
 		settings["eclepens_morton_home"] = setting;
 	}
 
+	{// MORRO BAY original
+		Setting setting;
+		setting.path_potree = "F:/temp/wgtest/morro_bay/potree_morro_bay_278M_morton"; 
+		setting.path_las = "F:/temp/wgtest/morro_bay/morro_bay_278M.las"; 
+		setting.yaw = -0.15;
+		setting.pitch = -0.57;
+		setting.radius = 3166.32;
+		setting.target = {2239.05, 1713.63, -202.02};
 
-	{// MORRO BAY
+		settings["morrobay_original"] = setting;
+	}
+
+	{// MORRO BAY original closeup
+		Setting setting;
+		setting.path_potree = "F:/temp/wgtest/morro_bay/potree_morro_bay_278M_morton"; 
+		setting.path_las = "F:/temp/wgtest/morro_bay/morro_bay_278M.las"; 
+		setting.yaw = -1.68;
+		setting.pitch = -0.39;
+		setting.radius = 69.96;
+		setting.target = {1625.87, 2362.57, 29.96};
+
+		settings["morrobay_original_closeup"] = setting;
+	}
+
+	{// MORRO BAY morton
 		Setting setting;
 		setting.path_potree = "F:/temp/wgtest/morro_bay/potree_morro_bay_278M_morton"; 
 		setting.path_las = "F:/temp/wgtest/morro_bay/morro_bay_278M_morton.las"; 
@@ -127,6 +174,18 @@ int main(){
 		setting.target = {2239.05, 1713.63, -202.02};
 
 		settings["morrobay_morton"] = setting;
+	}
+
+	{// MORRO BAY morton closeup
+		Setting setting;
+		setting.path_potree = "F:/temp/wgtest/morro_bay/potree_morro_bay_278M_morton"; 
+		setting.path_las = "F:/temp/wgtest/morro_bay/morro_bay_278M_morton.las"; 
+		setting.yaw = -1.68;
+		setting.pitch = -0.39;
+		setting.radius = 69.96;
+		setting.target = {1625.87, 2362.57, 29.96};
+
+		settings["morrobay_morton_closeup"] = setting;
 	}
 
 	{ // ENDEAVOR
@@ -157,6 +216,18 @@ int main(){
 	{ // Candi Banyunibo inside
 		Setting setting;
 		setting.path_potree = "F:/temp/wgtest/candi_banyunibo/potree"; 
+		setting.path_las = "F:/temp/wgtest/candi_banyunibo/candi_banyunibo.las"; 
+		setting.yaw = -18.35;
+		setting.pitch = 0.32;
+		setting.radius = 3.01;
+		setting.target = {41.48, 31.31, 4.96};
+
+		settings["banyunibo_inside"] = setting;
+	}
+
+	{ // Candi Banyunibo inside
+		Setting setting;
+		setting.path_potree = "F:/temp/wgtest/candi_banyunibo/potree"; 
 		setting.path_las = "F:/temp/wgtest/candi_banyunibo/morton.las"; 
 		setting.yaw = -18.35;
 		setting.pitch = 0.32;
@@ -164,6 +235,18 @@ int main(){
 		setting.target = {41.48, 31.31, 4.96};
 
 		settings["banyunibo_inside_morton"] = setting;
+	}
+
+	{ // Candi Banyunibo inside
+		Setting setting;
+		setting.path_potree = "F:/temp/wgtest/candi_banyunibo/potree"; 
+		setting.path_las = "F:/temp/wgtest/candi_banyunibo/candi_banyunibo.las"; 
+		setting.yaw = -13.63;
+		setting.pitch = 0.07;
+		setting.radius = 20.26;
+		setting.target = {38.64, 29.22, 5.23};
+
+		settings["banyunibo_outside"] = setting;
 	}
 
 
@@ -207,12 +290,40 @@ int main(){
 	// renderer->controls->radius = 13.45;
 	// renderer->controls->target = {0.00, 0.00, 0.00};
 
-	Setting setting = settings["banyunibo_inside_morton"];
+	// retz
+	// eclepens_original, eclepens_morton,
+	// eclepens_original_closeup, eclepens_morton_closeup,
+	// morrobay_original, morrobay_morton
+	// morrobay_original_closeup, morrobay_morton_closeup
+	// banyunibo_outside, banyunibo_outside_morton
+	// banyunibo_inside, banyunibo_inside_morton
+	// niederweiden_morton
+	Setting& setting = settings["morrobay_morton"];
 	
 	renderer->controls->yaw = setting.yaw;
 	renderer->controls->pitch = setting.pitch;
 	renderer->controls->radius = setting.radius;
 	renderer->controls->target = setting.target;
+
+	{ // ILLUSTRATE BIT RESOLUTION
+
+		// settings["retz"].yaw = 2.95;
+		// settings["retz"].pitch = -0.83;
+		// settings["retz"].radius = 1342.83;
+		// settings["retz"].target = {710.71, 891.63, -191.39};
+
+		// settings["morrobay_morton"].yaw = -6.56;
+		// settings["morrobay_morton"].pitch = -0.78;
+		// settings["morrobay_morton"].radius = 1787.31;
+		// settings["morrobay_morton"].target = {2064.40, 774.26, 562.50};
+
+		// renderer->controls->yaw    = settings["morrobay_morton"].yaw;
+		// renderer->controls->pitch  = settings["morrobay_morton"].pitch;
+		// renderer->controls->radius = settings["morrobay_morton"].radius;
+		// renderer->controls->target = settings["morrobay_morton"].target;
+
+
+	}
 
 	auto potreedata = PotreeData::create(setting.path_potree);
 	auto las_encode_444 = ComputeLasData::create(setting.path_las);

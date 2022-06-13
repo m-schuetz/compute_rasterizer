@@ -155,7 +155,8 @@ void ComputeLasData::process(Renderer* renderer){
 		glNamedBufferSubData(this->ssLoadBuffer.handle, 0, this->task->buffer->size, this->task->buffer->data);
 
 		//TODO now run las parse shader;
-		if(csLoad->program != -1){
+		// if(csLoad->program != -1)
+		// {
 
 			static int batchCounter = 0;
 			// string timestampLabel = "load-batch[" + std::to_string(batchCounter) + "]";
@@ -195,6 +196,10 @@ void ComputeLasData::process(Renderer* renderer){
 			//glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 46, this->ssLODColor.handle);
 
 			int numBatches = this->task->numPoints / POINTS_PER_WORKGROUP;
+			if((this->task->numPoints % POINTS_PER_WORKGROUP) != 0){
+				numBatches++;
+			}
+
 			glDispatchCompute(numBatches, 1, 1);
 
 			glMemoryBarrier(GL_ALL_BARRIER_BITS);
@@ -250,9 +255,10 @@ void ComputeLasData::process(Renderer* renderer){
 
 			// GLTimerQueries::timestampPrint(timestampLabel + "-end");
 
-		}
+		// }
 
 		this->numPointsLoaded += this->task->numPoints;
+		this->numBatchesLoaded += numBatches;
 		this->task = nullptr;
 
 	}

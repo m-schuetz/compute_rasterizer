@@ -98,6 +98,8 @@ layout(std140, binding = 31) uniform UniformData{
 	mat4 proj;
 	mat4 transform;
 	mat4 transformFrustum;
+	mat4 world_frustum;
+	mat4 view_frustum;
 	int pointsPerThread;
 	int enableFrustumCulling;
 	int showBoundingBox;

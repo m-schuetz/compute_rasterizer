@@ -155,6 +155,7 @@ struct Renderer{
 	void drawPoints(GLuint vao, GLuint vbo, int numPoints);
 
 	void toggleVR();
+	void readBatches();
 
 	void setVR(bool enable);
 

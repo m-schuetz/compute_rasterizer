@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define POINTS_PER_THREAD 80
+#define POINTS_PER_THREAD 2250
 #define WORKGROUP_SIZE 128
 #define POINTS_PER_WORKGROUP (POINTS_PER_THREAD * WORKGROUP_SIZE)
 // Adjust this to be something in the order of 1 million points

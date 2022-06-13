@@ -268,6 +268,10 @@ void processPoints(){
 	wgMax.y = ssBatches[globalBatchIndex].max_y;
 	wgMax.z = ssBatches[globalBatchIndex].max_z;
 
+	uint pointIndex = globalBatchIndex * numPointsPerBatch;
+	uint numPoints = min(gl_WorkGroupSize.x * uPointsPerThread, uNumTotalPoints - pointIndex);
+
+	ssBatches[globalBatchIndex].numPoints = int(numPoints);
 
 	for(int i = 0; i < uPointsPerThread; i++){
 
@@ -334,9 +338,9 @@ void processPoints(){
 		
 		{ // 12 byte
 
-			uint32_t X_12b = (X >> 10) & MASK_10BIT;
-			uint32_t Y_12b = (Y >> 10) & MASK_10BIT;
-			uint32_t Z_12b = (Z >> 10) & MASK_10BIT;
+			uint32_t X_12b = (X >> 0) & MASK_10BIT;
+			uint32_t Y_12b = (Y >> 0) & MASK_10BIT;
+			uint32_t Z_12b = (Z >> 0) & MASK_10BIT;
 
 			uint32_t encoded = X_12b | (Y_12b << 10) | (Z_12b << 20);
 

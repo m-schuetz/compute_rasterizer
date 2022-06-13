@@ -249,6 +249,7 @@ void main(){
 		}
 
 		color = SPECTRAL[level];
+		color = 0x0000FFFF;
 
 		BoundingBox box;
 		box.position = vec4(wgPos, 0.0);

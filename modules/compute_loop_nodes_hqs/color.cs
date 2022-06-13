@@ -113,6 +113,8 @@ layout(std140, binding = 31) uniform UniformData{
 	mat4 proj;
 	mat4 transform;
 	mat4 transformFrustum;
+	mat4 world_frustum;
+	mat4 view_frustum;
 	int pointsPerThread;
 	int enableFrustumCulling;
 	int showBoundingBox;
@@ -128,6 +130,30 @@ uint SPECTRAL[5] = {
 	0x00bfffff,
 	0x0061aefd,
 	0x001c19d7
+};
+
+uint SPECTRAL_10[10] = {
+	0x0042019e,
+	0x004f3ed5,
+	0x00436df4,
+	0x0061aefd,
+	0x008be0fe,
+	0x0098f5e6,
+	0x00a4ddab,
+	0x00a5c266,
+	0x00bd8832,
+	0x00a24f5e
+};
+
+uint SPECTRAL_8[8] = {
+	0x004f3ed5,
+	0x00436df4,
+	0x0061aefd,
+	0x008be0fe,
+	0x0098f5e6,
+	0x00a4ddab,
+	0x00a5c266,
+	0x00bd8832
 };
 
 
@@ -200,7 +226,7 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 	vec3 wgCenter = (wgMin + wgMax) / 2.0;
 	float wgRadius = distance(wgMin, wgMax);
 
-	vec4 viewCenter = uniforms.view * uniforms.world * vec4(wgCenter, 1.0);
+	vec4 viewCenter = uniforms.view_frustum * uniforms.world_frustum * vec4(wgCenter, 1.0);
 	vec4 viewEdge = viewCenter + vec4(wgRadius, 0.0, 0.0, 0.0);
 
 	vec4 projCenter = uniforms.proj * viewCenter;
@@ -225,6 +251,10 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 	}else{
 		level = 0;
 	}
+
+	// if(pixelSize < 400){
+	// 	level = 10;
+	// }
 
 	return level;
 }
@@ -714,10 +744,19 @@ void main(){
 
 				uint32_t color = ssRGBA[index];
 
-				if(uniforms.colorizeChunks){
-					color = batchIndex * 45;
-				}
+				// { // for LOD figure
+				// 	// int l = clamp(9 - int(float(batch.level * 0.9)), 0, 9);
+				// 	int l = clamp(9 - int(float(batch.level * 1.0)), 0, 9);
 
+				// 	color = SPECTRAL_10[l];
+				// }
+
+
+				// if(uniforms.colorizeChunks){
+					// color = batchIndex * 45;
+				// }
+
+				// color = 0x000000FF;
 				// color = 0x00010101;
 
 				uint32_t R = (color >>  0) & 0xFF;

@@ -42,6 +42,8 @@ struct ComputeLoopNodesHqs : public Method{
 		mat4 proj;
 		mat4 transform;
 		mat4 transformFrustum;
+		mat4 world_frustum;
+		mat4 view_frustum;
 		int pointsPerThread;
 		int enableFrustumCulling;
 		int showBoundingBox;
@@ -98,7 +100,7 @@ struct ComputeLoopNodesHqs : public Method{
 		ssColor = renderer->createBuffer(16 * 2048 * 2048);
 		ssDebug = renderer->createBuffer(256);
 		ssBoundingBoxes = renderer->createBuffer(48 * 1'000'000);
-		uniformBuffer = renderer->createUniformBuffer(512);
+		uniformBuffer = renderer->createUniformBuffer(1024);
 
 		GLuint zero = 0;
 		glClearNamedBufferData(ssDebug.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
@@ -147,6 +149,8 @@ struct ComputeLoopNodesHqs : public Method{
 			uniformData.transform = worldViewProj;
 			if(Debug::updateFrustum){
 				uniformData.transformFrustum = worldViewProj;
+				uniformData.world_frustum = world;
+				uniformData.view_frustum = view;
 			}
 			uniformData.pointsPerThread = POINTS_PER_THREAD;
 			uniformData.numPoints = potreeData->numPointsLoaded;

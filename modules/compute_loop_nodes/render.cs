@@ -98,6 +98,8 @@ layout(std140, binding = 31) uniform UniformData{
 	mat4 proj;
 	mat4 transform;
 	mat4 transformFrustum;
+	mat4 world_frustum;
+	mat4 view_frustum;
 	int pointsPerThread;
 	int enableFrustumCulling;
 	int showBoundingBox;
@@ -111,6 +113,19 @@ uint SPECTRAL[5] = {
 	0x00bfffff,
 	0x0061aefd,
 	0x001c19d7
+};
+
+uint SPECTRAL_10[10] = {
+	0x0042019e,
+	0x004f3ed5,
+	0x00436df4,
+	0x0061aefd,
+	0x008be0fe,
+	0x0098f5e6,
+	0x00a4ddab,
+	0x00a5c266,
+	0x00bd8832,
+	0x00a24f5e
 };
 
 struct Plane{
@@ -182,7 +197,7 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 	vec3 wgCenter = (wgMin + wgMax) / 2.0;
 	float wgRadius = distance(wgMin, wgMax);
 
-	vec4 viewCenter = uniforms.view * uniforms.world * vec4(wgCenter, 1.0);
+	vec4 viewCenter = uniforms.view_frustum * uniforms.world_frustum * vec4(wgCenter, 1.0);
 	vec4 viewEdge = viewCenter + vec4(wgRadius, 0.0, 0.0, 0.0);
 
 	vec4 projCenter = uniforms.proj * viewCenter;
@@ -211,7 +226,7 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 	return level;
 }
 
-void rasterize(vec3 point, uint index) {
+void rasterize(vec3 point, uint index, uint color) {
 
 	if(debug.enabled){
 		atomicAdd(debug.numPointsProcessed, 1);
@@ -269,11 +284,35 @@ void renderPrefetched(){
 	}
 
 	int level = getPrecisionLevel(wgMin, wgMax);
+	// level = 1;
 
-	if(level >= 4){
-		return;
+	if(level >= 3){
+		// return;
 	}
 	// debug.numPointsRendered = 123;
+
+	// int targetLevel = 5;
+	// if(batch.level != targetLevel){
+	// 	return;
+	// }
+
+	vec3 offset = vec3(0.0, 0.0, 0.0);
+	// if(batch.level != 0){
+		// vec3 morroSize = vec3(4200.0, 4500.0, 200.0);
+		// float splits = pow(2.0, float(targetLevel)) - 1;
+		// vec3 splitSize = 0.1 * boxSize / splits;
+
+		// // for LOD figure
+		// float offset_x = batch.min_x * 0.06;// - splitSize.x;
+		// float offset_y = batch.min_y * 0.06;// - splitSize.y;
+		// float offset_z = 0.0; //batch.min_z * 0.06 - splitSize.z;
+		// batch.min_x += offset_x;
+		// batch.max_x += offset_x;
+		// batch.min_y += offset_y;
+		// batch.max_y += offset_y;
+		// batch.min_z += offset_z;
+		// batch.max_z += offset_z;
+	// }
 
 
 	// POPULATE BOUNDING BOX BUFFER, if enabled
@@ -284,7 +323,7 @@ void renderPrefetched(){
 		boundingBoxes.first = 0;
 		boundingBoxes.baseInstance = 0;
 
-		vec3 wgPos = (wgMin + wgMax) / 2.0;
+		vec3 wgPos = (wgMin + wgMax) / 2.0 + offset;
 		vec3 wgSize = wgMax - wgMin;
 
 		uint color = 0x0000FF00;
@@ -292,7 +331,11 @@ void renderPrefetched(){
 			color = 0x000000FF;
 		}
 
-		color = SPECTRAL[level];
+		// int l = clamp(4 - batch.level, 0, 4);
+		int l = clamp(8 - batch.level, 0, 9);
+
+		color = SPECTRAL_10[l];
+		// color = SPECTRAL[l];
 
 		BoundingBox box;
 		box.position = vec4(wgPos, 0.0);
@@ -309,6 +352,14 @@ void renderPrefetched(){
 	uint batchSize = batch.numPoints;
 	uint loopSize = uint(ceil(float(batchSize) / float(gl_WorkGroupSize.x)));
 	loopSize = min(loopSize, 500);
+
+	uint color = 0;
+
+	{ // for LOD figure
+		int l = clamp(8 - batch.level, 0, 9);
+
+		color = SPECTRAL_10[l];
+	}
 
 	if(level == 0){
 		// return;
@@ -368,7 +419,7 @@ void renderPrefetched(){
 				point.z = float(Z) * (boxSize.z / STEPS_30BIT) + wgMin.z;
 
 				// now rasterize to screen
-				rasterize(point, index);
+				rasterize(point, index, color);
 			}
 		}
 	}else if(level == 1){
@@ -422,7 +473,7 @@ void renderPrefetched(){
 				point.z = float(Z) * (boxSize.z / STEPS_30BIT) + wgMin.z;
 
 				// now rasterize to screen
-				rasterize(point, index);
+				rasterize(point, index, color);
 			}
 		}
 	}else{
@@ -472,7 +523,7 @@ void renderPrefetched(){
 				// point.z = float(Z) * (boxSize.z / STEPS_10BIT) + wgMin.z;
 			
 				// now rasterize to screen
-				rasterize(point, index);
+				rasterize(point, index, color);
 			}
 		}
 	}

@@ -29,6 +29,7 @@ struct ComputeLasData : public Resource {
 	bool headerLoaded = false;
 	int64_t numPoints = 0;
 	int64_t numPointsLoaded = 0;
+	int64_t numBatchesLoaded = 0;
 	uint32_t offsetToPointData = 0;
 	int pointFormat = 0;
 	uint32_t bytesPerPoint = 0;
