@@ -85,7 +85,7 @@ void main(){
 		float B = 0;
 		float count = 0;
 
-		int window = 0;
+		int window = 4;
 		float closestDepth = 1000000.0;
 		uint32_t closestPointID = 0;
 

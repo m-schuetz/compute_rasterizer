@@ -298,7 +298,7 @@ int main(){
 	// banyunibo_outside, banyunibo_outside_morton
 	// banyunibo_inside, banyunibo_inside_morton
 	// niederweiden_morton
-	Setting& setting = settings["morrobay_morton"];
+	Setting& setting = settings["banyunibo_outside_morton"];
 	
 	renderer->controls->yaw = setting.yaw;
 	renderer->controls->pitch = setting.pitch;

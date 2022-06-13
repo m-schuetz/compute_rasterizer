@@ -99,7 +99,7 @@ void main(){
 		float B = 0;
 		float count = 0;
 
-		int window = 0;
+		int window = 3;
 		float depth = 1000000.0;
 		for(int ox = -window; ox <= window; ox++){
 		for(int oy = -window; oy <= window; oy++){
@@ -121,7 +121,7 @@ void main(){
 
 			float w = 1.0;
 			if(ox == 0 && oy == 0){
-				w = 100;
+				w = 10;
 			}else if(ox <= 1 && oy <= 1){
 				w = 2;
 			}else{
@@ -144,9 +144,10 @@ void main(){
 		uint32_t b = uint32_t(B / count);
 
 		if(count == 0){
-			r = 0;
-			g = 0;
-			b = 0;
+			//0x00443322
+			r = 0x22;
+			g = 0x33;
+			b = 0x44;
 		}else{
 			if(debug.enabled){
 				atomicAdd(debug.numPointsVisible, 1);

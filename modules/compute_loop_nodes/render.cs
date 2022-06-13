@@ -223,6 +223,12 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 		level = 0;
 	}
 
+	if(pixelSize > 1000){
+		level = 0;
+	}else{
+		level = 4;
+	}
+
 	return level;
 }
 
@@ -286,8 +292,8 @@ void renderPrefetched(){
 	int level = getPrecisionLevel(wgMin, wgMax);
 	// level = 1;
 
-	if(level >= 3){
-		// return;
+	if(level >= 4){
+		return;
 	}
 	// debug.numPointsRendered = 123;
 

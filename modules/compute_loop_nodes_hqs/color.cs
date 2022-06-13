@@ -252,6 +252,12 @@ int getPrecisionLevel(vec3 wgMin, vec3 wgMax){
 		level = 0;
 	}
 
+	if(pixelSize > 1000){
+		level = 0;
+	}else{
+		level = 4;
+	}
+
 	// if(pixelSize < 400){
 	// 	level = 10;
 	// }
