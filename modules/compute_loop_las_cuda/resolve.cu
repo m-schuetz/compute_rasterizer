@@ -11,7 +11,7 @@ __global__ void kernel(
 
 	int pixelID = x + y * width;
 	unsigned int pointID = framebuffer[pixelID];
-	unsigned int color = 0x0;
+	unsigned int color = 0x00443322;
 	if(pointID < 0x7FFFFFFF){
 		color = rgba[pointID];
 	}
