@@ -131,7 +131,6 @@ averages overlapping points
 
 		auto fbo = renderer->views[0].framebuffer;
 
-<<<<<<< HEAD
 		// resize framebuffer storage, if necessary
 		if(ssDepth.size < 4 * fbo->width * fbo->height){
 			
@@ -147,9 +146,6 @@ averages overlapping points
 
 		// Update Uniform Buffer
 		{
-=======
-		{ // Update Uniform Buffer
->>>>>>> f39ad46b80c86819f3cb1b3bdbd5d30fde5005ea
 			mat4 world;
 			mat4 view = renderer->views[0].view;
 			mat4 proj = renderer->views[0].proj;
