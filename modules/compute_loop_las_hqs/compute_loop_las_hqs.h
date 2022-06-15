@@ -12,6 +12,7 @@
 #include <glm/gtx/transform.hpp>
 #include "nlohmann/json.hpp"
 #include <glm/gtc/matrix_transform.hpp> 
+#include <glm/gtc/type_ptr.hpp> 
 
 #include "unsuck.hpp"
 
@@ -30,6 +31,8 @@
 using namespace std;
 using namespace std::chrono_literals;
 using nlohmann::json;
+
+using glm::ivec2;
 
 struct ComputeLoopLasHqs : public Method{
 
@@ -71,8 +74,10 @@ struct ComputeLoopLasHqs : public Method{
 	GLBuffer ssRGBA;
 	GLBuffer ssDebug;
 	GLBuffer ssBoundingBoxes;
+	GLBuffer ssFiles;
 	GLBuffer uniformBuffer;
 	UniformData uniformData;
+	shared_ptr<Buffer> ssFilesBuffer;
 
 	shared_ptr<LasLoaderSparse> las = nullptr;
 
@@ -95,26 +100,22 @@ averages overlapping points
 		ssDepth = renderer->createBuffer(4 * 2048 * 2048);
 		ssRGBA = renderer->createBuffer(16 * 2048 * 2048);
 
+		this->renderer = renderer;
+
+		ssFilesBuffer = make_shared<Buffer>(10'000 * 128);
+
 		ssDebug = renderer->createBuffer(256);
 		ssBoundingBoxes = renderer->createBuffer(48 * 1'000'000);
+		ssFiles = renderer->createBuffer(ssFilesBuffer->size);
 		uniformBuffer = renderer->createUniformBuffer(512);
 
 		GLuint zero = 0;
 		glClearNamedBufferData(ssDebug.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 		glClearNamedBufferData(ssBoundingBoxes.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
-
-		this->renderer = renderer;
+		glClearNamedBufferData(ssFiles.handle, GL_R32UI, GL_RED, GL_UNSIGNED_INT, &zero);
 	}
 
 	void update(Renderer* renderer){
-
-		// if(Runtime::resource != (Resource*)las.get()){
-
-		// 	if(Runtime::resource != nullptr){
-		// 		Runtime::resource->unload(renderer);
-		// 	}
-
-		// }
 
 	}
 
@@ -130,6 +131,7 @@ averages overlapping points
 
 		auto fbo = renderer->views[0].framebuffer;
 
+<<<<<<< HEAD
 		// resize framebuffer storage, if necessary
 		if(ssDepth.size < 4 * fbo->width * fbo->height){
 			
@@ -145,6 +147,9 @@ averages overlapping points
 
 		// Update Uniform Buffer
 		{
+=======
+		{ // Update Uniform Buffer
+>>>>>>> f39ad46b80c86819f3cb1b3bdbd5d30fde5005ea
 			mat4 world;
 			mat4 view = renderer->views[0].view;
 			mat4 proj = renderer->views[0].proj;
@@ -167,6 +172,42 @@ averages overlapping points
 			uniformData.colorizeOverdraw = Debug::colorizeOverdraw;
 
 			glNamedBufferSubData(uniformBuffer.handle, 0, sizeof(UniformData), &uniformData);
+		}
+
+		{ // update file buffer
+
+			for(int i = 0; i < las->files.size(); i++){
+				auto lasfile = las->files[i];
+
+				dmat4 world = glm::translate(dmat4(), lasfile->boxMin);
+				dmat4 view = renderer->views[0].view;
+				dmat4 proj = renderer->views[0].proj;
+				dmat4 worldView = view * world;
+				dmat4 worldViewProj = proj * view * world;
+
+				mat4 transform = worldViewProj;
+				mat4 fWorld = world;
+
+				memcpy(
+					ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 0, 
+					glm::value_ptr(transform), 
+					64);
+
+				if(Debug::updateFrustum){
+					memcpy(
+						ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 64, 
+						glm::value_ptr(transform), 
+						64);
+				}
+
+				memcpy(
+					ssFilesBuffer->data_u8 + 256 * lasfile->fileIndex + 128, 
+					glm::value_ptr(fWorld), 
+					64);
+
+			}
+
+			glNamedBufferSubData(ssFiles.handle, 0, 256 * las->files.size(), ssFilesBuffer->data);
 		}
 
 		if(Debug::enableShaderDebugValue){
@@ -192,6 +233,7 @@ averages overlapping points
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyzMed.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyzLow.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 45, ssFiles.handle);
 
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 50, ssBoundingBoxes.handle);
 
@@ -220,7 +262,8 @@ averages overlapping points
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 42, las->ssXyzMed.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 43, las->ssXyzLow.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
-			
+			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 45, ssFiles.handle);
+
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 50, ssBoundingBoxes.handle);
 
 			glBindImageTexture(0, fbo->colorAttachments[0]->handle, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8UI);
@@ -233,8 +276,7 @@ averages overlapping points
 		}
 
 		// RESOLVE
-		if(csResolve->program != -1){ 
-
+		if(csResolve->program != -1){
 			GLTimerQueries::timestamp("resolve-start");
 
 			glUseProgram(csResolve->program);
@@ -243,7 +285,6 @@ averages overlapping points
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 2, ssRGBA.handle);
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 30, ssDebug.handle);
 			glBindBufferBase(GL_UNIFORM_BUFFER, 31, uniformBuffer.handle);
-
 			glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 44, las->ssColors.handle);
 
 			glBindImageTexture(0, fbo->colorAttachments[0]->handle, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8UI);
@@ -252,7 +293,6 @@ averages overlapping points
 			int groups_y = ceil(float(fbo->height) / 16.0f);
 			glDispatchCompute(groups_x, groups_y, 1);
 			
-
 			glMemoryBarrier(GL_ALL_BARRIER_BITS);
 
 			GLTimerQueries::timestamp("resolve-end");
@@ -264,8 +304,6 @@ averages overlapping points
 
 			DebugData data;
 			glGetNamedBufferSubData(ssDebug.handle, 0, sizeof(DebugData), &data);
-
-			// Debug::getInstance()->values["debug value"] = formatNumber(data.value);
 
 			auto dbg = Debug::getInstance();
 

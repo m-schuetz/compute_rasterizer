@@ -26,6 +26,7 @@
 #include "GLTimerQueries.h"
 #include "Method.h"
 #include "compute/ComputeLasLoader.h"
+#include "Runtime.h"
 
 using namespace std;
 using namespace std::chrono_literals;

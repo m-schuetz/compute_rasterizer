@@ -25,19 +25,6 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -140,14 +127,14 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\include;$(SolutionDir)..\libs\glfw\include;$(SolutionDir)..\libs\glew\include;$(SolutionDir)..\libs\imgui\;$(SolutionDir)..\libs\implot\;$(SolutionDir)..\libs\imgui\backends;$(SolutionDir)..\libs\glm;$(SolutionDir)..\modules;$(SolutionDir)..\libs\json;$(SolutionDir)..\libs\openvr\headers;$(CUDA_PATH)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\include;$(SolutionDir)..\libs\glfw\include;$(SolutionDir)..\libs\glew\include;$(SolutionDir)..\libs\imgui\;$(SolutionDir)..\libs\implot\;$(SolutionDir)..\libs\imgui\backends;$(SolutionDir)..\libs\glm;$(SolutionDir)..\modules;$(SolutionDir)..\libs\json;$(SolutionDir)..\libs\openvr\headers;$(CUDA_PATH)\include;$(SolutionDir)..\libs\laszip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)..\libs\glfw\lib\msvc2017_x64\glfw3.lib;opengl32.lib;$(SolutionDir)..\libs\openvr\lib\win64\openvr_api.lib;$(CUDA_PATH)\lib\x64\cuda.lib;$(CUDA_PATH)\lib\x64\nvrtc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)..\libs\glfw\lib\msvc2017_x64\glfw3.lib;opengl32.lib;$(SolutionDir)..\libs\openvr\lib\win64\openvr_api.lib;$(CUDA_PATH)\lib\x64\cuda.lib;$(CUDA_PATH)\lib\x64\nvrtc.lib;$(SolutionDir)Release\laszip.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)..\libs\openvr\openvr_api.dll" "$(OutDir)"</Command>
@@ -167,6 +154,7 @@
     <ClCompile Include="..\libs\implot\implot_demo.cpp" />
     <ClCompile Include="..\libs\implot\implot_items.cpp" />
     <ClCompile Include="..\modules\compute\ComputeLasLoader.cpp" />
+    <ClCompile Include="..\modules\compute\LasLoaderSparse.cpp" />
     <ClCompile Include="..\src\Framebuffer.cpp" />
     <ClCompile Include="..\src\GLTimerQueries.cpp" />
     <ClCompile Include="..\src\main.cpp" />

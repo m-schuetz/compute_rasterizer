@@ -126,19 +126,20 @@ void Renderer::init(){
 	GLFWmonitor** monitors = glfwGetMonitors(&numMonitors);
 
 	cout << "<create windows>" << endl;
-	// if (numMonitors > 1) {
-	// 	const GLFWvidmode * modeLeft = glfwGetVideoMode(monitors[0]);
-	// 	const GLFWvidmode * modeRight = glfwGetVideoMode(monitors[1]);
+	//if (numMonitors > 1) {
+	//	const GLFWvidmode * modeLeft = glfwGetVideoMode(monitors[0]);
+	//	const GLFWvidmode * modeRight = glfwGetVideoMode(monitors[1]);
 
-	// 	window = glfwCreateWindow(modeRight->width, modeRight->height - 300, "Simple example", nullptr, nullptr);
+	//	window = glfwCreateWindow(modeRight->width, modeRight->height - 300, "Simple example", nullptr, nullptr);
 
-	// 	if (!window) {
-	// 		glfwTerminate();
-	// 		exit(EXIT_FAILURE);
-	// 	}
+	//	if (!window) {
+	//		glfwTerminate();
+	//		exit(EXIT_FAILURE);
+	//	}
 
-	// 	glfwSetWindowPos(window, modeLeft->width, 0);
-	// } else 
+	//	glfwSetWindowPos(window, modeLeft->width, 0);
+	//} 
+	//else 
 	{
 		const GLFWvidmode * mode = glfwGetVideoMode(monitors[0]);
 
@@ -362,7 +363,7 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 
 		auto windowSize_infos = ImVec2(490, 240);
 		auto windowSize_perf = ImVec2(490, 340);
-		auto windowSize_datasets = ImVec2(490, 160);
+		auto windowSize_datasets = ImVec2(490, 260);
 		auto windowSize_debug = ImVec2(490, 200);
 
 		auto windowSize_state = ImVec2(370, 320);
@@ -630,8 +631,6 @@ the fast software-rasterization of point clouds.)ER01");
   Make sure you have about 2GB + 16 byte per point of GPU memory.
   (e.g. about 18GB GPU memory for 1 billion points)
 - Maximum of 1 billion points.
-- All data sets transformed to origin.
-  (can't load multiple tiles relative to same origin)
 				)ER01");
 			ImGui::Text("URL: https://github.com/m-schuetz/compute_rasterizer");
 			
@@ -748,7 +747,7 @@ the fast software-rasterization of point clouds.)ER01");
 			int numItems = lasfiles == nullptr ? 0 : lasfiles->files.size();
 
 			ImGui::Text("Point Clouds:");
-			if (ImGui::BeginListBox("##listbox 3", ImVec2(-FLT_MIN, (4) * ImGui::GetTextLineHeightWithSpacing()))){
+			if (ImGui::BeginListBox("##listbox 3", ImVec2(-FLT_MIN, (11) * ImGui::GetTextLineHeightWithSpacing()))){
 				for (int n = 0; n < numItems; n++){
 					const bool is_selected = (item_current_idx == n);
 
