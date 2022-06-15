@@ -130,6 +130,19 @@ averages overlapping points
 
 		auto fbo = renderer->views[0].framebuffer;
 
+		// resize framebuffer storage, if necessary
+		if(ssDepth.size < 4 * fbo->width * fbo->height){
+			
+			glDeleteBuffers(1, &ssDepth.handle);
+			glDeleteBuffers(1, &ssRGBA.handle);
+
+			// make new buffer a little larger to have some reserves when users enlarge the window
+			int newBufferSize = 1.5 * double(fbo->width * fbo->height);
+
+			ssDepth = renderer->createBuffer(4 * newBufferSize);
+			ssRGBA = renderer->createBuffer(16 * newBufferSize);
+		}
+
 		// Update Uniform Buffer
 		{
 			mat4 world;

@@ -127,6 +127,17 @@ struct ComputeLoopLas : public Method{
 
 		auto fbo = renderer->views[0].framebuffer;
 
+		// resize framebuffer storage, if necessary
+		if(ssFramebuffer.size < 8 * fbo->width * fbo->height){
+			
+			glDeleteBuffers(1, &ssFramebuffer.handle);
+
+			// make new buffer a little larger to have some reserves when users enlarge the window
+			int newBufferSize = 1.5 * double(8 * fbo->width * fbo->height);
+
+			ssFramebuffer = renderer->createBuffer(newBufferSize);
+		}
+
 		// Update Uniform Buffer
 		{
 			mat4 world;
