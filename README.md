@@ -80,17 +80,14 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 }
 
 @article{SCHUETZ-2021-PCC,
-  title =      "Rendering Point Clouds with Compute Shaders and Vertex Order
-               Optimization",
+  title =      "Rendering Point Clouds with Compute Shaders and Vertex Order Optimization",
   author =     "Markus Sch\"{u}tz and Bernhard Kerbl and Michael Wimmer",
   year =       "2021",
   month =      jul,
   doi =        "10.1111/cgf.14345",
-  issn =       "1467-8659",
   journal =    "Computer Graphics Forum",
   number =     "4",
   volume =     "40",
-  booktitle =  "techreport",
   pages =      "115--126",
   keywords =   "point-based rendering, compute shader, real-time rendering",
   URL =        "https://www.cg.tuwien.ac.at/research/publications/2021/SCHUETZ-2021-PCC/",
