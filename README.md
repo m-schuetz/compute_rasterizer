@@ -69,13 +69,31 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 # Citing
 <pre>
 @article{SCHUETZ-2022-PCC,
-	title =      "Software Rasterization of 2 Billion Points in Real Time",
-	author =     "Markus Sch\"{u}tz and Bernhard Kerbl and Michael Wimmer",
-	publisher = {arXiv},
-	year =       "2022",
-	month =      apr,
-	URL =        "https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/",
-	doi = {10.48550/ARXIV.2204.01287},
-	copyright = {Creative Commons Attribution 4.0 International}
+  title =      "Software Rasterization of 2 Billion Points in Real Time",
+  author =     "Markus Sch\"{u}tz and Bernhard Kerbl and Michael Wimmer",
+  year =       "2022",
+  month =      jul,
+  journal =    "Proc. ACM Comput. Graph. Interact. Tech.",
+  volume =     "5",
+  pages =      "1--16",
+  URL =        "https://www.cg.tuwien.ac.at/research/publications/2022/SCHUETZ-2022-PCC/",
 }
+
+@article{SCHUETZ-2021-PCC,
+  title =      "Rendering Point Clouds with Compute Shaders and Vertex Order
+               Optimization",
+  author =     "Markus Sch\"{u}tz and Bernhard Kerbl and Michael Wimmer",
+  year =       "2021",
+  month =      jul,
+  doi =        "10.1111/cgf.14345",
+  issn =       "1467-8659",
+  journal =    "Computer Graphics Forum",
+  number =     "4",
+  volume =     "40",
+  booktitle =  "techreport",
+  pages =      "115--126",
+  keywords =   "point-based rendering, compute shader, real-time rendering",
+  URL =        "https://www.cg.tuwien.ac.at/research/publications/2021/SCHUETZ-2021-PCC/",
+}
+
 <pre>
