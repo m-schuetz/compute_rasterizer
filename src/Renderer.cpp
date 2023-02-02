@@ -361,7 +361,7 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		auto windowSize_infos = ImVec2(490, 240);
+		auto windowSize_infos = ImVec2(490, 280);
 		auto windowSize_perf = ImVec2(490, 340);
 		auto windowSize_datasets = ImVec2(490, 260);
 		auto windowSize_debug = ImVec2(490, 200);
@@ -623,7 +623,7 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			ImGui::Text(R"ER01(Semi-user-friendly version of the research prototype for 
 the fast software-rasterization of point clouds.)ER01");
 			ImGui::Text(R"ER01(
-- Drag&Drop LAS files to load them. (no LAZ!)
+- Drag&Drop LAS files to load them. 
 - Requires Windows and NVIDIA GPUs. 
   PRs for AMD are welcome.
 - Loads all points of the dropped point clouds, 
@@ -633,6 +633,17 @@ the fast software-rasterization of point clouds.)ER01");
 - Maximum of 1 billion points.
 				)ER01");
 			ImGui::Text("URL: https://github.com/m-schuetz/compute_rasterizer");
+
+			ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+			ImGui::Text(R"ER01(Issues: 
+- Multi-threaded loading is now enabled, but may ocasionally cause 
+  bugs (missing points). 
+  Workaround: "numThreads = 1;" in LasLoaderSparse.cpp
+- Loading compressed LAZ files is 10x slower than LAS.
+				)ER01");
+			// ImGui::InputText("##text1", txt_green, sizeof(txt_green));
+			ImGui::PopStyleColor();
+
 			
 			ImGui::End();
 		}

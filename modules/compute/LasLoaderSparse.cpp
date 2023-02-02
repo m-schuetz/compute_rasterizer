@@ -462,14 +462,16 @@ LasLoaderSparse::LasLoaderSparse(shared_ptr<Renderer> renderer){
 	if(cpuData.numProcessors == 8) numThreads = 5;
 	if(cpuData.numProcessors  > 8) numThreads = (cpuData.numProcessors / 2) + 1;
 
+	// uncomment to force just one thread
+	// numThreads = 1;
+
 	cout << "start loading points with " << numThreads << " threads" << endl;
 
-	for(int i = 0; i < 12; i++)
-	//for(int i = 0; i < numThreads; i++)
-	{
-		// spawnLoader();
+	// for(int i = 0; i < 12; i++)
+	for(int i = 0; i < numThreads; i++){
+		spawnLoader();
 	}
-	 spawnLoader();
+	// spawnLoader();
 }
 
 void LasLoaderSparse::add(vector<string> files, std::function<void(vector<shared_ptr<LasFile>>)> callback){

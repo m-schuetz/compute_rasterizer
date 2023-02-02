@@ -96,7 +96,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)..\libs\glfw\lib\msvc2017_x64\glfw3.lib;opengl32.lib;$(SolutionDir)..\libs\openvr\lib\win64\openvr_api.lib;$(CUDA_PATH)\lib\x64\cuda.lib;$(CUDA_PATH)\lib\x64\nvrtc.lib;$(SolutionDir)Release\laszip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)..\libs\glfw\lib\msvc2017_x64\glfw3.lib;opengl32.lib;$(SolutionDir)..\libs\openvr\lib\win64\openvr_api.lib;$(CUDA_PATH)\lib\x64\cuda.lib;$(CUDA_PATH)\lib\x64\nvrtc.lib;$(SolutionDir)$(Configuration)\laszip.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)..\libs\openvr\openvr_api.dll" "$(OutDir)"</Command>
@@ -134,7 +134,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)..\libs\glfw\lib\msvc2017_x64\glfw3.lib;opengl32.lib;$(SolutionDir)..\libs\openvr\lib\win64\openvr_api.lib;$(CUDA_PATH)\lib\x64\cuda.lib;$(CUDA_PATH)\lib\x64\nvrtc.lib;$(SolutionDir)Release\laszip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(SolutionDir)..\libs\glfw\lib\msvc2017_x64\glfw3.lib;opengl32.lib;$(SolutionDir)..\libs\openvr\lib\win64\openvr_api.lib;$(CUDA_PATH)\lib\x64\cuda.lib;$(CUDA_PATH)\lib\x64\nvrtc.lib;$(SolutionDir)$(Configuration)\laszip.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <Profile>true</Profile>
     </Link>
     <PostBuildEvent>
       <Command>copy /Y "$(SolutionDir)..\libs\openvr\openvr_api.dll" "$(OutDir)"</Command>
