@@ -1,206 +1,74 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\arithmeticdecoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\arithmeticencoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\arithmeticmodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\integercompressor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasindex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasinterval.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasquadtree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemcompressed_v1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemcompressed_v2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemcompressed_v3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemcompressed_v4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreadpoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasunzipper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemcompressed_v1.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemcompressed_v2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemcompressed_v3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemcompressed_v4.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswritepoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszip_dll.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszipper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\mydefs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\arithmeticdecoder.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\arithmeticencoder.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\arithmeticmodel.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\integercompressor.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasindex.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasinterval.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasquadtree.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v1.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v2.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v3.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v4.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasreadpoint.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\lasunzipper.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v1.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v2.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v3.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v4.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laswritepoint.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laszip.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laszip_dll.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\laszipper.cpp" />
+    <ClCompile Include="$(SolutionDir)..\libs\laszip\src\mydefs.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\arithmeticdecoder.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\arithmeticencoder.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\arithmeticmodel.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamin.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamin_array.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamin_file.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamin_istream.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreaminout.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreaminout_file.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamout.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamout_array.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamout_file.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamout_nil.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\bytestreamout_ostream.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\endian.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\integercompressor.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasattributer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasindex.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasinterval.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laspoint.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasquadtree.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasquantizer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemcompressed_v1.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemcompressed_v2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemcompressed_v3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemcompressed_v4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreaditemraw.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasreadpoint.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\lasunzipper.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemcompressed_v1.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemcompressed_v2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemcompressed_v3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemcompressed_v4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswriteitemraw.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laswritepoint.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszip.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszip_common_v1.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszip_common_v2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszip_common_v3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszip_decompress_selective_v3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\laszipper.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\dev\workspaces\compute_rasterizer\compute_rasterizer\libs\laszip\src\mydefs.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\arithmeticdecoder.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\arithmeticencoder.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\arithmeticmodel.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamin.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamin_array.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamin_file.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamin_istream.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreaminout.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreaminout_file.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout_array.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout_file.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout_nil.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\bytestreamout_ostream.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\endian.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\integercompressor.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasattributer.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasindex.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasinterval.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laspoint.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasquadtree.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasquantizer.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditem.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v1.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v2.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v3.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemcompressed_v4.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreaditemraw.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasreadpoint.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\lasunzipper.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitem.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v1.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v2.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v3.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemcompressed_v4.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswriteitemraw.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laswritepoint.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip_common_v1.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip_common_v2.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip_common_v3.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszip_decompress_selective_v3.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\laszipper.hpp" />
+    <ClInclude Include="$(SolutionDir)..\libs\laszip\src\mydefs.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

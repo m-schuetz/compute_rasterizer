@@ -1,5 +1,7 @@
 build/bin/
 build/obj/
+build/Debug
+build/Release
 build/.vs
 libs/openvr/samples
 libs/openvr_newer
