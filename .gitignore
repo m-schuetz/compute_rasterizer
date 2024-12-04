@@ -1,8 +1,8 @@
-build/bin/
-build/obj/
-build/Debug
-build/Release
-build/.vs
+buildvs/bin/
+buildvs/obj/
+buildvs/Debug
+buildvs/Release
+buildvs/.vs
 libs/openvr/samples
 libs/openvr_newer
 tools/sort_points/bin/
@@ -12,3 +12,5 @@ tools/sort_points/Sort_Frugal/Debug
 tools/sort_points/Sort_Frugal/Release
 tools/sort_points/Sort_Frugal/.vs
 imgui.ini
+.vscode
+build

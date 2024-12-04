@@ -207,7 +207,7 @@ struct ComputeLoopLasCUDA : public Method {
 
 		{ // CLEAR
 			GLuint zero = 0;
-			cuMemsetD8(fb, 0xFFFF, 8 * 2048 * 2048);
+			cuMemsetD8(fb, 0xFF, 8 * 2048 * 2048);
 		}
 		
 		GLTimerQueries::timestamp("compute-loop-end");

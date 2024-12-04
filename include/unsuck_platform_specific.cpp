@@ -1,7 +1,6 @@
 
 #include "unsuck.hpp"
 
-EventQueue *EventQueue::instance = new EventQueue();
 
 #ifdef _WIN32
 	#include "TCHAR.h"

@@ -265,7 +265,7 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 		this->width = width;
 		this->height = height;
 
-		EventQueue::instance->process();
+		EventQueue::instance()->process();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, this->width, this->height);
@@ -519,8 +519,9 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 			}
 
 			if(Debug::frameStats.size() > 0 && ImGui::Button("copy")) {
-				
+#ifdef _WIN32
 				toClipboard(ssStats.str());
+#endif
 			}
 
 			ImGui::End();
@@ -587,8 +588,9 @@ void Renderer::loop(function<void(void)> update, function<void(void)> render){
 				ss << "renderer->controls->target = {" << target.x << ", " << target.y << ", " << target.z << "};" << endl;
 
 				string str = ss.str();
-				
+#ifdef _WIN32
 				toClipboard(str);
+#endif
 			}
 
 			// if (ImGui::Button("copy vr matrices")) {

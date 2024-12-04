@@ -503,7 +503,7 @@ void LasLoaderSparse::add(vector<string> files, std::function<void(vector<shared
 			lasfile->numPoints = buffer_header->get<uint64_t>(247);
 		}
 
-		lasfile->numPoints = min(lasfile->numPoints, 1'000'000'000ll);
+		lasfile->numPoints = min(lasfile->numPoints, (int64_t)1'000'000'000ll);
 
 		lasfile->offsetToPointData = buffer_header->get<uint32_t>(96);
 		lasfile->pointFormat = buffer_header->get<uint8_t>(104) % 128;

@@ -179,7 +179,7 @@ struct PotreeData : public Resource {
 				rgbOffset = bytesPerPoint;
 			}
 
-			bytesPerPoint += jsAttribute["size"];
+			bytesPerPoint += jsAttribute["size"].get<int64_t>();
 		}
 
 		metadataLoaded = true;

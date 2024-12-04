@@ -60,7 +60,7 @@ struct LasStandardData : public Resource {
 			data->numPoints = buffer_header->get<uint64_t>(247);
 		}
 
-		data->numPoints = min(data->numPoints, 1'000'000'000ll);
+		data->numPoints = min(data->numPoints, (int64_t)1'000'000'000ll);
 
 		data->offsetToPointData = buffer_header->get<uint32_t>(96);
 		data->pointFormat = buffer_header->get<uint8_t>(104);

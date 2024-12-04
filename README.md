@@ -31,7 +31,9 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 # Building
 
 * Clone the repository
-* Compile build/ComputeRasterizer.sln with Visual Studio 2022.
+  
+### On Windows
+* Compile buildvs/ComputeRasterizer.sln with Visual Studio 2022.
 * Run (ctrl + f5)
 
 <table>
@@ -66,6 +68,10 @@ In branch [compute_rasterizer_2021](https://github.com/m-schuetz/compute_rasteri
 	</tr>
 </table>
 
+### On Linux
+(tested on ubuntu 20.04 and 22.04)
+* sudo apt install libglfw3-dev
+* mkdir build && cd build && cmake .. && make -j$(nproc)
 # Citing
 <pre>
 @article{SCHUETZ-2022-PCC,

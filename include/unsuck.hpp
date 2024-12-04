@@ -636,8 +636,10 @@ inline string repeat(string str, int64_t repetitions) {
 void toClipboard(string str);
 
 struct EventQueue {
-
-	static EventQueue *instance;
+	static inline EventQueue* instance() {
+		static EventQueue instance;
+		return &instance;
+	}
 	vector<std::function<void()>> queue;
 	mutex mtx;
 
@@ -661,7 +663,7 @@ struct EventQueue {
 };
 
 inline void schedule(std::function<void()> event) {
-	EventQueue::instance->add(event);
+	EventQueue::instance()->add(event);
 }
 
 inline void monitorFile(string file, std::function<void()> callback) {

@@ -1,11 +1,18 @@
-cmake_minimum_required(VERSION 2.8)
 
 project(openvr_api)
 
 IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	add_definitions(-DOSX -DPOSIX)
 	set_source_files_properties(vrcommon/pathtools_public.cpp vrcommon/vrpathregistry_public.cpp PROPERTIES COMPILE_FLAGS "-x objective-c++")
-ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	add_definitions(-DLINUX -DPOSIX)
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+	add_definitions(-DWIN32)
+	if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        add_definitions(-D_WIN64)
+    endif()
+ENDIF()
+
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 include_directories(. ../headers)
